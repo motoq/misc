@@ -34,8 +34,12 @@ public class TMatrixEnum<I extends Enum<I>, J extends Enum<J>> extends TMatrix {
     super.set(eRow.ordinal(), eCol.ordinal(), value);
   }
 
-  public static void main(String[] args) {
-    TMatrixEnum<Basis3D, Basis3D> mtx = new TMatrixEnum<>(Basis3D.I, Basis3D.J);
-    //TMatrixEnum<Basis3D, Basis3D> mtx = new TMatrixEnum<>(Basis3D.I, Q.Q0);
+  public static <I extends Enum<I>, J extends Enum<J>> TMatrixEnum<I, J>
+                                                  Factory(final Class<I> enI,
+                                                          final Class<J> enJ) {
+
+    TMatrixEnum<I, J> mtx = new TMatrixEnum<I, J>(enI.getEnumConstants()[0],
+                                                  enJ.getEnumConstants()[0]);
+    return mtx;
   }
 }

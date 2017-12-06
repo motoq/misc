@@ -1,7 +1,7 @@
 /*
- c  TVector.java
+ c  Basis3D.java
  c
- c  Copyright (C) 2017 Kurt Motekew
+ c  Copyright (C) 2000, 2017 Kurt Motekew
  c
  c  This library is free software; you can redistribute it and/or
  c  modify it under the terms of the GNU Lesser General Public
@@ -19,33 +19,21 @@
  c  02110-1301 USA
  */
 
-public class TVector extends TMatrix {
-  private final double[] vals;
+package cognition.math;
 
-  public TVector(int m) {
-    super(m, 1);
-    vals = super.valuesPtr();
-  }
+/**
+ * This enum represents an orthoganal basis in a three dimensional
+ * vector space (think - Cartesian coordinate system).  Uses include
+ * an index for a 3 element vector, or for indexing a 3X3 Matrix.
+ *
+ * @author Kurt Motekew
+ * @since 20070529
+ * @since 20171203  Brought over to new math package
+ */
+public enum Basis3D {
 
-  public TVector(double[] vec) {
-    super(vec.length, 1);
-    vals = super.valuesPtr();
-    System.arraycopy(vec, 0, vals, 0, vec.length);
-  }
+  I,
+  J,
+  K
 
-  public double get(int ii) {
-    return vals[ii];
-  }
-
-  public void set(int ii, double value) {
-    vals[ii] = value;
-  }
-
-  public double ndx(int row) {
-    return vals[row-1];
-  }
-
-  public void ndx(int row, double value) {
-    vals[row-1] = value;
-  }
 }

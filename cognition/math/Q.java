@@ -1,7 +1,7 @@
 /*
  c  Q.java
  c
- c  Copyright (C) 2000, 2008 Kurt Motekew
+ c  Copyright (C) 2000, 2017 Kurt Motekew
  c
  c  This library is free software; you can redistribute it and/or
  c  modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
  c  02110-1301 USA
  */
 
-//package eros.math;
+package cognition.math;
 
 /**
  * This enum represents the components of a Quaternion.
@@ -28,6 +28,7 @@
  *
  * @author Kurt Motekew
  * @since 20080830
+ * @since 20171203  Brought over to new math package
  */
 public enum Q {
 

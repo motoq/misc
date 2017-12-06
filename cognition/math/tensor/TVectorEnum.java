@@ -33,5 +33,11 @@ public class TVectorEnum<I extends Enum<I>> extends TVector {
     super.set(eRow.ordinal(), value);
   }
 
+  public static <I extends Enum<I>> TVectorEnum<I> Factory(final Class<I> enI) {
+    //I[] evI = enI.getEnumConstants();
+    //TVectorEnum<I> vec = new TVectorEnum<I>(evI[0]);
+    TVectorEnum<I> vec = new TVectorEnum<I>(enI.getEnumConstants()[0]);
+    return vec;                           
+  }
 
 }

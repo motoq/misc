@@ -19,41 +19,79 @@
  c  02110-1301 USA
  */
 
+package cognition.math.tensor;
+
 import java.util.Arrays;
 
+/**
+ * Tensor class, currently only as the superclass to matrix and vector
+ * classes.
+ *
+ * @author Kurt Motekew
+ * @since 20171203
+ */
 public class Tensor {
   private final int SIZE;
   private final int RANK;
   private final double[] vals;
 
+  /**
+   * Initizlize as a rank 1 tensor
+   *
+   * @param  dimension  Number of elements in the vector.
+   */
   public Tensor(int dimension) {
     RANK = 1;
     SIZE = dimension;
     vals = new double[SIZE];
   }
 
+  /**
+   * Initizlize as a rank 2 tensor
+   *
+   * @param  rows  Number of elements the row index
+   * @param  cols  Number of elements in column index
+   */
   public Tensor(int rows, int cols) {
     RANK = 2;
     SIZE = rows*cols;
     vals = new double[SIZE];
   }
 
-  /** @return   The rank of the tensor */
+  /**
+   * @return   The rank of the tensor
+   */
   public int rank() { return RANK; }
   
-  /** @return   The total number of elements composing the tensor */
+  /**
+   *  @return   The total number of elements composing the tensor
+   */
   public int size() { return SIZE; }
   
+  /**
+   * Zero every element of this tensor
+   */
   public void zero() {
     Arrays.fill(vals, 0.0);
   }
 
-  public void mult(double num) {
+  //public void set(Tensor t) {
+  //  System.arraycopy(t.vals, 0, vals, 0, SIZE);
+  //}
+
+  /**
+   * Multiply this tensor by a scalar
+   *
+   * @param  sfactor
+  public void mult(double sfactor) {
     for (int ii=0; ii<SIZE; ii++) {
-      vals[ii] *= num;
+      vals[ii] *= sfactor;
     }
   }
 
+  /*
+   * @return pointer to the array storing all values in this tensor
+   */
   double [] valuesPtr() {
     return vals;
   }
