@@ -43,7 +43,7 @@ public class TVector extends TMatrix {
   }
 
   /**
-   * Initizlize a column vector given an array of values.
+   * Initialize a column vector given an array of values.
    *
    * @param  vec  Array of values to copy into this vector.  The length
    *              of the input array will be the number of rows.

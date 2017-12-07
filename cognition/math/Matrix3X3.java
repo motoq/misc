@@ -1,5 +1,5 @@
 /*
- c  TMatrix3x3.java
+ c  Matrix3x3.java
  c
  c  Copyright (C) 2017 Kurt Motekew
  c
@@ -19,25 +19,45 @@
  c  02110-1301 USA
  */
 
-public class TMatrix3x3 extends TMatrix {
+package cognition.math;
 
-  public TMatrix3x3() {
+import cognition.math.tensor.TMatrix;
+
+/**
+ * Specialized three dimensional matrix class for common engineering
+ * applications.
+ *
+ * @author Kurt Motekew
+ * @since 20171203     
+ */
+public class Matrix3X3 extends TMatrix {
+
+  /**
+   * Create a 3X3 matrix with values initizlized to zero.
+   */
+  public Matrix3X3() {
     super(3, 3);
   }
 
-  public TMatrix3x3(double[][] mtrx) {
-    super(3, 3);
-    for (int ii=0; ii<3; ii++) {
-      for (int jj=0; jj<3; jj++) {
-        set(ii, jj, mtrx[ii][jj]);
-      }
-    }
-  }
-
+  /**
+   * <code>Basis3D</code> based accessor method.
+   *
+   * @param  row  Row for the element to be returned.
+   * @param  col  Column for the element to be returned.
+   *
+   * @return  Value stored at requested (row,col)
+   */
   public double get(Basis3D row, Basis3D col) {
     return super.get(row.ordinal(), col.ordinal());
   }
 
+  /**
+   * <code>Basis3D</code> based accessor method.
+   *
+   * @param  row    Row for the element to be set.
+   * @param  col    Column for the element to be set.
+   * @param  value  Value to store at requested (row,col)
+   */
   public void set(Basis3D row, Basis3D col, double value) {
     super.set(row.ordinal(), col.ordinal(), value);
   }

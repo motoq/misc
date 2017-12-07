@@ -1,5 +1,5 @@
 /*
- c  TVector3D.java
+ c  Vector3D.java
  c
  c  Copyright (C) 2017 Kurt Motekew
  c
@@ -19,21 +19,41 @@
  c  02110-1301 USA
  */
 
-public class TVector3D extends TVector {
+package cognition.math;
 
-  public TVector3D() {
+import cognition.math.tensor.TVector;
+
+/**
+ * Specialized three dimensional vector class for common engineering
+ * applications.
+ *
+ * @author Kurt Motekew
+ * @since 20171203     
+ */
+public class Vector3D extends TVector {
+
+  /**
+   * Create a 3x1 matrix with values initialized to zero.
+   */
+  public Vector3D() {
     super(3);
   }
 
-  public TVector3D(double[] vec) {
-    super(3);
-    for (int ii=0; ii<3; ii++) {
-      set(ii, vec[ii]);
-    }
-  }
+  /**
+   * <code>Basis3D</code> based accessor method.
+   *
+   * @param  ii  Index for the element to be returned.
+   *
+   * @return  Value stored at requested index.
+   */
+  public double get(Basis3D ii) { return get(ii.ordinal()); }
 
-  public double get(Basis3D ii) { return super.get(ii.ordinal()); }
-
+  /**
+   * <code>Basis3D</code> based accessor method.
+   *
+   * @param  ii     Index for the element to be set.
+   * @param  value  Value to store at requested index.
+   */
   public void set(Basis3D ii, double value) { super.set(ii.ordinal(), value); }
 
 }

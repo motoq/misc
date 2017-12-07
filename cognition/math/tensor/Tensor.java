@@ -36,7 +36,7 @@ public class Tensor {
   private final double[] vals;
 
   /**
-   * Initizlize as a rank 1 tensor
+   * Initialize as a rank 1 tensor
    *
    * @param  dimension  Number of elements in the vector.
    */
@@ -47,7 +47,7 @@ public class Tensor {
   }
 
   /**
-   * Initizlize as a rank 2 tensor
+   * Initialize as a rank 2 tensor
    *
    * @param  rows  Number of elements the row index
    * @param  cols  Number of elements in column index
