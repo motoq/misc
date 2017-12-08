@@ -81,6 +81,28 @@ public class TMatrix extends Tensor {
   }
 
   /**
+   * Copy values from an input array of arrays to this matrix
+   *
+   * @param  mtx  A double[][] used to set the values of this TMatrix
+   *              It should be a block double array, not jagged.
+   *              Values are copied into this matrix.  The dimensions
+   *              must match.
+   */
+  public void set(double[][] mtx) {
+    if (mtx.length != ROWS  ||  mtx[0].length != COLS) {
+      throw new IllegalArgumentException(
+        "TMatrix.set:  Can't set a " + ROWS + "x" + COLS + " TMatrix with a " +
+                         "double[" + mtx.length + "][" + mtx[0].length + "]."
+      );
+    }
+    for (int ii=0; ii<ROWS; ii++) {
+      for (int jj=0; jj<COLS; jj++) {
+        vals[off.applyAsInt(ii, jj)] = mtx[ii][jj];
+      }
+    }
+  }
+
+  /**
    * Copy values from an input matrix into this matrix.
    *
    * @param  mtx  Values from mtx will be copied to this TMatrix.  The
@@ -152,33 +174,6 @@ public class TMatrix extends Tensor {
   }
 
   /**
-   * Sets this matrix to the product of the two input matrices.
-   * Rows and columns must be compatible - input notation assumes
-   * this is a MxN matrix.
-   *
-   * @param  aMat  MxP matrix
-   * @param  bMat  PxN matrix
-   */
-  public void mult(TMatrix aMat, TMatrix bMat) {
-    if (aMat.ROWS != ROWS  ||  bMat.COLS != COLS  ||  aMat.COLS != bMat.ROWS) {
-      throw new IllegalArgumentException("TMatrix.mult(A, B):  " +
-        ROWS + "x" + COLS + " ?= " + aMat.ROWS + "x" + aMat.COLS + 
-                             " * " + bMat.ROWS + "x" + bMat.COLS);
-    }
-    final int ACOLS = aMat.numColumns();
-    zero();
-    for (int ii=0; ii<ROWS; ii++) {
-      for (int kk=0; kk<ACOLS; kk++) {
-        for (int jj=0; jj<COLS; jj++) {
-          vals[off.applyAsInt(ii, jj)] += 
-              aMat.vals[aMat.off.applyAsInt(ii,kk)]*
-              bMat.vals[bMat.off.applyAsInt(kk,jj)];
-        }
-      }
-    }
-  }
-
-  /**
    * Add input matrix to this matrix
    *
    * @param  mtx  Input matrix to add.  Dimensions must match this matrix
@@ -216,12 +211,38 @@ public class TMatrix extends Tensor {
 
   /**
    * Sets this matrix to the product of the two input matrices.
-   * Rows and columns must be compatible.
+   * Rows and columns must be compatible - input notation assumes
+   * this is a MxN matrix.
    *
    * @param  aMat  MxP matrix
    * @param  bMat  PxN matrix
+   */
+  public void mult(TMatrix aMat, TMatrix bMat) {
+    if (aMat.ROWS != ROWS  ||  bMat.COLS != COLS  ||  aMat.COLS != bMat.ROWS) {
+      throw new IllegalArgumentException("TMatrix.mult(A, B):  " +
+        ROWS + "x" + COLS + " ?= " + aMat.ROWS + "x" + aMat.COLS + 
+                             " * " + bMat.ROWS + "x" + bMat.COLS);
+    }
+    final int ACOLS = aMat.numColumns();
+    zero();
+    for (int ii=0; ii<ROWS; ii++) {
+      for (int kk=0; kk<ACOLS; kk++) {
+        for (int jj=0; jj<COLS; jj++) {
+          vals[off.applyAsInt(ii, jj)] += 
+              aMat.vals[aMat.off.applyAsInt(ii,kk)]*
+              bMat.vals[bMat.off.applyAsInt(kk,jj)];
+        }
+      }
+    }
+  }
+
+  /**
+   * Returns a matrix that is the product of this and the input matrix.
+   * Rows and columns must be compatible.
    *
-   * @return  MxN matrix
+   * @param  mat  PxN matrix where this is a MxP matrix
+   *
+   * @return  MxN matrix = this * mat
    */
   public TMatrix mult(TMatrix mat) {
     if (COLS != mat.ROWS) {
