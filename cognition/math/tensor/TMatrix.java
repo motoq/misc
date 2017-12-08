@@ -77,7 +77,7 @@ public class TMatrix extends Tensor {
    */
   public TMatrix(TMatrix mtx) {
     this(mtx.ROWS, mtx.COLS);
-    System.arraycopy(mtx.vals, 0, vals, 0, super.size());
+    System.arraycopy(mtx.vals, 0, vals, 0, size());
   }
 
   /**
@@ -93,7 +93,7 @@ public class TMatrix extends Tensor {
                                       mtx.ROWS + "x" + mtx.COLS + " TMatrix."
       );
     }
-    System.arraycopy(mtx.vals, 0, vals, 0, super.size());
+    System.arraycopy(mtx.vals, 0, vals, 0, size());
   }
 
   /** @return  The number of rows in this matrix */
@@ -114,7 +114,6 @@ public class TMatrix extends Tensor {
   public double get(int ii, int jj) {
     return vals[off.applyAsInt(ii, jj)];
   }
-
 
   /**
    * Offset based accessor method
@@ -176,6 +175,42 @@ public class TMatrix extends Tensor {
               bMat.vals[bMat.off.applyAsInt(kk,jj)];
         }
       }
+    }
+  }
+
+  /**
+   * Add input matrix to this matrix
+   *
+   * @param  mtx  Input matrix to add.  Dimensions must match this matrix
+   */
+  public void plus(TMatrix mtx) {
+    if (mtx.ROWS != ROWS  ||  mtx.COLS != COLS) {
+      throw new IllegalArgumentException(
+        "TMatrix.plus:  Can't add a " + ROWS + "x" + COLS + " TMatrix to a " +
+                                     mtx.ROWS + "x" + mtx.COLS + " TMatrix."
+      );
+    }
+    final int N = size();
+    for (int ii=0; ii<N;  ii++) {
+      vals[ii] += mtx.vals[ii];
+    }
+  }
+
+  /**
+   * Subtract input matrix from this matrix
+   *
+   * @param  mtx  Input matrix to subtract.  Dimensions must match this matrix
+   */
+  public void minus(TMatrix mtx) {
+    if (mtx.ROWS != ROWS  ||  mtx.COLS != COLS) {
+      throw new IllegalArgumentException(
+        "TMatrix.plus:  Can't subtract a " + ROWS + "x" + COLS + 
+        " TMatrix from a " + mtx.ROWS + "x" + mtx.COLS + " TMatrix."
+      );
+    }
+    final int N = size();
+    for (int ii=0; ii<N;  ii++) {
+      vals[ii] -= mtx.vals[ii];
     }
   }
 

@@ -89,6 +89,23 @@ public class Tensor {
     }
   }
 
+  /**
+   * Computes the Frobenius norm of the tensor.  For a rank 1 tensor,
+   * this method does what you expect it to do - computes the magnitude.
+   * For any other tensor, it is just the RSS of each element, useful
+   * for testing & validating tensor operations.
+   *
+   * @return  The square root of the sum of the squares of every
+   *          element in this tensor.
+   */
+  public double norm() {
+    double ss = 0.0;
+    for (int ii=0; ii<SIZE; ii++) {
+      ss += vals[ii]*vals[ii];
+    }
+    return Math.sqrt(ss);
+  }
+
   /*
    * @return pointer to the array storing all values in this tensor
    */
