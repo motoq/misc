@@ -1,5 +1,5 @@
 /*
- c  TVectorEnum.java
+ c  VectorEnum.java
  c
  c  Copyright (C) 2017 Kurt Motekew
  c
@@ -19,24 +19,77 @@
  c  02110-1301 USA
  */
 
-public class TVectorEnum<I extends Enum<I>> extends TVector {
+package cognition.math;
 
-  public TVectorEnum(I ii) {
+import cognition.math.tensor.TVector;
+
+/**
+ * Vector class where an enum defines the number of elements
+ * an allows enum based accessor methods.
+ * <P>
+ * Instantiation via the constructor may appear a bit awkward given
+ * an element of the enum is required:
+ * <pre>
+ * {@code
+ * VectorEnum<Basis3D> v3d = new VectorEnum<>(Basis3D.I);
+ * }
+ * </pre>
+ * The factory method may be more aesthetically pleasing
+ * <pre>
+ * {@code
+ * VectorEnum<Basis3D> v3d = VectorEnum.factory(Basis3D.class);
+ * }
+ * </pre>
+ *
+ * @author Kurt Motekew
+ * @since 20171203
+ */
+public class VectorEnum<I extends Enum<I>> extends TVector {
+
+  /**
+   * Instantiate via the constructor and a "sample" enum element.
+   * See the class description for an example.  All elements
+   * initialized to zero.
+   *
+   * @param  ii  Any element of the enum I
+   */
+  public VectorEnum(I ii) {
     super(ii.getDeclaringClass().getEnumConstants().length);
   }
 
-  public double get(I eRow) {
-    return super.get(eRow.ordinal());
+  /**
+   * Accessor method using Enum I
+   *
+   * @param  ii  Index for the element to be returned.
+   *
+   * @return  Value stored at requested index.
+   */
+  public double get(I ii) {
+    return get(ii.ordinal());
   }               
 
-  public void set(I eRow, double value) {
-    super.set(eRow.ordinal(), value);
+  /**
+   * Accessor method using Enum I
+   *
+   * @param  ii     Index for the element to be set.
+   * @param  value  Value to store at requested index.
+   */
+  public void set(I ii, double value) {
+    set(ii.ordinal(), value);
   }
 
-  public static <I extends Enum<I>> TVectorEnum<I> Factory(final Class<I> enI) {
+  /**
+   * Creates an enum based Vector given the enum Class.  See class
+   * description for an example.  All elements initizlized to zero.
+   *
+   * @param  enI  enum.class for index definition
+   *
+   * @return  Vector based on requested enum
+   */
+  public static <I extends Enum<I>> VectorEnum<I> factory(final Class<I> enI) {
     //I[] evI = enI.getEnumConstants();
-    //TVectorEnum<I> vec = new TVectorEnum<I>(evI[0]);
-    TVectorEnum<I> vec = new TVectorEnum<I>(enI.getEnumConstants()[0]);
+    //VectorEnum<I> vec = new VectorEnum<I>(evI[0]);
+    VectorEnum<I> vec = new VectorEnum<I>(enI.getEnumConstants()[0]);
     return vec;                           
   }
 

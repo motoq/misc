@@ -1,5 +1,5 @@
 /*
- c  TMatrixEnum.java
+ c  MatrixEnum.java
  c
  c  Copyright (C) 2017 Kurt Motekew
  c
@@ -19,26 +19,85 @@
  c  02110-1301 USA
  */
 
-public class TMatrixEnum<I extends Enum<I>, J extends Enum<J>> extends TMatrix {
+package cognition.math;
 
-  public TMatrixEnum(I ii, J jj) {
+import cognition.math.tensor.TMatrix;
+
+/**
+ * Matrix class where the two enum types define the number of rows
+ * and columns along with allowing enum based accessor methods.
+ * Different enum types can be used for the row and column definitions.
+ * <P>
+ * Instantiation via the constructor may appear a bit awkward given
+ * an element of the enum is required:
+ * <pre>
+ * {@code
+ * MatrixEnum<Basis3D, Q> m3x4 = new MatrixEnum<>(Basis3D.I, Q.Q0);
+ * }
+ * </pre>
+ * The factory method may be more aesthetically pleasing
+ * <pre>
+ * {@code
+ * MatrixEnum<Basis3D, Q> m3x4 = MatrixEnum.factory(Basis3D.class, Q.class);
+ * }
+ * </pre>
+ *
+ * @author Kurt Motekew
+ * @since 20171203
+ */
+public class MatrixEnum<I extends Enum<I>, J extends Enum<J>> extends TMatrix {
+
+  /**
+   * Instantiate via the constructor and "sample" enum elements.
+   * Different enum types can be used for the row and column
+   * definitions.  See the class description for an example.  All
+   * elements initialized to zero.
+   *
+   * @param  ii  Any element of the enum I
+   * @param  jj  Any element of the enum J
+   */
+  public MatrixEnum(I ii, J jj) {
     super(ii.getDeclaringClass().getEnumConstants().length,
           jj.getDeclaringClass().getEnumConstants().length);
   }
 
+  /**
+   * Accessor method using I and J Enum values
+   *
+   * @param  eRow  Row index
+   * @param  eCol  Column index
+   *
+   * @return  Value stored at requested row/column
+   */
   public double get(I eRow, J eCol) {
     return super.get(eRow.ordinal(), eCol.ordinal());
   }
 
+  /**
+   * Accessor method using I and J Enum values
+   *
+   * @param  eRow   Row index
+   * @param  eCol   Column index
+   * @param  value  Value to store at requested row/column
+   */
   public void set(I eRow, J eCol, double value) {
     super.set(eRow.ordinal(), eCol.ordinal(), value);
   }
 
-  public static <I extends Enum<I>, J extends Enum<J>> TMatrixEnum<I, J>
-                                                  Factory(final Class<I> enI,
+  /**
+   * Creates an enum based Matrix given the enum Classes to use.  See
+   * class description for an example.  All elements initizlized to zero.
+   *                                                              
+   * @param  enI  enum.class for row definition
+   * @param  enJ  enum.class for column definition
+   *                        
+   * @return  Matrix based on requested enum
+   */
+  public static <I extends Enum<I>, J extends Enum<J>> MatrixEnum<I, J>
+                                                  factory(final Class<I> enI,
                                                           final Class<J> enJ) {
 
-    TMatrixEnum<I, J> mtx = new TMatrixEnum<I, J>(enI.getEnumConstants()[0],
+    MatrixEnum<I, J> mtx = new MatrixEnum<I, J>(enI.getEnumConstants()[0],
                                                   enJ.getEnumConstants()[0]);
     return mtx;
   }

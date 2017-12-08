@@ -54,6 +54,6 @@ public class Vector3D extends TVector {
    * @param  ii     Index for the element to be set.
    * @param  value  Value to store at requested index.
    */
-  public void set(Basis3D ii, double value) { super.set(ii.ordinal(), value); }
+  public void set(Basis3D ii, double value) { set(ii.ordinal(), value); }
 
 }

@@ -48,7 +48,7 @@ public class Matrix3X3 extends TMatrix {
    * @return  Value stored at requested (row,col)
    */
   public double get(Basis3D row, Basis3D col) {
-    return super.get(row.ordinal(), col.ordinal());
+    return get(row.ordinal(), col.ordinal());
   }
 
   /**
@@ -59,7 +59,7 @@ public class Matrix3X3 extends TMatrix {
    * @param  value  Value to store at requested (row,col)
    */
   public void set(Basis3D row, Basis3D col, double value) {
-    super.set(row.ordinal(), col.ordinal(), value);
+    set(row.ordinal(), col.ordinal(), value);
   }
 
 }
