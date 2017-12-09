@@ -60,8 +60,22 @@ public class TVector extends TMatrix {
    * @param  vec  Values are copied
    */
   public TVector(TVector vec) {
-    this(vec.numRows());
-    set(vec);
+    this(vec.vals.length);
+    System.arraycopy(vec.vals, 0, vals, 0, vec.vals.length);
+  }
+
+  /**
+   * Copy values from an input array into this vector.
+   *
+   * @param  vec  Values from vec will be copied to this TVector.  The
+   *              number of elements must match.
+   */
+  public void set(double[] vec) {
+    if (vec.length != size()) {
+      throw new IllegalArgumentException("TVector.set:  Can't set a " +
+            size() + " TVector with a " + "double[" + vec.length + "].");
+    }
+    System.arraycopy(vec, 0, vals, 0, vec.length);
   }
 
   /**

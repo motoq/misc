@@ -40,6 +40,20 @@ public class Vector3D extends TVector {
   }
 
   /**
+   * Create a 3x1 matrix and initialize elements with scalar inputs
+   *
+   * @param  x  First element value
+   * @param  y  Second element value
+   * @param  z  Third element value
+   */
+  public Vector3D(double x, double y, double z) {
+    super(3);
+    set(0, x);
+    set(1, y);
+    set(2, z);
+  }
+
+  /**
    * <code>Basis3D</code> based accessor method.
    *
    * @param  ii  Index for the element to be returned.

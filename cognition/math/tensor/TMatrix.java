@@ -34,6 +34,7 @@ import java.util.function.IntBinaryOperator;
 public class TMatrix extends Tensor {
   private final int ROWS;
   private final int COLS;
+  private final int SIZE;
   private final double[] vals;
   private final IntBinaryOperator off;
   private final IntBinaryOperator inx;
@@ -48,6 +49,7 @@ public class TMatrix extends Tensor {
     super(rows, columns);
     ROWS = rows;
     COLS = columns;
+    SIZE = super.size();
     vals = super.valuesPtr();
     off = (int ii, int jj) -> COLS*ii + jj;
     inx = (int ii, int jj) -> COLS*(ii - 1) + jj - 1;
@@ -77,7 +79,7 @@ public class TMatrix extends Tensor {
    */
   public TMatrix(TMatrix mtx) {
     this(mtx.ROWS, mtx.COLS);
-    System.arraycopy(mtx.vals, 0, vals, 0, size());
+    System.arraycopy(mtx.vals, 0, vals, 0, mtx.vals.length);
   }
 
   /**
@@ -115,13 +117,17 @@ public class TMatrix extends Tensor {
                                       mtx.ROWS + "x" + mtx.COLS + " TMatrix."
       );
     }
-    System.arraycopy(mtx.vals, 0, vals, 0, size());
+    System.arraycopy(mtx.vals, 0, vals, 0, mtx.vals.length);
   }
 
-  /** @return  The number of rows in this matrix */
+  /**
+   * @return  The number of rows in this matrix
+   */
   int numRows() { return ROWS; }
 
-  /** @return  The number of columns in this matrix */
+  /**
+   * @return  The number of columns in this matrix
+   */
   int numColumns() { return COLS; }
 
   /**
@@ -174,21 +180,63 @@ public class TMatrix extends Tensor {
   }
 
   /**
+   * Return a new matrix that is the sum of this and the input matrix.
+   *
+   * @param  mtx  Input matrix to add to this matrix.  Dimensions must
+   * match.
+   */
+  public TMatrix plus(TMatrix mtx) {
+    if (mtx.ROWS != ROWS  ||  mtx.COLS != COLS) {
+      throw new IllegalArgumentException(
+        "C = TMatrix.plusEquals:  Can't add a " +
+                                  ROWS + "x" + COLS + " TMatrix to a " +
+                                  mtx.ROWS + "x" + mtx.COLS + " TMatrix."
+      );
+    }
+    TMatrix mtxSum = new TMatrix(ROWS, COLS);
+    for (int ii=0; ii<SIZE;  ii++) {
+      mtxSum.vals[ii] = vals[ii] + mtx.vals[ii];
+    }
+    return mtxSum;
+  }
+
+  /**
    * Add input matrix to this matrix
    *
    * @param  mtx  Input matrix to add.  Dimensions must match this matrix
    */
-  public void plus(TMatrix mtx) {
+  public void plusEquals(TMatrix mtx) {
     if (mtx.ROWS != ROWS  ||  mtx.COLS != COLS) {
       throw new IllegalArgumentException(
-        "TMatrix.plus:  Can't add a " + ROWS + "x" + COLS + " TMatrix to a " +
-                                     mtx.ROWS + "x" + mtx.COLS + " TMatrix."
+        "TMatrix.plusEquals:  Can't add a " +
+                              ROWS + "x" + COLS + " TMatrix to a " +
+                              mtx.ROWS + "x" + mtx.COLS + " TMatrix."
       );
     }
-    final int N = size();
-    for (int ii=0; ii<N;  ii++) {
+    for (int ii=0; ii<SIZE;  ii++) {
       vals[ii] += mtx.vals[ii];
     }
+  }
+
+  /**
+   * Return a new matrix that is the difference between this and the input
+   *  matrix.
+   *
+   * @param  mtx  Input matrix to subtract from this matrix.  Dimensions must
+   *              match.
+   */
+  public TMatrix minus(TMatrix mtx) {
+    if (mtx.ROWS != ROWS  ||  mtx.COLS != COLS) {
+      throw new IllegalArgumentException(
+        "C = TMatrix.minusEquals:  Can't subtract a " + ROWS + "x" + COLS + 
+        " TMatrix from a " + mtx.ROWS + "x" + mtx.COLS + " TMatrix."
+      );
+    }
+    TMatrix mtxDiff = new TMatrix(ROWS, COLS);
+    for (int ii=0; ii<SIZE;  ii++) {
+      mtxDiff.vals[ii] = vals[ii] - mtx.vals[ii];
+    }
+    return mtxDiff;
   }
 
   /**
@@ -196,15 +244,14 @@ public class TMatrix extends Tensor {
    *
    * @param  mtx  Input matrix to subtract.  Dimensions must match this matrix
    */
-  public void minus(TMatrix mtx) {
+  public void minusEquals(TMatrix mtx) {
     if (mtx.ROWS != ROWS  ||  mtx.COLS != COLS) {
       throw new IllegalArgumentException(
-        "TMatrix.plus:  Can't subtract a " + ROWS + "x" + COLS + 
+        "TMatrix.minusEquals:  Can't subtract a " + ROWS + "x" + COLS + 
         " TMatrix from a " + mtx.ROWS + "x" + mtx.COLS + " TMatrix."
       );
     }
-    final int N = size();
-    for (int ii=0; ii<N;  ii++) {
+    for (int ii=0; ii<SIZE;  ii++) {
       vals[ii] -= mtx.vals[ii];
     }
   }
@@ -254,8 +301,8 @@ public class TMatrix extends Tensor {
     for (int ii=0; ii<ROWS; ii++) {
       for (int kk=0; kk<COLS; kk++) {
         for (int jj=0; jj<N; jj++) {
-          m3.vals[off.applyAsInt(ii, jj)] += vals[off.applyAsInt(ii,kk)]*
-                                         mat.vals[off.applyAsInt(kk,jj)];
+          m3.vals[m3.off.applyAsInt(ii, jj)] += vals[off.applyAsInt(ii,kk)]*
+                                            mat.vals[mat.off.applyAsInt(kk,jj)];
         }
       }
     }
