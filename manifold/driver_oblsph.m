@@ -1,3 +1,9 @@
+% Plots an oblate spheroid along with basis vectors
+%
+% Kurt Motekew
+% 2017/07
+%
+
 clear;
 close all;
 

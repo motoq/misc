@@ -1,3 +1,9 @@
+% Plots a sphere along with basis vectors
+%
+% Kurt Motekew
+% 2017/07
+%
+
 clear;
 close all;
 
