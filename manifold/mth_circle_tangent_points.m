@@ -1,4 +1,4 @@
-function [t1, t2] = mth_circle_tangent_points(dx1, dy1, dx2, dy2);
+function [t1, t2] = mth_circle_tangent_points(dx1, dy1, dx2, dy2)
 % MTH_CIRCLE_TANGENT_POINTS generates the location of the tangen points
 % shared by two circles of equal radius.
 %
