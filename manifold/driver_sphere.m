@@ -5,7 +5,6 @@
 %
 
 clear;
-close all;
 
   % Define Oblate spheroid with fixed size
 r = 3.75;

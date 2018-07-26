@@ -5,7 +5,6 @@
 %
 
 clear;
-close all;
 
   % Define vortex
 k = 2;                                           % Size/units
