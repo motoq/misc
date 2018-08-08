@@ -27,14 +27,14 @@ scatter3(x, y, z);
   % normal to osculating plane)
   %
 
-w = sqrt(r*r + c*c);
+w2 = r*r + c*c;
+w = sqrt(w2);
 s = t*w;
 sow = s/w;
   % Tangent: "t"
 xd_s = [-r*sin(sow)/w, r*cos(sow)/w, c/w]';
 quiver3(x, y, z, xd_s(1), xd_s(2), xd_s(3));
   % Normal: "tdot"
-w2 = w*w;
 xdd_s = [-r*cos(sow)/w2, -r*sin(sow)/w2, 0]';
 quiver3(x, y, z, xdd_s(1), xdd_s(2), xdd_s(3));
 
@@ -64,6 +64,10 @@ fprintf('\nRadius of curvature:\t\t%1.4f', rho);
   % Center of curvature
 m = [x y z]' + rho*xdd_s/k;
 scatter3(m(1), m(2), m(3));
+
+  % Torsion
+tau = c/w2;
+fprintf('\nTorsion:\t\t\t%1.4f', tau);
 
 fprintf('\n');
 
