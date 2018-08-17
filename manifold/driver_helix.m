@@ -7,13 +7,14 @@
 %
 
 clear;
+close all;
 
   % Helix definition and range over which to plot
 r = 1;
 c = .25;
-t = (-2*pi):.1:(2*pi);
+t_curve = (-2*pi):.1:(2*pi);
 
-[x, y, z] = mth_helix_parametric(t, r, c);
+[x, y, z] = mth_helix_parametric(t_curve, r, c);
 figure; hold on;
 plot3(x, y, z);
 
@@ -27,21 +28,17 @@ scatter3(x, y, z);
   % normal to osculating plane)
   %
 
-w2 = r*r + c*c;
-w = sqrt(w2);
-s = t*w;
-sow = s/w;
-  % Tangent: "t"
-xd_s = [-r*sin(sow)/w, r*cos(sow)/w, c/w]';
-quiver3(x, y, z, xd_s(1), xd_s(2), xd_s(3));
-  % Normal: "tdot"
-xdd_s = [-r*cos(sow)/w2, -r*sin(sow)/w2, 0]';
-quiver3(x, y, z, xdd_s(1), xdd_s(2), xdd_s(3));
+[xd_s, xdd_s, n] = mth_helix_tdt(r, c, t);
 
+  % Tangent: "t"
+quiver3(x, y, z, xd_s(1), xd_s(2), xd_s(3), 'color',...
+        [1, 0, 0], 'linewidth', 3);
+  % Normal: "tdot"
+quiver3(x, y, z, xdd_s(1), xdd_s(2), xdd_s(3),...
+       'color', [0, 1, 0], 'linewidth', 3);
   % Normal to osculating plane
-n = [c*sin(t)  -c*cos(t)  r]';
-%n = cross(xd_s, xdd_s);
-quiver3(x, y, z, n(1), n(2), n(3));
+quiver3(x, y, z, n(1), n(2), n(3),...
+        'color', [0, 0, 1], 'linewidth', 3);
 
   % Plot osculating plane using point normal form
 plt_plane(n, [x y z]', -r:r, -r:r);
@@ -66,10 +63,42 @@ m = [x y z]' + rho*xdd_s/k;
 scatter3(m(1), m(2), m(3));
 
   % Torsion
+w2 = r*r + c*c;
 tau = c/w2;
 fprintf('\nTorsion:\t\t\t%1.4f', tau);
 
-fprintf('\n');
+  % Compute rotation vector
+[ut, up, ub] = mth_helix_tpb(r, c, t);
+d = tau*ut + k*ub;
+quiver3(x, y, z, d(1), d(2), d(3), 'color', [0, 0, 0], 'linewidth', 1);
+
+Frenet = [0 k 0 ; -k 0 tau ; 0 -tau 0]*[ut' ; up' ; ub'];
+dut = Frenet(1,:)';
+dup = Frenet(2,:)';
+dub = Frenet(3,:)';
+quiver3(x, y, z, dut(1), dut(2), dut(3), 'color', [1, 0, 0], 'linewidth', 1);
+quiver3(x, y, z, dup(1), dup(2), dup(3), 'color', [0, 1, 0], 'linewidth', 1);
+quiver3(x, y, z, dub(1), dub(2), dub(3), 'color', [0, 0, 1], 'linewidth', 1);
+fprintf('\nDarboux (rotation) vector dot...');
+fprintf('\ndot(d, Ddot):\t%1.3e', dot(d, dut));
+fprintf('\ndot(d, Pdot):\t%1.3e', dot(d, dup));
+fprintf('\ndot(d, Bdot):\t%1.3e', dot(d, dub));
+
 
 box off;
 axis equal;
+
+[ut, up, ub] = mth_helix_tpb(r, c, t_curve);
+figure; hold on;
+plot3(ut(1,:), ut(2,:), ut(3,:), 'ro');
+plot3(up(1,:), up(2,:), up(3,:), 'bo');
+plot3(ub(1,:), ub(2,:), ub(3,:), 'go');
+Sphere = [r*r 0 0 ; 0 r*r 0 ; 0 0 r*r];
+matrix3X3_plot(Sphere, 40, false);
+legend('t', 'p', 'b');
+title('Indicatrix');
+
+box off;
+axis equal;
+
+fprintf('\n');
