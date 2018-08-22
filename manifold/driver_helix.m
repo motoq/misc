@@ -53,19 +53,17 @@ fprintf('\ndot(Tangent, Normal):\t\t%1.3e', dot(xd_s, xdd_s));
 fprintf('\ndot(Tangent, Plane Normal):\t%1.3e', dot(xd_s, n));
 fprintf('\ndot(Normal, Plane Normal):\t%1.3e', dot(xdd_s, n));
 
-k = norm(xdd_s);
+  % Curvature and torsion
+[k, tau] = mth_helix_ktau(r, c, t);
 rho = 1/k;
+
 fprintf('\nCurvature:\t\t\t%1.4f', k);
 fprintf('\nRadius of curvature:\t\t%1.4f', rho);
+fprintf('\nTorsion:\t\t\t%1.4f', tau);
 
   % Center of curvature
 m = [x y z]' + rho*xdd_s/k;
 scatter3(m(1), m(2), m(3));
-
-  % Torsion
-w2 = r*r + c*c;
-tau = c/w2;
-fprintf('\nTorsion:\t\t\t%1.4f', tau);
 
   % Compute rotation vector
 [ut, up, ub] = mth_helix_tpb(r, c, t);
@@ -100,5 +98,23 @@ title('Indicatrix');
 
 box off;
 axis equal;
+
+
+figure; hold on;
+t = 0;
+[k0, tau0] = mth_helix_ktau(r, c, t);
+x1 = -1:.1:1;
+zvec = zeros(size(x1));
+x2 = k0*x1.*x1/2;
+plot3(x1, x2, zvec);
+x3 = k0*tau0*x1.*x1.*x1/6;
+plot3(x1, zvec, x3);
+x3 = sqrt(2)*tau0*sqrt(x2.*x2.*x2)/(3*sqrt(k0));
+plot3(zvec, x2, x3);
+xlabel('x1');
+ylabel('x2');
+zlabel('x3');
+title('Shape of Neighboring Curve');
+
 
 fprintf('\n');

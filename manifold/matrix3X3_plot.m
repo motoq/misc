@@ -17,6 +17,7 @@ if (makesurface)
   surf(XX,YY,ZZ);
 else
   mesh(XX,YY,ZZ);
+  colormap([.1 .2 .3]);
 end
 xlabel('x');
 ylabel('y');

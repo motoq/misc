@@ -17,9 +17,9 @@ function [xd_s, xdd_s, xd_x_xdd] = mth_helix_tdt(r, c, t);
 %   t   Independent parameter, [1xn]
 %
 % Return
-%   xd_s      Tangent vector
-%   xdd_s     Rate of change of tangent vector 
-%   xd_x_xdd  Binormal vector (xd_s X xdd_s)
+%   xd_s      Tangent vector, [3xn]
+%   xdd_s     Rate of change of tangent vector, [3xn]
+%   xd_x_xdd  Binormal vector (xd_s X xdd_s), [3xn]
 %
 % Kurt Motekew   2018/08/15
 %
