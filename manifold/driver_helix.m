@@ -14,14 +14,14 @@ r = 1;
 c = .25;
 t_curve = (-2*pi):.1:(2*pi);
 
-[x, y, z] = mth_helix_parametric(t_curve, r, c);
+[x_curve, y_curve, z_curve] = mth_helix_parametric(t_curve, r, c);
 figure; hold on;
-plot3(x, y, z);
+plot3(x_curve, y_curve, z_curve);
 
   % Location at which to plot the tangent plane
 t = pi/4;
 [x, y, z] = mth_helix_parametric(t, r, c);
-scatter3(x, y, z);
+scatter3(x, y, z, 'filled');
 
   %
   % Use helix definition as a function of arc length for vectors (including
@@ -63,7 +63,7 @@ fprintf('\nTorsion:\t\t\t%1.4f', tau);
 
   % Center of curvature
 m = [x y z]' + rho*xdd_s/k;
-scatter3(m(1), m(2), m(3));
+scatter3(m(1), m(2), m(3), 'filled');
 
   % Compute rotation vector
 [ut, up, ub] = mth_helix_tpb(r, c, t);
@@ -82,6 +82,25 @@ fprintf('\ndot(d, Ddot):\t%1.3e', dot(d, dut));
 fprintf('\ndot(d, Pdot):\t%1.3e', dot(d, dup));
 fprintf('\ndot(d, Bdot):\t%1.3e', dot(d, dub));
 
+box off;
+axis equal;
+
+  % Osculating sphere
+a = [x y z]' + rho*up;                 % Origin
+r_os = norm([x y z]' - a);             % Radius
+Sphere = [r_os*r_os 0 0 ; 0 r_os*r_os 0 ; 0 0 r_os*r_os];
+[XX, YY, ZZ] = matrix3X3_points(Sphere, 40);   
+figure; hold on;
+mesh(XX + a(1), YY + a(2), ZZ + a(3), 'FaceAlpha', 0);
+colormap([.1 .2 .3]);
+plot3(x_curve, y_curve, z_curve);
+quiver3(0, 0, 0, a(1), a(2), a(3), 'color', [0, 0, 0], 'linewidth', 3);
+scatter3(x, y, z, 'filled');
+scatter3(a(1), a(2), a(3), 'filled');
+xlabel('x');
+ylabel('y');
+zlabel('z');
+title('Osculating Sphere with Vector to Origin');
 
 box off;
 axis equal;
@@ -116,5 +135,6 @@ ylabel('x2');
 zlabel('x3');
 title('Shape of Neighboring Curve');
 
+box off;
 
 fprintf('\n');
