@@ -1,4 +1,4 @@
-function [xd_s, xdd_s, xd_x_xdd] = mth_helix_tdt(r, c, t);
+function [xd_s, xdd_s, xd_x_xdd] = mth_helix_tdt(r, c, t)
 % MTH_HELIX_TDT Computes the tangent, rate of change of the tangent,
 % and normal to these vectors, for a helix originating about the Cartesian
 % reference frame origin and spiraling about the z-axis.

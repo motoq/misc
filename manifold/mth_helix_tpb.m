@@ -1,4 +1,4 @@
-function [ut, up, ub] = mth_helix_tpb(r, c, t);
+function [ut, up, ub] = mth_helix_tpb(r, c, t)
 % MTH_HELIX_TPB Computes unit basis vectors associated with a circular
 % helix originating about the Cartesian reference frame origin and
 % spiraling about the z-axis.

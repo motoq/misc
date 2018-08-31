@@ -1,4 +1,4 @@
-function [k, tau] = mth_helix_ktau(r, c, t);
+function [k, tau] = mth_helix_ktau(r, c, t)
 % MTH_HELIX_KTAU Computes the curvature and torsion of a circular helix.
 %
 %-----------------------------------------------------------------------
