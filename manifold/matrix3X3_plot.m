@@ -18,6 +18,7 @@ if (makesurface)
 else
   mesh(XX,YY,ZZ);
   colormap([.1 .2 .3]);
+  hidden('off');
 end
 xlabel('x');
 ylabel('y');
