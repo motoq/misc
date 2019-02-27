@@ -8,6 +8,13 @@
 close all;
 clear;
 
+%
+% The cross product of the vector normal to a plane and an arbitrary
+% non-collinear vector will lie in that plane.  Therefore, the cross
+% product of two vectors, each normal to different planes, will lie in
+% both planes and therefore be the intersection.
+%
+
   % If true, use "pretty" basis vectors to intersect.  Otherwise, use
   % randomly generated ones.
 demo = true;
@@ -98,4 +105,7 @@ quiver3(o(1), o(2), o(3), sf*v_hat(1), sf*v_hat(2), sf*v_hat(3),...
 
 axis equal;
 
-alpha(0.3);
+  % 50% alpha looks better but not yet supported by Octave
+if exist('octave_config_info') == 0
+  alpha(0.5);
+end
