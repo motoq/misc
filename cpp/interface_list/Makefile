@@ -5,7 +5,6 @@ OBJECTS := $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 
 fire_em : $(OBJECTS)
 	$(CC) $(CFLAGS) -o fire_em $(OBJECTS)
-#$(CC) $(CFLAGS) -o fire_em $(OBJECTS)  $LFLAGS
 
 .PHONY : clean
 clean :

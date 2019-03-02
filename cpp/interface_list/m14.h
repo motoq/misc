@@ -2,14 +2,22 @@
 #define M14_H
 
 #include <iostream>
+#include <string>
 
 #include <ishoot.h>
 
-  // Note "public Shootable" to make base class accessible
+/**
+ * Semiautomatic
+ */
 class M14 : public IShoot {
   public:
-    virtual ~M14() { std::cout << "\nM14 Destructor"; }
+    M14() {}
+    M14(std::string msg) { this->msg = ":  " + msg; }
+    virtual ~M14() { std::cout << "\nM14 Destructor" << msg; }
     virtual void fire() { std::cout << "\nBang!"; }
+
+  private:
+    std::string msg = "";
 };
 
 #endif  // M14_H

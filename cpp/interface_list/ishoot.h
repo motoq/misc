@@ -1,6 +1,9 @@
 #ifndef ISHOOT_H
 #define ISHOOT_H
 
+/**
+ * Interface for an object that shoots
+ */
 class IShoot {
   public:
     virtual ~IShoot() {}
