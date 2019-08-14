@@ -23,6 +23,10 @@ static void shoot_all_p(std::vector<IShoot*>& shooter_lst);
  *  emplace_back vs. push_back
  *  make_shared vs. new
  *  make_unique vs. new
+ *    When adding a unique_ptr to a container, it must be created
+ *    during the call to emplace_back.  It can not be called,
+ *    pointing to a local variable, with that local variable being
+ *    added to the container.  Use a shared_ptr for that.
  */
 int main()
 {
@@ -79,10 +83,11 @@ int main()
     shooters.emplace_back(new M14);
     shooters.emplace_back(new M14E2);
     shooters.emplace_back(std::make_unique<M14E2>("make_unique"));
+    shooters.push_back(std::make_unique<M14E2>("make_unique push_back"));
     shoot_all(shooters);
     std::cout << "\nAbout to exit unique_ptr block";
-    // OK:  std::unique_ptr<IShoot> up_m14e2 = std::make_unique<M14E2>();
-    // BAD: shooters.emplace_back(up_m14e2);
+     //*OK:*/  std::unique_ptr<IShoot> up_m14e2 = std::make_unique<M14E2>();
+     //*BAD:*/ shooters.emplace_back(up_m14e2);
   }
   std::cout << "\nJust left unique_ptr block";
 

@@ -21,9 +21,9 @@ function plt_sphere_covariant(r, theta, phi)
   % Plot vectors tangent to oblate spheroid
 xyz = mth_sphere2cart(r, theta, phi);
 dxds = mth_dcart_dsphere(r, theta, phi);
-e1 = dxds(:,2);
+e1 = dxds(:,1);%dxds(:,2);
 e1 = e1/norm(e1);
-e2 = dxds(:,3);
+e2 = dxds(:,2);%dxds(:,3);
 ne2 = norm(e2);
 if ne2 ~= 0
   e2 = e2/ne2;
@@ -34,7 +34,7 @@ quiver3(xyz(1), xyz(2), xyz(3), e2(1), e2(2), e2(3),...
         'color',[0,1,0],'linewidth',3);
 
   % Plot covariant to b coordinate system vector
-e3 = dxds(:,1);
+e3 = dxds(:,3);%dxds(:,1);
 ne3 = norm(e3);
 e3 = e3/ne3;
 quiver3(xyz(1), xyz(2), xyz(3), e3(1), e3(2), e3(3),...
