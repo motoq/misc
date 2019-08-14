@@ -119,6 +119,7 @@ title('Covariance Mapping via Partials');
   % Combined covariance
 AptWAp12 = ApTWAp1 + ApTWAp2;
 SigmaP12 = AptWAp12^-1;
+
   % Plot comparison on new figure
 figure; hold on;
 SigmaP1Model = zeros(3);
@@ -209,6 +210,11 @@ ylabel('y');
 zlabel('z');
 title('Covariance Mapping via UT');
 
+  % Combined covariance
+ApTWAp1 = SigmaP1^-1;
+ApTWAp2 = SigmaP2^-1;
+SigmaP12 = (ApTWAp1 + ApTWAp2)^-1;
+
   % Plot comparison on new figure
 figure; hold on;
 SigmaP1Model = zeros(3);
@@ -219,10 +225,10 @@ SigmaP2Model = zeros(3);
 SigmaP2Model(1:nobs,1:nobs) = SigmaP2;
 [XX, YY, ZZ] = matrix3X3_points(SigmaP2Model, 40);
 mesh(XX, YY, ZZ);
-%SigmaP12Model = zeros(3);
-%SigmaP12Model(1:nobs,1:nobs) = SigmaP12;
-%[XX, YY, ZZ] = matrix3X3_points(SigmaP12Model, 40);
-%surf(XX, YY, ZZ);
+SigmaP12Model = zeros(3);
+SigmaP12Model(1:nobs,1:nobs) = SigmaP12;
+[XX, YY, ZZ] = matrix3X3_points(SigmaP12Model, 40);
+surf(XX, YY, ZZ);
 xlabel('x');
 ylabel('y');
 zlabel('z');
