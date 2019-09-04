@@ -1,6 +1,7 @@
 % Illustrates mapping 2D covariance matrices in 3D space.  Two ellipses
 % are projected to a sphere given their relative orientations and a
-% location on the sphere.
+% location on the sphere.  Some use of the unscented transform (UT) is
+% also illustrated.
 % 
 % o  3D Cartesian origin
 % p  Reference point on sphere
@@ -23,6 +24,8 @@
 
 clear;
 close all;
+
+warning("on", "Octave:language-extension");
 
   % Sphere - place at origin
 re = 1.0;
@@ -86,8 +89,6 @@ Ap2 = Tyc2(1:2,:)*invrmag*(eye(3) - rhat_p_y2_c*rhat_p_y2_c')*Tct(:,1:2);
 ApTWAp2 = Ap2'*W*Ap2;
 SigmaP2 = ApTWAp2^-1;
 
-
-
   % Plot Sphere
 figure; hold on;
 matrix3X3_plot(SphereModel, 40, true);
@@ -140,9 +141,11 @@ zlabel('z');
 title('Combined Covariance Mapping via Partials');
 axis equal;
 
-
- % Unscented Transform Version
-
+ %
+ % Unscented Transform Version where resultant covariances
+ % are inverted and combined.  Both initial covariances are
+ % propagated separately, then combined.
+ %
 alpha = .01;
 kappa = 0;
 beta = 2;
@@ -158,12 +161,12 @@ for ii = 1:n_sigma_vec
   u = rhat_p_y1_y(1) + Chi(1,ii);
   v = rhat_p_y1_y(2) + Chi(2,ii);
   w = sqrt(1 - u*u - v*v);
-  rhat_p_y1_y_i = [u v w]';
-  rhat_p_y1_c_i = Tcy1*rhat_p_y1_y_i;
-  r_p_o_c_i = mth_xsphere(r_y1_o_c, rhat_p_y1_c_i, re);
-  r_p_y1_c = r_p_o_c_i - r_p_o_c;
-  r_p_y1_t = Ttc*r_p_y1_c;
-  Chi1(:,ii) = r_p_y1_t(1:2);
+  rhat_pi_y1_y = [u v w]';
+  rhat_pi_y1_c = Tcy1*rhat_pi_y1_y;
+  r_pi_o_c = mth_xsphere(r_y1_o_c, rhat_pi_y1_c, re);
+  r_pi_p_c = r_pi_o_c - r_p_o_c;
+  r_pi_p_t = Ttc*r_pi_p_c;
+  Chi1(:,ii) = r_pi_p_t(1:2);
 end
 [~, SigmaP1] = est_pred_ukf(Chi1, w_m, w_c, zeros(n_obs));
   % Second transformation
@@ -175,15 +178,14 @@ for ii = 1:n_sigma_vec
   u = rhat_p_y2_y(1) + Chi(1,ii);
   v = rhat_p_y2_y(2) + Chi(2,ii);
   w = sqrt(1 - u*u - v*v);
-  rhat_p_y2_y_i = [u v w]';
-  rhat_p_y2_c_i = Tcy2*rhat_p_y2_y_i;
-  r_p_o_c_i = mth_xsphere(r_y2_o_c, rhat_p_y2_c_i, re);
-  r_p_y2_c = r_p_o_c_i - r_p_o_c;
-  r_p_y2_t = Ttc*r_p_y2_c;
-  Chi2(:,ii) = r_p_y2_t(1:2);
+  rhat_pi_y2_y = [u v w]';
+  rhat_pi_y2_c = Tcy2*rhat_pi_y2_y;
+  r_pi_o_c = mth_xsphere(r_y2_o_c, rhat_pi_y2_c, re);
+  r_pi_p_c = r_pi_o_c - r_p_o_c;
+  r_pi_p_t = Ttc*r_pi_p_c;
+  Chi2(:,ii) = r_pi_p_t(1:2);
 end
 [~, SigmaP2] = est_pred_ukf(Chi2, w_m, w_c, zeros(n_obs));
-
   % Plot Sphere
 figure; hold on;
 matrix3X3_plot(SphereModel, 40, true);
@@ -209,12 +211,10 @@ xlabel('x');
 ylabel('y');
 zlabel('z');
 title('Covariance Mapping via UT');
-
   % Combined covariance
 ApTWAp1 = SigmaP1^-1;
 ApTWAp2 = SigmaP2^-1;
 SigmaP12 = (ApTWAp1 + ApTWAp2)^-1;
-
   % Plot comparison on new figure
 figure; hold on;
 SigmaP1Model = zeros(3);
@@ -232,5 +232,154 @@ surf(XX, YY, ZZ);
 xlabel('x');
 ylabel('y');
 zlabel('z');
-title('Combined Covariance Mapping via UT');
+title('Separate Propagation via UT');
+axis equal;
+
+  %
+  % UT combining via Kalman filter observation update.  The first
+  % covariance is propagated.  This primes a filter update - the second
+  % covariance is mapped via the Kalman update process.
+  %
+alpha = .01;
+kappa = 0;
+beta = 2;
+[Chi, w_m, w_c] = est_ut_sigma_vec([0 0]', SigmaY, alpha, kappa, beta);
+n_obs = size(Chi,1);
+n_sigma_vec = size(Chi, 2);
+  % First transformation
+r_p_y1_c = r_p_o_c - r_y1_o_c;
+r_p_y1_y = Tyc1*r_p_y1_c;
+rhat_p_y1_y = r_p_y1_y/norm(r_p_y1_y);
+Chi1 = zeros(n_obs, n_sigma_vec);
+for ii = 1:n_sigma_vec
+  u = rhat_p_y1_y(1) + Chi(1,ii);
+  v = rhat_p_y1_y(2) + Chi(2,ii);
+  w = sqrt(1 - u*u - v*v);
+  rhat_pi_y1_y = [u v w]';
+  rhat_pi_y1_c = Tcy1*rhat_pi_y1_y;
+  r_pi_o_c = mth_xsphere(r_y1_o_c, rhat_pi_y1_c, re);
+  r_pi_p_c = r_pi_o_c - r_p_o_c;
+  r_pi_p_t = Ttc*r_pi_p_c;
+  Chi1(:,ii) = r_pi_p_t(1:2);
+end
+[~, SigmaP1] = est_pred_ukf(Chi1, w_m, w_c, zeros(n_obs));
+  % Second transformation
+r_p_y2_c = r_p_o_c - r_y2_o_c;
+r_p_y2_y = Tyc2*r_p_y2_c;
+rhat_p_y2_y = r_p_y2_y/norm(r_p_y2_y);
+Chi2 = zeros(n_obs, n_sigma_vec);
+for ii = 1:n_sigma_vec
+  u = rhat_p_y2_y(1) + Chi(1,ii);
+  v = rhat_p_y2_y(2) + Chi(2,ii);
+  w = sqrt(1 - u*u - v*v);
+  rhat_pi_y2_y = [u v w]';
+  rhat_pi_y2_c = Tcy2*rhat_pi_y2_y;
+  r_pi_o_c = mth_xsphere(r_y2_o_c, rhat_pi_y2_c, re);
+  r_pi_p_c = r_pi_o_c - r_p_o_c;
+  r_pi_p_t = Ttc*r_pi_p_c;
+  Chi2(:,ii) = r_pi_p_t(1:2);
+end
+[~, SigmaP2] = est_pred_ukf(Chi2, w_m, w_c, zeros(n_obs));
+  % Use unscented Kalman observation update to combine
+[Chi, w_m, w_c] = est_ut_sigma_vec([0 0]', SigmaP1, alpha, kappa, beta);
+n_obs = size(Chi,1);
+n_sigma_vec = size(Chi, 2);
+  % x_bar = [0 0]', P_bar = SigmaP1;
+[x_bar, P_bar] = est_pred_ukf(Chi, w_m, w_c, zeros(2));
+Z = zeros(nobs, n_sigma_vec);
+for ii = 1:n_sigma_vec
+  r_pi_p_t = zeros(3,1);
+  r_pi_p_t(1:2) = Chi(:,ii);
+  r_pi_p_c = Tct*r_pi_p_t;
+  r_pi_o_c = r_p_o_c + r_pi_p_c;
+  r_pi_y2_c = r_pi_o_c - r_y2_o_c;
+  r_pi_y2_y = Tyc2*r_pi_y2_c;
+  rhat_pi_y2_y = r_pi_y2_y/norm(r_pi_y2_y);
+  Y(:,ii) = rhat_pi_y2_y(1:2);
+end
+[x_hat, P_hat] = est_upd_ukf(x_bar, P_bar, Chi, w_m, w_c,...
+                                           Y, rhat_p_y2_y(1:2), SigmaY);
+  % Plot comparison on new figure
+figure; hold on;
+SigmaP1Model = zeros(3);
+SigmaP1Model(1:nobs,1:nobs) = SigmaP1;
+[XX, YY, ZZ] = matrix3X3_points(SigmaP1Model, 40);
+mesh(XX, YY, ZZ);
+SigmaP2Model = zeros(3);
+SigmaP2Model(1:nobs,1:nobs) = SigmaP2;
+[XX, YY, ZZ] = matrix3X3_points(SigmaP2Model, 40);
+mesh(XX, YY, ZZ);
+SigmaP12Model = zeros(3);
+SigmaP12Model(1:nobs,1:nobs) = P_hat;
+[XX, YY, ZZ] = matrix3X3_points(SigmaP12Model, 40);
+surf(XX, YY, ZZ);
+xlabel('x');
+ylabel('y');
+zlabel('z');
+title('Unscented Kalman Update Combining');
+axis equal;
+
+  %
+  % Propagate both initial covariances together.
+  %
+alpha = .01;
+kappa = 0;
+beta = 2;
+[Chi, w_m, w_c] = est_ut_sigma_vec([[0 0]' ; [0 0]'],...
+                   [SigmaY zeros(size(SigmaY)) ; zeros(size(SigmaY)) SigmaY],...
+                                                         alpha, kappa, beta);
+n_obs = size(Chi,1);
+n_sigma_vec = size(Chi, 2);
+  % First transformation
+r_p_y1_c = r_p_o_c - r_y1_o_c;
+r_p_y1_y = Tyc1*r_p_y1_c;
+rhat_p_y1_y = r_p_y1_y/norm(r_p_y1_y);
+  % Second transformation
+r_p_y2_c = r_p_o_c - r_y2_o_c;
+r_p_y2_y = Tyc2*r_p_y2_c;
+rhat_p_y2_y = r_p_y2_y/norm(r_p_y2_y);
+for ii = 1:n_sigma_vec
+  u = rhat_p_y1_y(1) + Chi(1,ii);
+  v = rhat_p_y1_y(2) + Chi(2,ii);
+  w = sqrt(1 - u*u - v*v);
+  rhat_pi_y1_y = [u v w]';
+  rhat_pi_y1_c = Tcy1*rhat_pi_y1_y;
+  r_pi_o_c = mth_xsphere(r_y1_o_c, rhat_pi_y1_c, re);
+  r_pi_p_c = r_pi_o_c - r_p_o_c;
+  r_pi_p_t = Ttc*r_pi_p_c;
+  Chi(1:2,ii) = r_pi_p_t(1:2);
+    %
+  u = rhat_p_y2_y(1) + Chi(3,ii);
+  v = rhat_p_y2_y(2) + Chi(4,ii);
+  w = sqrt(1 - u*u - v*v);
+  rhat_pi_y2_y = [u v w]';
+  rhat_pi_y2_c = Tcy2*rhat_pi_y2_y;
+  r_pi_o_c = mth_xsphere(r_y2_o_c, rhat_pi_y2_c, re);
+  r_pi_p_c = r_pi_o_c - r_p_o_c;
+  r_pi_p_t = Ttc*r_pi_p_c;
+  Chi2(3:4,ii) = r_pi_p_t(1:2);
+end
+[~, SigmaP] = est_pred_ukf(Chi, w_m, w_c, zeros(n_obs));
+  % Combined covariance
+ApTWAp1 = SigmaP(1:2,1:2)^-1;
+ApTWAp2 = SigmaP(3:4,3:4)^-1;
+SigmaP12 = (ApTWAp1 + ApTWAp2)^-1;
+  % Plot comparison on new figure
+figure; hold on;
+SigmaP1Model = zeros(3);
+SigmaP1Model(1:nobs,1:nobs) = SigmaP1;
+[XX, YY, ZZ] = matrix3X3_points(SigmaP1Model, 40);
+mesh(XX, YY, ZZ);
+SigmaP2Model = zeros(3);
+SigmaP2Model(1:nobs,1:nobs) = SigmaP2;
+[XX, YY, ZZ] = matrix3X3_points(SigmaP2Model, 40);
+mesh(XX, YY, ZZ);
+SigmaP12Model = zeros(3);
+SigmaP12Model(1:nobs,1:nobs) = SigmaP12;
+[XX, YY, ZZ] = matrix3X3_points(SigmaP12Model, 40);
+surf(XX, YY, ZZ);
+xlabel('x');
+ylabel('y');
+zlabel('z');
+title('Combined Propagation via UT');
 axis equal;
