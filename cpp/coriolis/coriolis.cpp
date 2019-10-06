@@ -50,14 +50,14 @@ int main()
                    0.0,          0.0, 0.0;
 
     // Convert to ECF using only product rule
-  const Vector3d r_f = c*r_i;
-  const Vector3d v_f = c*v_i + cdot*r_i;
-  const Vector3d a_f = c*a_i + 2*cdot*v_i + cddot*r_i;
+  const auto r_f = c*r_i;
+  const auto v_f = c*v_i + cdot*r_i;
+  const auto a_f = c*a_i + 2*cdot*v_i + cddot*r_i;
 
     // Convert using traditional cross product method
-  const Vector3d v_f_w = c*v_i - w_vec.cross(r_f);
-  const Vector3d a_f_w = c*a_i - 2*w_vec.cross(v_f)
-                               - w_vec.cross(w_vec.cross(r_f));
+  const auto v_f_w = c*v_i - w_vec.cross(r_f);
+  const auto a_f_w = c*a_i - 2*w_vec.cross(v_f)
+                           - w_vec.cross(w_vec.cross(r_f));
 
     // Difference
   const auto dv = v_f - v_f_w;
@@ -67,9 +67,14 @@ int main()
   cout << "\nInertial Velocity:\n" << v_i;
   cout << "\nInertial Acceleration:\n" << a_i;
   cout << '\n';
+  cout << "\nECI to ECF:\n" << c;
+  cout << "\nd(ECI to ECF)/dt:\n" << cdot;
+  cout << "\nd(ECI to ECF)/dtdt:\n" << cddot;
+  cout << '\n';
   cout << "\nEarth Fixed Position:\n" << r_f;
   cout << "\nEarth Fixed Velocity:\n" << v_f;
   cout << "\nEarth Fixed Acceleration:\n" << a_f;
+  cout << '\n';
   cout << "\nUsing Cross Products";
   cout << "\nEarth Fixed Velocity:\n" << v_f_w;
   cout << "\nEarth Fixed Acceleration:\n" << a_f_w;
