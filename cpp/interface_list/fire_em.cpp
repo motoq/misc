@@ -19,14 +19,15 @@ static void shoot_all_p(std::vector<IShoot*>& shooter_lst);
  * to be deallocated automatically once the vector goes out of scope
  * vs. looping through the <vector> and deleting each object.
  *
+ * See the "vec_ptrs" example for a cleaned up version of how to
+ * properly do this.
+ *
  * Notice:
  *  emplace_back vs. push_back
  *  make_shared vs. new
  *  make_unique vs. new
- *    When adding a unique_ptr to a container, it must be created
- *    during the call to emplace_back.  It can not be called,
- *    pointing to a local variable, with that local variable being
- *    added to the container.  Use a shared_ptr for that.
+ *    When adding a unique_ptr to a container, if created outside
+ *    the call to push/emplace_back, std::move must be used.
  */
 int main()
 {
@@ -84,10 +85,10 @@ int main()
     shooters.emplace_back(new M14E2);
     shooters.emplace_back(std::make_unique<M14E2>("make_unique"));
     shooters.push_back(std::make_unique<M14E2>("make_unique push_back"));
+    std::unique_ptr<IShoot> up_m14e2 = std::make_unique<M14E2>("std::move");
+    shooters.push_back(std::move(up_m14e2));
     shoot_all(shooters);
     std::cout << "\nAbout to exit unique_ptr block";
-     //*OK:*/  std::unique_ptr<IShoot> up_m14e2 = std::make_unique<M14E2>();
-     //*BAD:*/ shooters.emplace_back(up_m14e2);
   }
   std::cout << "\nJust left unique_ptr block";
 
