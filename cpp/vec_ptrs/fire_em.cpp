@@ -12,10 +12,9 @@ static void shoot_all(std::vector<std::unique_ptr<IShoot>>&);
 /**
  * Demonstrates the use of a base class operating on behalf of a
  * derived class.  Also demonstrates storing base classes in a
- * vector allowing for all to be used based on the base class
- * interface.  Demonstrates automatic release of memory when
- * the vector storing unique pointers goes out of scope and
- * handling of unique pointers.
+ * vector allowing for all to be used via the base class interface
+ * Demonstrates automatic release of memory when the vector storing
+ * unique pointers goes out of scope and handling of unique pointers.
  *
  * Notice:
  *   When adding a unique_ptr to a container, if created outside
@@ -42,11 +41,14 @@ int main()
     std::vector<std::unique_ptr<IShoot>> shooters;
     std::unique_ptr<IShoot> up = nullptr;
 
+    // Allocating space and then adding to the vector is safer
+    // w.r.t. the potential for thrown exceptions
     up =  std::make_unique<M14E2>("First");
     shooters.push_back(std::move(up));
     // Nope - runtime seg fault - up no longer points to anything:
     //   up->fire();
 
+    std::cout << "\nAbout to reassign unused unique_ptr";
     up =  std::make_unique<M14>("Second - never used");
     // Nope - compile time error - can't change ownership through
     // pointer copy:
@@ -58,6 +60,7 @@ int main()
     up =  std::make_unique<M14E2>("Fourth");
     shooters.push_back(std::move(up));
 
+    std::cout << "\nAbout to loop through vector and shoot:";
     shoot_all(shooters);
     std::cout << "\nAbout to exit unique_ptr block";
   }
