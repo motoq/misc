@@ -1,0 +1,8 @@
+
+# Test Scenario
+
+SimStart GD 2007 04 05 end
+SimDays   365          end             # Full Year
+Compute EarthRot
+          GMST1982
+end
