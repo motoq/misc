@@ -1,6 +1,6 @@
 CC = g++
 #CPPFLAGS = -I/usr/local/include/eigen3
-CPPFLAGS = -g -Wall -Wextra -I$(EIG_INC)
+CPPFLAGS = -g -Wall -Wextra -Wno-deprecated-copy -I$(EIG_INC)
 #LFLAGS = -l$$MY_LIB -lm
 
 OBJECTS := $(patsubst %.cpp,%.o,$(wildcard *.cpp))

@@ -5,7 +5,9 @@
 #include <vector>
 #include <map>
 
-static bool print_cogs(const std::vector<std::string>& c);
+#include <cog_simstart.h>   // KAM
+
+static bool print_tokens(const std::vector<std::string>& c);
 
 /**
  * Parses an input file and passes each line to the parser.
@@ -50,27 +52,27 @@ const std::map<std::string,CaseKeyWord> keyword_table {
   // Read each line and pass to parser while tracking line number
   int line_number {0};
   std::string input_line;
-  bool parse_cogs = false;
+  bool parse_tokens = false;
   bool no_error = true;
-  std::vector<std::string> cogs;
+  std::vector<std::string> tokens;
   const std::string endicator = "end";
   while (std::getline(ifs,input_line)) {
     line_number++;
     std::istringstream iss(input_line);
-    std::string word;
-    while (iss >> word  &&  no_error) {
-      if (word[0] == '#') {
+    std::string token;
+    while (iss >> token  &&  no_error) {
+      if (token[0] == '#') {
         break;
       } else {
-        if (word == endicator) {
-          parse_cogs = true;
+        if (token == endicator) {
+          parse_tokens = true;
         } else {
-          cogs.push_back(word);
+          tokens.push_back(token);
         }
-        if (parse_cogs) {
-          parse_cogs = false;
-          no_error = print_cogs(cogs);
-          cogs.clear();
+        if (parse_tokens) {
+          parse_tokens = false;
+          no_error = print_tokens(tokens);
+          tokens.clear();
         }
       }
     }
@@ -83,13 +85,18 @@ const std::map<std::string,CaseKeyWord> keyword_table {
 
   std::cout << "\n\n";
 
-  return 0;
 }
 
-static bool print_cogs(const std::vector<std::string>& c) {
+static bool print_tokens(const std::vector<std::string>& c) {
   if (c.size() > 0) {
-    for(auto& s : c) {
-	    std::cout << '\n' << s;
+    std::string simst = "SimStart";
+    if (c[0] ==  simst) {
+      CogSimStart cog;
+      cog.unserialize(c);
+    } else {
+      for(auto& s : c) {
+	      std::cout << '\n' << s;
+      }
     }
     return true;
   } else {

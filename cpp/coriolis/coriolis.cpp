@@ -1,5 +1,7 @@
 #include <cmath>
 #include <iostream>
+
+#define EIGEN_NO_MALLOC
 #include <Eigen/Dense>
 
 /**
@@ -29,7 +31,7 @@ int main()
     // Compute gravitational acceleration
   const auto r = r_i.norm();
   const auto r3 = r*r*r;
-  const Vector3d a_i = -gm*r_i/r3;
+  const auto a_i = -gm*r_i/r3;
 
     // ECI to ECF reference frame transformation
   constexpr auto wt = w*t;
