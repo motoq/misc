@@ -7,13 +7,19 @@
 #include <cog.h>
 
 /**
- * Simulation start time
+ * Simulation start time Cog.
  */
 class CogSimStart : public Cog {
   public:
-    /** @return  true if successfully unserialized */
+    /**
+     *  @return  true if successfully initialized
+     */
     bool valid() const override;
 
+    /**
+     * @param  tokens  Text values to convert to a simulation start
+     *                 time.
+     */
     bool unserialize(const std::vector<std::string>& tokens) override;
 
   private:
