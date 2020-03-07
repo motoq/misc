@@ -17,7 +17,7 @@ int main()
    * standard C++ array at compile time.  Note the array itself does not
    * need to be constexpr.  How cool is that...
    */
-  constexpr double coeffs[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  constexpr double coeffs[] = { 1., 2., 3., 4., 5., 6., 7., 8., 9. };
   constexpr int ncoeff = arraySize(coeffs);
   std::cout << "\nDouble array size is " << ncoeff << " - very cool!";
     // Not constexpr
