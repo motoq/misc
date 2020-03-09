@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <iostream>
 
 /**
  * The arraySize utility function from "Effective Modern C++ by Scott Meyers
@@ -13,3 +14,17 @@ constexpr std::size_t arraySize(T (&)[N]) noexcept
 {
   return N;
 }
+
+/**
+ * Use of a template function allowing a range for loop to be used on an
+ * array of values.
+ *
+ * @param   vals  C array of integers
+ */
+template <std::size_t array_size>
+void print_int_array(int (&vals)[array_size]) {
+  for (int it : vals) {
+    std::cout << it << "  ";
+  }
+}
+

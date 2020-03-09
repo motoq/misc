@@ -89,9 +89,17 @@ private:
 int main()
 {
 
+    // Start with a standard C array.
+  std::cout << "\nOutput a standard C array\n";
+  int a[] = {1, 2, 3};
+  for (auto it : a) {
+    std::cout << it << "  ";
+  }
+  std::cout << '\n';
+
   V v;
     // auto returns a copy
-  std::cout << "\nModify a copy of container value\n";
+  std::cout << "\nModify a copy of container value:  before  after\n";
   for (auto it : v) {
     std::cout << it << "    ";
     it *= 2;;

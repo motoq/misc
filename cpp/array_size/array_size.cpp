@@ -24,8 +24,24 @@ int main()
   std::string colors[] = { "Red", "Green", "Blue" }; 
   int ncolors = arraySize(colors);
   std::cout << "\nNumber of colors is " << ncolors;
-
   std::cout << '\n';
-  
+
+    // Start with a standard C array.
+  std::cout << "\nOutput a standard C array\n";
+  int a[] = {1, 2, 3};
+  for (auto it : a) {
+    std::cout << it << "  ";
+  }
+  std::cout << '\n';
+    // Can't send to a standard function as a pointer,
+    // but can use a template function
+  std::cout << "\nOutput a standard C array via template function\n";
+  print_int_array(a);
+  std::cout << '\n';
+
 }
+
+
+
+
 
