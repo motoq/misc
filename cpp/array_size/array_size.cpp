@@ -42,7 +42,9 @@ int main()
   std::cout << '\n';
 
 
-
+  /*
+   * Compile time enum class indexing
+   */
   std::cout << "\n\n*\n* Demonstrating compile time enum class indexing\n*\n";
   enum Ndx { first, second }; 
   enum class NdxC { first, second }; 
@@ -59,6 +61,15 @@ int main()
   std::cout << "\nIndexing a Tuple with an enum class C++11 style";
   std::cout << "\n\tFirst: " << std::get<endx_(NdxC::first)>(tvals);
   std::cout << "    Second: " << std::get<endx_(NdxC::second)>(tvals);
+
+  /*
+   * Compile time integer pow.
+   */
+  constexpr int base {2};
+  constexpr int exp {8};
+  constexpr int size = cepow(base, exp);
+  std::cout << "\n\npow(" << base << ", " << exp << ") = " << size;
+  
   
 
   std::cout << '\n';

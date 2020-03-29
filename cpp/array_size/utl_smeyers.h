@@ -73,3 +73,26 @@ constexpr typename std::underlying_type<E>::type
                      std::underlying_type<E>::type>(enumerator);
 }
 
+
+/**
+ * The consexpr integer pow function from  "Effective Modern C++ by
+ * Scott Meyers (O'Reilly).  Copyright 2015 Scott Meyers,
+ * 978-1-491-90399-5."
+ *
+ * C++14 compatible compile time integer pow function.  Note this will
+ * fail at compile time, not at run time, for an overflow condition.
+ *
+ * @param  base  Value to raise to the exp power
+ * @param  exp   Exponent
+ *
+ * @return  base^exp
+ */
+constexpr int cepow(int base, int exp) noexcept
+{
+  auto result = 1;
+  for (int ii=0; ii<exp; ++ii) {
+    result *= base;
+  }
+
+  return result;
+}

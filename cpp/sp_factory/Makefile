@@ -3,9 +3,9 @@ CPPFLAGS = -g -Wall -Wextra -I.
 
 OBJECTS := $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 
-explicit : $(OBJECTS)
-	$(CC) $(CFLAGS) -o explicit $(OBJECTS)
+sp_factory : $(OBJECTS)
+	$(CC) $(CFLAGS) -o sp_factory $(OBJECTS)
 
 .PHONY : clean
 clean :
-	rm explicit $(OBJECTS)
+	rm sp_factory $(OBJECTS)

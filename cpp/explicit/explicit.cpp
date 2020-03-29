@@ -12,6 +12,8 @@ void g(DefaultsUser);
  * arguments.  In the past, the decision to use explicit was limited to
  * constructors that would accept a single argument.  This is no longer
  * true with implicit list construction.
+ *
+ * @author  Kurt Motekew  2020/03/29
  */
 int main()
 {
