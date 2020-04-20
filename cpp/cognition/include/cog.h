@@ -7,12 +7,18 @@
 /**
  * Interface for objects defining a component to the simulation
  * environment.
+ *
+ * Test how how this turns out for Doxygen.
  */
 class Cog {
   public:
     virtual ~Cog() = default;
 
     /**
+     * More testing.
+     *
+     * More testing of doc format.
+     *
      * @return  If true, the class is valid.  An invalid class could be
      *          the result of an attempt to unserialize with bad data.
      */

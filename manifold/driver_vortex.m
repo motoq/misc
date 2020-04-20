@@ -31,7 +31,7 @@ c = a*e;
 plt_vortex_xy(k, xvals, yvals);
 
 axis equal;
-axis off;
+%axis off;
 view([150, 20])
 
 fprintf('\nThe accumulated error over');
