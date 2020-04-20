@@ -1,8 +1,8 @@
-function [r, zeye, lambda] = mth_cart2vortex(xyz)
-% MTH_CART2VORTEX computes Cartesian coordinates given vortex coordinates
+function [r, lambda, kappa] = mth_cart2abyss(xyz)
+% MTH_CART2ABYSS computes abyss coordinates given Cartesian
 %
 %-----------------------------------------------------------------------
-% Copyright 2017 Kurt Motekew
+% Copyright 2020 Kurt Motekew
 %
 % This Source Code Form is subject to the terms of the Mozilla Public
 % License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,12 +13,12 @@ function [r, zeye, lambda] = mth_cart2vortex(xyz)
 %   xyz      Cartesian coordinates to convert to convert
 %
 % Return
-%   r        Radial distance, units of xyz
-%   zeye     Z coordinate, -inf < zeye < 0
-%   lambda   Azimuth/longitude/right ascension, -pi <= lambda <= pi
+%   r        Radial position, units of xyz
+%   lambda   Azimuth/longitude/right ascension coordinate, -pi <= lambda <= pi
+%   kappa    Depth
 %
-% Kurt Motekew   2017/08/04
+% Kurt Motekew   2020/04/18
 %
   r = sqrt(xyz(1)*xyz(1) + xyz(2)*xyz(2));
-  zeye = xyz(3);
   lambda = atan2(xyz(2), xyz(1));
+  kappa = -xyz(3)*r;
