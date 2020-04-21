@@ -1,4 +1,4 @@
-function dxda = mth_dcart_dabyss(r, lambda, kappa)
+function dxda = mth_dcart_dabyss(r, kappa, lambda)
 % MTH_DCART_DABYSS computes the partials of 3D Cartesian coordinates
 % w.r.t. 3D abyss coordinates.  Each column of the resulting Jacobian
 % is a covariant basis vector.
@@ -13,19 +13,19 @@ function dxda = mth_dcart_dabyss(r, lambda, kappa)
 %
 % Inputs:
 %   r        Radial position, undefined for r = 0.
-%   lambda   Azimuth/longitude/right ascension coordinate, -pi <= lambda <= pi
 %   kappa    Depth
+%   lambda   Azimuth/longitude/right ascension coordinate, -pi <= lambda <= pi
 %
 % Return
 %   dxda   Partial of Cartesian w.r.t. abyss coordinates
 %
 %                 -                              -
-%                 | dx/dr  dx/dlambda  dx/dkappa |
-%          dxdo = | dy/dr  dy/dlambda  dy/dkappa |
-%                 | dz/dr  dz/dlambda  dz/dkappa |
+%                 | dx/dr  dx/dkappa  dx/dlambda |
+%          dxdo = | dy/dr  dy/dkappa  dy/dlambda |
+%                 | dz/dr  dz/dkappa  dz/dlambda |
 %                 -                              -
 %
-%               = [ e_r  e_lambda  e_kappa ]
+%               = [ e_r  e_kappa  e_lambda ]
 %
 % Kurt Motekew   2020/04/21
 %
@@ -35,7 +35,7 @@ function dxda = mth_dcart_dabyss(r, lambda, kappa)
   invr = 1/r;
   invr2 = invr*invr;
 
-  dxda = [     cl      -r*sl    0 ;
-               sl       r*cl    0 ;
-           kappa*invr2   0    -invr ];
+  dxda = [     cl         0     -r*sl ;
+               sl         0      r*cl ;
+           kappa*invr2  -invr     0   ];
 

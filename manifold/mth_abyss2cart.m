@@ -1,4 +1,4 @@
-function xyz = mth_abyss2cart(r, lambda, kappa)
+function xyz = mth_abyss2cart(r, kappa, lambda)
 % MTH_ABYSS2CART comptues Cartesian coordinates given abyss coordinates
 %
 %-----------------------------------------------------------------------
@@ -11,8 +11,8 @@ function xyz = mth_abyss2cart(r, lambda, kappa)
 %
 % Inputs:
 %   r        Radial position
-%   lambda   Azimuth/longitude/right ascension coordinate, -pi <= lambda <= pi
 %   kappa    Depth
+%   lambda   Azimuth/longitude/right ascension coordinate, -pi <= lambda <= pi
 %
 % Return   Cartesian coordinates in units of r, [3x1]
 %

@@ -1,6 +1,6 @@
-function plt_abyss_covariant(r, lambda, kappa)
+function plt_abyss_covariant(r, kappa, lambda)
 % PLT_ABYSS_COVARIANT Compute and plot the covariant basis vectors to
-% the abyss manifold.  Radial (red), Lambda (green), Kappa (blue).
+% the abyss manifold.  Radial (red), Kappa (green), Lambda (blue).
 %
 %-----------------------------------------------------------------------
 % Copyright 2020 Kurt Motekew
@@ -12,18 +12,17 @@ function plt_abyss_covariant(r, lambda, kappa)
 %
 % Inputs:
 %   r        Radial position
-%   lambda   Azimuth/longitude/right ascension coordinate, -pi <= lambda <= pi
 %   kappa    Depth
+%   lambda   Azimuth/longitude/right ascension coordinate, -pi <= lambda <= pi
 %
 % Kurt Motekew   2020/04/21
 %
 
   % Orthogonal covariant basis vectors
-xyz = mth_abyss2cart(r, lambda, kappa);
-dxda = mth_dcart_dabyss(r, lambda, kappa);
+xyz = mth_abyss2cart(r, kappa, lambda);
+dxda = mth_dcart_dabyss(r, kappa, lambda);
 e1 = dxda(:,1);
 e2 = dxda(:,2);
-  % Non-orthogonal
 e3 = dxda(:,3);
 
   % Normalize for plotting
@@ -35,5 +34,5 @@ quiver3(xyz(1), xyz(2), xyz(3), e1(1), e1(2), e1(3),...
 quiver3(xyz(1), xyz(2), xyz(3), e2(1), e2(2), e2(3),...
                                'color',[0,1,0],'linewidth',3);
 quiver3(xyz(1), xyz(2), xyz(3), e3(1), e3(2), e3(3),...
-        'color',[0,1,1],'linewidth',3);
+                               'color',[0,1,1],'linewidth',3);
 

@@ -8,10 +8,10 @@ clear;
 
   % Plot fine resolution representation of abyss
 rs = .1:.05:4;
-lambdas = -pi:pi/12:pi;
 kappa = .5;
-compute_error = false;
-[dxyz, npts] = plt_abyss(rs, lambdas, kappa, compute_error);
+lambdas = -pi:pi/12:pi;
+compute_error = true;
+[dxyz, npts] = plt_abyss(rs, kappa, lambdas, compute_error);
 if compute_error
   fprintf('\nThe accumulated error over');
   fprintf(' %i points is %1.2e meters\n', npts, 6378137*dxyz);
@@ -25,9 +25,9 @@ p_npts = size(rs, 2);
 point_size = 50;
 point_color = .9;
 for ii = 1:p_npts
-  xyz = mth_abyss2cart(rs(ii), lambda, kappa);
+  xyz = mth_abyss2cart(rs(ii), kappa, lambda);
   scatter3(xyz(1,:), xyz(2,:), xyz(3,:), point_size, point_color, 'filled');
-  plt_abyss_covariant(rs(ii), lambda, kappa);
+  plt_abyss_covariant(rs(ii), kappa, lambda);
   lambda = lambda + dlambda;
 end
 

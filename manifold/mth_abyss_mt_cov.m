@@ -1,6 +1,7 @@
-function Z_ij = mth_abyss_mt_cov(r, lambda, kappa)
+function Z_ij = mth_abyss_mt_cov(r, kappa)
 % MTH_ABYSS_MT_COV computes the covariant matric tensor Z_ij of the
-% abyss coordinate system.
+% abyss coordinate system.  Note it is a function of the range and depth
+% parameters only.
 %
 %-----------------------------------------------------------------------
 % Copyright 2020 Kurt Motekew
@@ -12,16 +13,15 @@ function Z_ij = mth_abyss_mt_cov(r, lambda, kappa)
 %
 % Inputs:
 %   r        Radial position.  Undefined if r = 0
-%   lambda   Azimuth/longitude/right ascension coordinate, -pi <= lambda <= pi
 %   kappa    Depth
 %
 % Return
-%   Z_ij   Covariant metric tensor, 3x3
+%   Z_ij   Covariant metric tensor, 3x3.
+%          Z_1 = r, z_2 = kappa, z_3 = lambda
 %
 % Kurt Motekew   2020/04/20
 %
 
-    % Undefined point, but just in case
   Z_ij = zeros(3);
 
   r2 = r*r;
@@ -30,7 +30,7 @@ function Z_ij = mth_abyss_mt_cov(r, lambda, kappa)
   k2 = kappa*kappa;
 
   Z_ij(1,1) = 1 + k2/r4;
-  Z_ij(2,2) = r2;
-  Z_ij(3,3) = 1/r2;
-  Z_ij(1,3) = -kappa/r3;
-  Z_ij(3,1) = Z_ij(1,3);
+  Z_ij(2,2) = 1/r2;
+  Z_ij(3,3) = r2;
+  Z_ij(1,2) = -kappa/r3;
+  Z_ij(2,1) = Z_ij(1,2);

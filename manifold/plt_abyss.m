@@ -1,4 +1,4 @@
-function [dxyz, npts] = plt_abyss(rs, lambdas, kappa, compute_error)
+function [dxyz, npts] = plt_abyss(rs, kappa, lambdas, compute_error)
 % PLT_ABYSS Plots an abyss via scatter3, creating a new figure and
 % leaving the hold on.  Creates default 'X', 'Y', and 'Z' axes labels
 % and a default title 'Vortex'.
@@ -13,8 +13,8 @@ function [dxyz, npts] = plt_abyss(rs, lambdas, kappa, compute_error)
 %
 % Inputs:
 %   rs            Array of radial positions, distuance units
-%   lambda        Array of azimuths, -pi <= lambda <= pi
 %   kappa         Chosen depth
+%   lambda        Array of azimuths, -pi <= lambda <= pi
 %   cmpute_error  Check accumulated error with conversions to/from
 %                 Cartesian/Abyss coordinates
 %
@@ -34,11 +34,11 @@ n = 0;
 for ii = 1:naz
   for jj = 1:nr
     n = n + 1;
-    xyz(:,n) = mth_abyss2cart(rs(jj), lambdas(ii), kappa);
+    xyz(:,n) = mth_abyss2cart(rs(jj), kappa, lambdas(ii));
       % Error computing
     if compute_error
-      [r, lambda, k] = mth_cart2abyss(xyz(:,n));
-      xyzn = mth_abyss2cart(r, lambda, k);
+      [r, k, lambda] = mth_cart2abyss(xyz(:,n));
+      xyzn = mth_abyss2cart(r, k, lambda);
       dxyz = dxyz + norm(xyz(:,n) - xyzn);
     end
   end
