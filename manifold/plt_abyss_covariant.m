@@ -18,21 +18,17 @@ function plt_abyss_covariant(r, kappa, lambda)
 % Kurt Motekew   2020/04/21
 %
 
-  % Orthogonal covariant basis vectors
 xyz = mth_abyss2cart(r, kappa, lambda);
-dxda = mth_dcart_dabyss(r, kappa, lambda);
-e1 = dxda(:,1);
-e2 = dxda(:,2);
-e3 = dxda(:,3);
+[e_1, e_2, e_3] = mth_abyss_cov_basis(r, kappa, lambda);
 
   % Normalize for plotting
-e1 = e1/norm(e1);
-e2 = e2/norm(e2);
-e3 = e3/norm(e3);
-quiver3(xyz(1), xyz(2), xyz(3), e1(1), e1(2), e1(3),...
+e_1 = e_1/norm(e_1);
+e_2 = e_2/norm(e_2);
+e_3 = e_3/norm(e_3);
+quiver3(xyz(1), xyz(2), xyz(3), e_1(1), e_1(2), e_1(3),...
                                'color',[1,0,0],'linewidth',3);
-quiver3(xyz(1), xyz(2), xyz(3), e2(1), e2(2), e2(3),...
+quiver3(xyz(1), xyz(2), xyz(3), e_2(1), e_2(2), e_2(3),...
                                'color',[0,1,0],'linewidth',3);
-quiver3(xyz(1), xyz(2), xyz(3), e3(1), e3(2), e3(3),...
+quiver3(xyz(1), xyz(2), xyz(3), e_3(1), e_3(2), e_3(3),...
                                'color',[0,1,1],'linewidth',3);
 

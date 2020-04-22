@@ -28,6 +28,7 @@ for ii = 1:p_npts
   xyz = mth_abyss2cart(rs(ii), kappa, lambda);
   scatter3(xyz(1,:), xyz(2,:), xyz(3,:), point_size, point_color, 'filled');
   plt_abyss_covariant(rs(ii), kappa, lambda);
+  plt_abyss_contravariant(rs(ii), kappa, lambda);
   lambda = lambda + dlambda;
 end
 
