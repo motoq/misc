@@ -28,5 +28,12 @@ for ii = 1:p_npts
   plt_os_covariant(e, a, p_lambdas(ii), p_etas(ii));
 end
 
+[dxyz, npts] = plt_os(e, a, lambdas, etas, 0);
+for ii = 1:p_npts
+  xyz = mth_os2cart(e, a, p_lambdas(ii), p_etas(ii));
+  scatter3(xyz(1,:), xyz(2,:), xyz(3,:), 55, .9, 'filled');
+  plt_os_contravariant(e, a, p_lambdas(ii), p_etas(ii));
+end
+
 
 fprintf('\n');
