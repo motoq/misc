@@ -15,6 +15,7 @@ function matrix3X3_plot(A, N, makesurface)
 
 if (makesurface)
   surf(XX,YY,ZZ);
+  colormap([.8 .8 .8]);
 else
   mesh(XX,YY,ZZ);
   colormap([.1 .2 .3]);

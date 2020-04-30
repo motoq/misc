@@ -58,7 +58,7 @@ int main()
 
     // Convert using traditional cross product method
   const auto v_f_w = c*v_i - w_vec.cross(r_f);
-  const auto a_f_w = c*a_i - 2*w_vec.cross(v_f)
+  const auto a_f_w = c*a_i - 2*w_vec.cross(v_f_w)
                            - w_vec.cross(w_vec.cross(r_f));
 
     // Difference

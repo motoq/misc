@@ -44,7 +44,6 @@ for ii = 1:naz
   end
 end
 
-figure; hold on;
 scatter3(xyz(1,:), xyz(2,:), xyz(3,:), sizes);
 stitle = sprintf('Abyss with depth factor %1.1f', kappa);
 title(stitle);
