@@ -21,13 +21,10 @@ function [e1, e2, e3] = mth_os_cont_basis(e, a, lambda, eta)
 %
 % Kurt Motekew   2020/04/29
 %
-
-  g_ij = mth_os_mt_cov(e, a, lambda, eta);
-  gij = g_ij^-1;
-
+  gij = mth_os_mt_cont(e, a, eta);
   [e_1, e_2, e_3] = mth_os_cov_basis(e, a, lambda, eta);
 
-    % Form illustrating tensor contraction vs. simple matrix multiply
+    % Form illustrating tensor contraction vs. matrix multiply
   e1 = gij(1,1)*e_1 + gij(1,2)*e_2 + gij(1,3)*e_3;
   e2 = gij(2,1)*e_1 + gij(2,2)*e_2 + gij(2,3)*e_3;
   e3 = gij(3,1)*e_1 + gij(3,2)*e_2 + gij(3,3)*e_3;

@@ -36,4 +36,31 @@ for ii = 1:p_npts
 end
 
 
+lambda = lambdas(18);
+eta = etas(18);
+[e_1, e_2, e_3] = mth_os_cov_basis(e, a, lambda, eta);
+[e1, e2, e3] = mth_os_cont_basis(e, a, lambda, eta);
+fprintf("\n\nExpect three ones\n");
+dot(e1,e_1)
+dot(e2,e_2)
+dot(e3,e_3)
+fprintf("\nExpect six zeros\n");
+dot(e1,e_2)
+dot(e1,e_3)
+dot(e2,e_3)
+dot(e2,e_1)
+dot(e3,e_1)
+dot(e3,e_2)
+fprintf("\nNorm of covariant then contravariant basis vectors\n");
+norm(e_1)
+norm(e_2)
+norm(e_3)
+norm(e1)
+norm(e2)
+norm(e3)
+fprintf("\ng_ij*gij\n");
+g_ij = mth_os_mt_cov(e, a, eta);
+gij = mth_os_mt_cont(e, a, eta);
+g_ij*gij
+
 fprintf('\n');

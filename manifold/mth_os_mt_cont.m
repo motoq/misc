@@ -1,5 +1,5 @@
-function g_ij = mth_os_mt_cov(e, a, eta)
-% MTH_OS_MT_COV computes the covariant matric tensor g_ij of the
+function gij = mth_os_mt_cont(e, a, eta)
+% MTH_OS_MT_CONT computes the contravariant matric tensor gij of the
 % oblate spheroidal coordinate system.
 %
 %-----------------------------------------------------------------------
@@ -23,7 +23,7 @@ function g_ij = mth_os_mt_cov(e, a, eta)
 %          dxdo = | gla  gll  gle |
 %                 | gea  gel  gee |
 %                 -               -
-% Kurt Motekew   2020/04/29
+% Kurt Motekew   2020/05/01
 %
 
   a2 = a*a;
@@ -32,9 +32,9 @@ function g_ij = mth_os_mt_cov(e, a, eta)
   ometa2 = 1 - eta2;
   ome2 = 1 - e2;
 
-  g_ij = zeros(3);
-  g_ij(1,1) = 1 - eta2*e2;
-  g_ij(2,2) = a2*ometa2;
-  g_ij(3,3) = a2*(1 - e2 + eta2/ometa2);
-  g_ij(1,3) = -a*eta*e2;
-  g_ij(3,1) = g_ij(1,3);
+  gij = zeros(3);
+  gij(1,1) = 1 + e2*eta2/ome2;
+  gij(2,2) = 1/(a2*ometa2);
+  gij(3,3) = ometa2*(1 - e2*eta2)/(a2*ome2);
+  gij(1,3) = eta*e2*ometa2/(a*ome2);
+  gij(3,1) = gij(1,3);

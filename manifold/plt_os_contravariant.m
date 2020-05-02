@@ -1,4 +1,4 @@
-function plt_oblsph_contravariant(e, a, lambda, eta)
+function plt_os_contravariant(e, a, lambda, eta)
 % PLT_OS_CONTRAVARIANT Compute and plot the oblate spheroid contravariant
 % basis vectors.
 %

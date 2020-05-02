@@ -1,4 +1,4 @@
-function plt_oblsph_covariant(e, a, lambda, eta)
+function plt_os_covariant(e, a, lambda, eta)
 % PLT_OS_COVARIANT Compute and plot the oblate spheroid covariant
 % basis vectors.
 %
