@@ -27,6 +27,10 @@ for ii = 1:p_npts
   scatter3(xyz(1,:), xyz(2,:), xyz(3,:), 55, .9, 'filled');
   plt_os_covariant(e, a, p_lambdas(ii), p_etas(ii));
 end
+stitle = sprintf('Oblate Spheroid (e = %1.2f) and %s',...
+                         e, 'Covariant Basis Vectors');
+title(stitle);
+axis equal;
 
 [dxyz, npts] = plt_os(e, a, lambdas, etas, 0);
 for ii = 1:p_npts
@@ -34,7 +38,10 @@ for ii = 1:p_npts
   scatter3(xyz(1,:), xyz(2,:), xyz(3,:), 55, .9, 'filled');
   plt_os_contravariant(e, a, p_lambdas(ii), p_etas(ii));
 end
-
+stitle = sprintf('Oblate Spheroid (e = %1.2f) and %s',...
+                     e, 'Contravariant Basis Vectors');
+title(stitle);
+axis equal;
 
 lambda = lambdas(18);
 eta = etas(18);
