@@ -30,7 +30,6 @@ function g_ij = mth_os_mt_cov(e, a, eta)
   e2 = e*e;
   eta2 = eta*eta;
   ometa2 = 1 - eta2;
-  ome2 = 1 - e2;
 
   g_ij = zeros(3);
   g_ij(1,1) = 1 - eta2*e2;

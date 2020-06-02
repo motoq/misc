@@ -32,7 +32,7 @@ stitle = sprintf('Oblate Spheroid (e = %1.2f) and %s',...
 title(stitle);
 axis equal;
 
-[dxyz, npts] = plt_os(e, a, lambdas, etas, 0);
+plt_os(e, a, lambdas, etas, 0);
 for ii = 1:p_npts
   xyz = mth_os2cart(e, a, p_lambdas(ii), p_etas(ii));
   scatter3(xyz(1,:), xyz(2,:), xyz(3,:), 55, .9, 'filled');
@@ -71,3 +71,17 @@ gij = mth_os_mt_cont(e, a, eta);
 g_ij*gij
 
 fprintf('\n');
+
+plt_os(e, a, lambdas, etas, 0);
+[e_1, ~, ~] = mth_os_cov_basis(e, a, lambda, eta);
+xyz = mth_os2cart(e, a, lambda, eta);
+quiver3(xyz(1), xyz(2), xyz(3), e_1(1), e_1(2), e_1(3),...
+        'color',[1,0,0],'linewidth',3);
+xyz = mth_os2cart(e, a, lambda+pi/4, eta+.2);
+quiver3(xyz(1), xyz(2), xyz(3), e_1(1), e_1(2), e_1(3),...
+        'color',[1,0,0],'linewidth',3);
+
+stitle = sprintf('Oblate Spheroid (e = %1.2f) and %s',...
+                     e, 'a Covariant Basis Vector');
+title(stitle);
+axis equal;
