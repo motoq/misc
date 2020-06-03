@@ -16,13 +16,13 @@ function gij = mth_os_mt_cont(e, a, eta)
 %   eta      Elevation coordinate, -1 <= eta <= 1
 %
 % Return
-%   gij   Covariant metric tensor, 3x3
+%   gij  Covariant metric tensor, 3x3
 %
-%                 -               -
-%                 | gaa  gal  gae |
-%          dxdo = | gla  gll  gle |
-%                 | gea  gel  gee |
-%                 -               -
+%                -               -
+%                | gaa  gal  gae |
+%          gij = | gla  gll  gle |
+%                | gea  gel  gee |
+%                -               -
 % Kurt Motekew   2020/05/01
 %
 

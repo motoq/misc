@@ -81,7 +81,6 @@ xyz = mth_os2cart(e, a, lambda+pi/4, eta+.2);
 quiver3(xyz(1), xyz(2), xyz(3), e_1(1), e_1(2), e_1(3),...
         'color',[1,0,0],'linewidth',3);
 
-stitle = sprintf('Oblate Spheroid (e = %1.2f) and %s',...
-                     e, 'a Covariant Basis Vector');
+stitle = sprintf('Oblate Spheroid (e = %1.2f)', e);
 title(stitle);
 axis equal;

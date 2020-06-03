@@ -16,11 +16,11 @@ function g_ij = mth_os_mt_cov(e, a, eta)
 %   eta      Elevation coordinate, -1 <= eta <= 1
 %
 % Return
-%   gij   Covariant metric tensor, 3x3
+%   g_ij  Covariant metric tensor, 3x3
 %
 %                 -               -
 %                 | gaa  gal  gae |
-%          dxdo = | gla  gll  gle |
+%          g_ij = | gla  gll  gle |
 %                 | gea  gel  gee |
 %                 -               -
 % Kurt Motekew   2020/04/29
