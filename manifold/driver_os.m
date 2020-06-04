@@ -5,6 +5,7 @@
 % 2020/04
 %
 
+close all;
 clear;
 
   % Define Oblate spheroid with fixed size
@@ -42,6 +43,25 @@ stitle = sprintf('Oblate Spheroid (e = %1.2f) and %s',...
                      e, 'Contravariant Basis Vectors');
 title(stitle);
 axis equal;
+
+
+
+
+
+plt_os(e, a, lambdas, etas, 0);
+for ii = 1:p_npts
+  %plt_os_covariant(e, a, p_lambdas(ii), p_etas(ii));
+  g_ij = mth_os_mt_cov(e, a, p_etas(ii));
+  xyz = mth_os2cart(e, a, p_lambdas(ii), p_etas(ii));
+  J = mth_dcart_dos(e, a, p_lambdas(ii), p_etas(ii));
+  [XX, YY, ZZ] = matrix3X3_points(.001*J*g_ij*J', 40);
+  surf(XX + xyz(1), YY + xyz(2), ZZ + xyz(3));
+end
+stitle = sprintf('Oblate Spheroid (e = %1.2f) with MT', e);
+title(stitle);
+axis equal;
+
+
 
 lambda = lambdas(18);
 eta = etas(18);

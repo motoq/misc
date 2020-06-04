@@ -27,7 +27,6 @@ function g_ij = mth_affine_mt_cov(a, b, theta)
 % Kurt Motekew   2020/06/02
 %
 
-  ab = a*b;
   ct = cos(theta);
   st = sin(theta);
   st2 = st*st;
