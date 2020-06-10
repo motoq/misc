@@ -16,6 +16,7 @@
 %      y points "south"
 %
 % Relies on the Bierman sequential estimation project - add to path
+% (run utl_setlibpath first!)
 % 
 % Kurt Motekew  2014/10/19  Original
 % Kurt Motekew  2019/08/10  Updated to be more generic and added with
