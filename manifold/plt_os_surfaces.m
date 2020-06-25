@@ -78,7 +78,6 @@ scatter3(0, 0, 0, 100, 1, 'filled');
 scatter3(xyz(1), xyz(2), xyz(3), 100, 1, 'filled');
 plot3([0 xyz(1)], [0 xyz(2)], [0 xyz(3)], 'color', [1,0,0], 'linewidth', 3);
 
-title(stitle);
 xlabel('X');
 ylabel('Y');
 zlabel('Z');
