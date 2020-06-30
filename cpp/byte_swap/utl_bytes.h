@@ -11,7 +11,7 @@
 
 
 /**
- * Swaps the endian of the input data type
+ * Swaps the endian of the arbitrarily sized input INTEGER data type.
  *
  * @param  val  Input value for which bytes are to be swapped
  *
@@ -28,7 +28,7 @@ T swap_bytes(T val) noexcept
   size_t nbits = static_cast<size_t>(8);
   size_t shift = nbits*(nbytes - static_cast<size_t>(1));
   for (size_t ii=0; ii<nbytes; ++ii) {
-    val |= static_cast<long long>(0xff & bytes[ii]) << shift;
+    val |= static_cast<T>(0xff & bytes[ii]) << shift;
     shift -= nbits;
   }
 

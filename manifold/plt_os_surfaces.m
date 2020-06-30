@@ -1,9 +1,10 @@
 function plt_os_surfaces(e, a, lambda, eta)
-% PLT_OS_SURFACES computes the surfaces defining the oblate spheroidal
-% coordinate system.  The input coordinates and ellipsoid definition
-% define a specific coordinate to illustrate.  An ellipsoid, plane, and
-% hyperboloid of one sheet, are plotted.  The intersection is the
-% coordinate.
+% PLT_OS_SURFACES plots the oblate spheroidal coordinate surfaces
+% The input coordinates and ellipsoid definition define a specific
+% coordinate that is plotted.  The corresponding ellipsoid, longitudinal
+% plane, and hyperboloid of one sheet coordinate surfaces, are plotted
+% with the intersection of all three as the coordinate.
+% The intersection is the coordinate.
 %
 % A new figure is created and hold is left on.
 %

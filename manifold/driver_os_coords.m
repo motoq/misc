@@ -1,5 +1,4 @@
-% Plots surfaces representing a coordinate in the oblate spheroidal
-% reference frame.
+% Plots oblate spheroid coordinate surfaces
 
 clear;
 close all;
