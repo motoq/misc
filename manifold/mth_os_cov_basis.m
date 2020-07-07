@@ -22,7 +22,7 @@ function [e_1, e_2, e_3] = mth_os_cov_basis(e, a, lambda, eta)
 % Kurt Motekew   2020/04/29
 %
 
-  dxda = mth_dcart_dos(e, a, lambda, eta);
-  e_1 = dxda(:,1);
-  e_2 = dxda(:,2);
-  e_3 = dxda(:,3);
+  dxdos = mth_dcart_dos(e, a, lambda, eta);
+  e_1 = dxdos(:,1);
+  e_2 = dxdos(:,2);
+  e_3 = dxdos(:,3);

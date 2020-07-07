@@ -45,6 +45,11 @@ for ii = 1:naz
     xyzloc = mth_os2cart(e, aloc, lambdaloc, etaloc);
     dxyz = dxyz + norm(xyz(:,n) - xyzloc);
 
+    if ~isreal(xyzloc)
+      xyzloc
+      fprintf('\nUnreal Cartesian');
+    end
+
     n = n + 1;
   end
 end
