@@ -63,10 +63,9 @@ for ii = 1:rows
 end
 mesh(X, Y, Z);
 
-  % Extend the bounds of the azimuth plane just beyond the semimajor
-  % axis and use the same z-axis bounds as the hyperboloid.
-r = a + .2*a;
+  % Use z-axis bounds for hyperboloid for azimuth plane 
 xyz = mth_hyp2cart(e, a_h, lambda, 1);
+r = 2*xyz(3);
 h = xyz(3);
 x = [0 r*cos(lambda) r*cos(lambda) 0 0];
 y = [0 r*sin(lambda) r*sin(lambda) 0 0];
