@@ -24,8 +24,6 @@
 clear;
 close all;
 
-warning("on", "Octave:language-extension");
-
   % Sphere - place at origin
 re = 1.0;
 SphereModel = [ re*re    0      0 ;
@@ -59,7 +57,6 @@ r_p_o_c = mth_sphere2cart(re, theta, phi);
   %                   dcart/dsphere_ll * dsphere_ll/t
   %                            Tc_ll*Tll_t
 Tct = mth_dcart_dsphere(re, theta, phi)*mth_roty(-pi/2);
-Ttc = Tct';
 
   % Place ellipses in y-z plane.  Rotate each ellipse such that y3
   % points towards the center of the sphere.  Position and orientation:

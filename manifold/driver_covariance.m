@@ -26,7 +26,7 @@
 clear;
 close all;
 
-warning("on", "Octave:language-extension");
+%warning("on", "Octave:language-extension");
 
   % Sphere - place at origin
 re = 1.0;

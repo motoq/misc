@@ -1,7 +1,7 @@
 % Plots oblate spheroid coordinate surfaces
 
 clear;
-close all;
+%close all;
 
 e = .9;                                          % Shape
 a = 3.75;                                        % Semimajor axis length, units
@@ -9,7 +9,8 @@ lambda = pi*75/180;                              % Azimuth range
 eta = 0.7;                                       % Elevation range
 
 plt_os_surfaces(e, a, lambda, eta);
+plt_os_covariant(e, a, lambda, eta);
 view([135, 15]);
 
-%print -depsc2 os_coord_surf.eps
+%print -tight -depsc2 os_coord_surf.eps
 

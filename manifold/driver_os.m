@@ -47,8 +47,27 @@ stitle = sprintf('Oblate Spheroid (e = %1.2f) and %s',...
 title(stitle);
 axis equal;
 
-  % Alternate mapping covariante and contravariant metric tensors to
-  % Cartesian space and plot
+  % Covariante and contravariant metric tensors
+plt_os(e, a, lambdas, etas, 0);
+for ii = 1:p_npts
+  xyz = mth_os2cart(e, a, p_lambdas(ii), p_etas(ii));
+  g_ij = mth_os_mt_cov(e, a, p_etas(ii));
+  gij = mth_os_mt_cont(e, a, p_etas(ii));
+  [e_1, e_2, e_3] = mth_os_cov_basis(e, a, p_lambdas(ii), p_etas(ii));
+  e_1 = e_1/norm(e_1);
+  e_2 = e_2/norm(e_2);
+  e_3 = e_3/norm(e_3);
+  R = [e_1 e_2 e_3];
+  [XX, YY, ZZ] = matrix3X3_points(.05*R*g_ij*R', 40);
+  surf(XX + xyz(1), YY + xyz(2), ZZ + xyz(3));
+  [XX, YY, ZZ] = matrix3X3_points(.05*R*gij*R', 40);
+  surf(XX + xyz(1), YY + xyz(2), ZZ + xyz(3));
+end
+stitle = sprintf('Oblate Spheroid (e = %1.2f), Metric Tensors (scaled)', e);
+title(stitle);
+axis equal;
+
+  % Plot again, but transform to natural space
 plt_os(e, a, lambdas, etas, 0);
 for ii = 1:p_npts
   xyz = mth_os2cart(e, a, p_lambdas(ii), p_etas(ii));
@@ -112,13 +131,13 @@ fprintf("\nJ'*gij*J - I = %1.3e", norm(norm(g_ij - eye(3))));
 fprintf('\n');
 
 plt_os(e, a, lambdas, etas, 0);
-[e_1, ~, ~] = mth_os_cov_basis(e, a, lambda, eta);
+[~, e_2, ~] = mth_os_cov_basis(e, a, lambda, eta);
 xyz = mth_os2cart(e, a, lambda, eta);
-quiver3(xyz(1), xyz(2), xyz(3), e_1(1), e_1(2), e_1(3),...
+quiver3(xyz(1), xyz(2), xyz(3), e_2(1), e_2(2), e_2(3),...
         'color',[1,0,0],'linewidth',3);
 xyz = mth_os2cart(e, a, lambda+pi/4, eta+.2);
-quiver3(xyz(1), xyz(2), xyz(3), e_1(1), e_1(2), e_1(3),...
-        'color',[1,0,0],'linewidth',3);
+quiver3(xyz(1), xyz(2), xyz(3), e_2(1), e_2(2), e_2(3),...
+        'color',[0,1,0],'linewidth',3);
 
 
 stitle = sprintf('Oblate Spheroid (e = %1.2f)', e);

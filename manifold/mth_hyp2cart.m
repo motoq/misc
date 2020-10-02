@@ -1,4 +1,4 @@
-function xyz = mth_hyp2cart(e, a, lambda, eta)
+function xyz = mth_hyp2cart(a, lambda, eta)
 % MTH_HYP2CART computes Cartesian coordinates given hyperboloid of
 % one sheet coordinates.
 %
@@ -23,6 +23,6 @@ function xyz = mth_hyp2cart(e, a, lambda, eta)
 
   tmp = a*sqrt(1 + eta*eta);
 
-  xyz(3,1) = a*e*eta;                            % c = a*e
-  xyz(2,1) = tmp*sin(lambda);
-  xyz(1,1) = tmp*cos(lambda);
+  xyz(3,1) = a*eta;                         % a*cos(theta);
+  xyz(2,1) = tmp*sin(lambda);               % a*sin(theta)*sin(lambda);
+  xyz(1,1) = tmp*cos(lambda);               % a*sin(theta)*cos(lambda);
