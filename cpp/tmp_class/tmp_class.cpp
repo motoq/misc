@@ -3,10 +3,10 @@
 #include <array>
 
 template <typename TYPE, std::size_t DIM>
-class StdArrayTest {
+class TemplateArray {
 public:
-  StdArrayTest();
-  StdArrayTest(TYPE initVal);
+  TemplateArray();
+  TemplateArray(TYPE initVal);
 
   std::array<TYPE, DIM> getArray() const;
 
@@ -19,7 +19,7 @@ private:
   
 
 template <typename TYPE, std::size_t DIM>
-StdArrayTest<TYPE, DIM>::StdArrayTest()
+TemplateArray<TYPE, DIM>::TemplateArray()
 {
   TYPE def_val = static_cast<TYPE>(0);
   for (std::size_t ii=static_cast<std::size_t>(0); ii<DIM; ++ii) {
@@ -28,7 +28,7 @@ StdArrayTest<TYPE, DIM>::StdArrayTest()
 }
 
 template <typename TYPE, std::size_t DIM>
-StdArrayTest<TYPE, DIM>::StdArrayTest(TYPE def_val)
+TemplateArray<TYPE, DIM>::TemplateArray(TYPE def_val)
 {
   for (std::size_t ii=static_cast<size_t>(0); ii<DIM; ++ii) {
     a[ii] = def_val;
@@ -36,19 +36,19 @@ StdArrayTest<TYPE, DIM>::StdArrayTest(TYPE def_val)
 }
 
 template <typename TYPE, std::size_t DIM>
-std::array<TYPE, DIM> StdArrayTest<TYPE, DIM>::getArray() const
+std::array<TYPE, DIM> TemplateArray<TYPE, DIM>::getArray() const
 {
   return a;
 }
 
 template <typename TYPE, std::size_t DIM>
-TYPE& StdArrayTest<TYPE, DIM>::operator[](std::size_t ndx)
+TYPE& TemplateArray<TYPE, DIM>::operator[](std::size_t ndx)
 {
   return a[ndx];
 }
 
 template <typename TYPE, std::size_t DIM>
-TYPE StdArrayTest<TYPE, DIM>::operator[](std::size_t ndx) const
+TYPE TemplateArray<TYPE, DIM>::operator[](std::size_t ndx) const
 {
   return a[ndx];
 }
@@ -63,33 +63,33 @@ void printArray(const std::array<TYPE, DIM>& a2p)
 }
 
 template <typename TYPE, std::size_t DIM, std::size_t DIM_SLICE>
-StdArrayTest<TYPE, DIM_SLICE>
-slice(const StdArrayTest<TYPE, DIM>& sat1, std::size_t offset)
+TemplateArray<TYPE, DIM_SLICE>
+slice(const TemplateArray<TYPE, DIM>& ta, std::size_t offset)
 {
-  StdArrayTest<TYPE, DIM_SLICE> sat2;
+  TemplateArray<TYPE, DIM_SLICE> taslc;
 
   for (std::size_t ii=static_cast<std::size_t>(0); ii<DIM_SLICE; ++ii) {
-    sat2[ii] = sat1[ii+offset];
+    taslc[ii] = ta[ii+offset];
   }
 
-  return sat2;
+  return taslc;
 }
 
 template <typename TYPE, std::size_t DIM1, std::size_t DIM2>
-StdArrayTest<TYPE, DIM1+DIM2>
-cat(const StdArrayTest<TYPE, DIM1>& sat1,
-    const StdArrayTest<TYPE, DIM2>& sat2)
+TemplateArray<TYPE, DIM1+DIM2>
+cat(const TemplateArray<TYPE, DIM1>& ta1,
+    const TemplateArray<TYPE, DIM2>& ta2)
 {
-  StdArrayTest<TYPE, DIM1 + DIM2> sat3;
+  TemplateArray<TYPE, DIM1 + DIM2> ta3;
 
   for (std::size_t ii=static_cast<std::size_t>(0); ii<DIM1; ++ii) {
-    sat3[ii] = sat1[ii];
+    ta3[ii] = ta1[ii];
   }
   for (std::size_t ii=static_cast<std::size_t>(0); ii<DIM2; ++ii) {
-    sat3[ii+DIM1] = sat2[ii];
+    ta3[ii+DIM1] = ta2[ii];
   }
 
-  return sat3;
+  return ta3;
 }
 
 
@@ -102,23 +102,26 @@ int main()
   constexpr std::size_t n {3};
   constexpr std::size_t n2 {n - 1};
 
-  StdArrayTest<double, n> sat0;
-  auto a0 = sat0.getArray();
-  printArray(a0);
+  TemplateArray<double, n> ta1;
+  std::cout << "\nFirst template array";
+  printArray(ta1.getArray());
 
-  StdArrayTest<double, n> sat1(1.0);
-  auto a1 = sat1.getArray();
-  printArray(a1);
+  TemplateArray<double, n> ta2(1.0);
+  std::cout << "\nSecond template array";
+  printArray(ta2.getArray());
 
-  std::cout << "\nsat1[1]: " << sat1[1];
-  sat1[1] = 3.0;
-  std::cout << "\nChanged sat1[1]: " << sat1[1];
+  std::cout << "\n\nta2[1]: " << ta2[1];
+  ta2[1] = 3.0;
+  std::cout << "\nChanged ta2[1]";
+  printArray(ta2.getArray());
 
-  StdArrayTest<double, n2> sat2 = slice<double, n, n2>(sat1, 1);
-  printArray(sat2.getArray());
+  std::cout << "\n\nSlice of ta2";
+  TemplateArray<double, n2> ta3 = slice<double, n, n2>(ta2, 1);
+  printArray(ta3.getArray());
 
-  StdArrayTest<double, n+n2> sat3 = cat<double, n, n2>(sat1, sat2);
-  printArray(sat3.getArray());
+  std::cout << "\n\nta2 and slice of ta2";
+  TemplateArray<double, n+n2> ta4 = cat<double, n, n2>(ta2, ta3);
+  printArray(ta4.getArray());
 
   std::cout << '\n';
 }
