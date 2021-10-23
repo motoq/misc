@@ -1,5 +1,5 @@
-#include <cmath>
 #include <iostream>
+#include <cmath>
 
 #define EIGEN_NO_MALLOC
 #include <Eigen/Dense>
@@ -62,9 +62,19 @@ int main()
   const Vector3d a_f_w {c*a_i - 2*w_vec.cross(v_f_w)
                               - w_vec.cross(w_vec.cross(r_f))};
 
+    // Convert using traditional cross product method, but with
+    // quaternions
+  const Quaterniond q(c);
+  const Vector3d r_f_q {q*r_i};
+  const Vector3d v_f_q {q*v_i - w_vec.cross(r_f)};
+  const Vector3d a_f_q {q*a_i - 2*w_vec.cross(v_f_w)
+                              - w_vec.cross(w_vec.cross(r_f))};
+
     // Difference
-  const Vector3d dv {v_f - v_f_w};
-  const Vector3d da {a_f - a_f_w};
+  const Vector3d dvw {v_f_w - v_f};
+  const Vector3d daw {a_f_w - a_f};
+  const Vector3d dvq {v_f_w - v_f_q};
+  const Vector3d daq {a_f_w - a_f_q};
 
   cout << "\nInertial Position:\n" << r_i;
   cout << "\nInertial Velocity:\n" << v_i;
@@ -82,8 +92,16 @@ int main()
   cout << "\nEarth Fixed Velocity:\n" << v_f_w;
   cout << "\nEarth Fixed Acceleration:\n" << a_f_w;
   cout << '\n';
-  cout << "\nVelocity Difference:      " <<  dv.norm() << "km/s";
-  cout << "\nAcceleration Difference:  " <<  da.norm() << "km/s^2";
+  cout << "\nUsing Quaternions and cross products";
+  cout << "\nEarth Fixed Position:\n" << r_f_q;
+  cout << "\nEarth Fixed Velocity:\n" << v_f_q;
+  cout << "\nEarth Fixed Acceleration:\n" << a_f_q;
+  cout << '\n';
+  cout << "\nVelocity Difference:      " <<  dvw.norm() << " km/s";
+  cout << "\nAcceleration Difference:  " <<  daw.norm() << " km/s^2";
+  cout << '\n';
+  cout << "\nQ Velocity Difference:      " <<  dvq.norm() << " km/s";
+  cout << "\nQ Acceleration Difference:  " <<  daq.norm() << " km/s^2";
 
   cout << '\n';
 }
