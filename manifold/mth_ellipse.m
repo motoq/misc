@@ -79,15 +79,7 @@ function [xvals, yvals] = mth_ellipse(x0, y0, major, minor, orient, n)
   xvals(ndx) = xvals(1);
   yvals(ndx) = yvals(1);
 
-    % First translate
-  if (x0 ~= 0)  ||  (y0 ~= 0)
-    for ii = 1:npts
-      xvals(ii) = xvals(ii) + x0;
-      yvals(ii) = yvals(ii) + y0;
-    end
-  end
-
-    % rotate through orient angle
+    % First rotate
   if orient ~= 0
     sino = sin(orient);
     coso = cos(orient);
@@ -96,5 +88,13 @@ function [xvals, yvals] = mth_ellipse(x0, y0, major, minor, orient, n)
       ty =  coso*xvals(ii) - sino*yvals(ii);
       xvals(ii) = tx;
       yvals(ii) = ty;
+    end
+  end
+
+    % Then translate
+  if (x0 ~= 0)  ||  (y0 ~= 0)
+    for ii = 1:npts
+      xvals(ii) = xvals(ii) + x0;
+      yvals(ii) = yvals(ii) + y0;
     end
   end

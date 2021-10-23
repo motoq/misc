@@ -24,12 +24,16 @@ fprintf(' The accumulated error with');
 fprintf(' %i points is %1.2e', npts, dxy);
 
 [e_1, e_2] = mth_affine_cov_basis(a, b, theta);
-quiver(0, 0, e_1(1), e_1(2), 'color', [1 0 0], 'linewidth', 3);
-quiver(0, 0, e_2(1), e_2(2), 'color', [0 1 0], 'linewidth', 3);
+quiver(0, 0, e_1(1), e_1(2), 'color', [1 0 0], 'linewidth', 3,...
+                                               'AutoScale', 'off');
+quiver(0, 0, e_2(1), e_2(2), 'color', [0 1 0], 'linewidth', 3,...
+                                               'AutoScale', 'off');
   %
 [e1, e2] = mth_affine_cont_basis(a, b, theta);
-quiver(0, 0, e1(1), e1(2), 'color', [1 0 0], 'linewidth', 1);
-quiver(0, 0, e2(1), e2(2), 'color', [0 1 0], 'linewidth', 1);
+quiver(0, 0, e1(1), e1(2), 'color', [1 0 0], 'linewidth', 1,...
+                                             'AutoScale', 'off');
+quiver(0, 0, e2(1), e2(2), 'color', [0 1 0], 'linewidth', 1,...
+                                             'AutoScale', 'off');
 
 sxlabel = sprintf('x (u = %1.1f to %1.1f)', u1, u2);
 xlabel(sxlabel);

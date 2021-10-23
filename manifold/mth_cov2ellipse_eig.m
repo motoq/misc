@@ -33,4 +33,4 @@ function [smajor, sminor, orient] = mth_cov2ellipse_eig(Sigma)
     sminor = tmp;
     v = V(:,2)/norm(V(:,2));
   end
-    orient = atan2(v(1),v(2));
+  orient = atan2(v(1),v(2));
