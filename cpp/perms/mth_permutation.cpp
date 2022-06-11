@@ -11,6 +11,8 @@
 #include <vector>
 #include <algorithm>
 
+// Use std lib to determine permutations.  Sorting logic to determin
+// even vs. odd permutation
 Permutation::Permutation(int dim)
 {
   n = dim;
@@ -20,9 +22,8 @@ Permutation::Permutation(int dim)
     elements.push_back(ii);
   }
 
-    // library creates perturbations - need to determine sign
   do {
-      // Store current permutation, starting with 1:n
+      // Store current permutation, starting with initial 1:n
     e.push_back(elements);
       // Determine even (+1) vs. odd (-1) by seeing how many swaps
       // are needed to sort the current permutation
@@ -32,9 +33,10 @@ Permutation::Permutation(int dim)
       if (elm != p[elm-1]) {
         for (int ii=elm; ii<n; ++ii) {
           if (elm == p[ii]) {
-            auto tmp = p[elm-1];
-            p[elm-1] = p[ii];
-            p[ii] = tmp;
+            //auto tmp = p[elm-1];     // This would be the logic to sort, but
+            //p[elm-1] = p[ii];        // only need to determine the number
+            //p[ii] = tmp;             // of swaps, not actually swap
+            p[ii] = p[elm-1];
             swaps++;
             break;
           }

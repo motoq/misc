@@ -30,21 +30,23 @@ public:
   /**
    * @return  The number of elements in each permutation
    */
-  int getDimension() { return n; }
+  int getDimension() const noexcept { return n; }
 
   /**
    * @return  The number of permutations, n!
    */
-  int getNumberOfPermutations() { return s.size(); }
+  int getNumberOfPermutations() const { return s.size(); }
 
   /**
-   * @param  ii  Permutation for which to return a sign (row of
-   *             (permutation number, element) matrix.  Offset (zero)
-   *             based indexing.
+   * Indicates if the ith permutation is even of odd
    *
-   * @return  +1 if even, -1 if odd
+   * @param  ii  Permutation for which to return even or odd.
+   *             Offset (zero) based indexing.
+   *             0 <= ii < getNumberOfPermutations()
+   *
+   * @return  +1 if an even permutation, -1 if odd
    */
-  int operator()(unsigned int ii) { return s[ii]; }
+  int operator()(unsigned int ii) const { return s[ii]; }
 
   /**
    * Retrieves the element of the indicated perturbation.  Note, there
@@ -52,12 +54,12 @@ public:
    * not garanteed to be the first perturbations, meaning [0][0] may not
    * be equal to 1.  Offset (zero) based indexing.
    *
-   * @param  ii  Permutation index
-   * @param  jj  Element index
+   * @param  ii  Permutation index, 0 <= ii < getNumberOfPermutations()
+   * @param  jj  Element index, 0 <= jj < getDimension()
    *
    * @return  Element of permutation matrix
    */
-  int operator()(unsigned int ii, unsigned int jj) { return e[ii][jj]; }
+  int operator()(unsigned int ii, unsigned int jj) const { return e[ii][jj]; }
 
 private:
   int n {0};
