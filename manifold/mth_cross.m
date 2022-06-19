@@ -1,7 +1,8 @@
 function x = mth_cross(U)
-% MTH_CROSS Computes the cross product for an N-dimensional vector such
-% than N is 2-dimensional or greater.  The resulting vector is
-% orthogonal to each input column vector.
+% MTH_CROSS Computes the cross product for N-dimensional Cartesian
+% vectors such than N is 2-dimensions or greater.  The resulting vector is
+% orthogonal to each input column vector.  The order of operation is
+% from left to right (increasing column index).
 %
 % Note:  Increasingly higher dimensions do start showing signs of numerical
 % error in that the dot product grows in size.  For 2D, the dot product

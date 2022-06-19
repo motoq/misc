@@ -6,14 +6,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <mth_permutation.h>
+#include <mth_permutation_x.h>
 
 #include <vector>
 #include <algorithm>
 
 // Use std lib to determine permutations.  Sorting logic to determin
 // even vs. odd permutation
-Permutation::Permutation(int dim)
+PermutationX::PermutationX(int dim)
 {
   n = dim;
     // create the set {1, 2,..., n}
