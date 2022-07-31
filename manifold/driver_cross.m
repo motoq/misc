@@ -18,7 +18,7 @@ fprintf('\nDifference between 3D cross Product: %1.3e', norm(x2 - x1));
 %
 
 sf = 1;
-maxdim = 7;
+maxdim = 8;
 for m = 2:maxdim
   n = m - 1;
   U = sf*randn(m,n);
