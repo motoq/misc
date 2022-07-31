@@ -1,25 +1,43 @@
+%
+% Placeholder
+%
+
 close all;
 clear;
 
-p = 360;
-t = -180:1:180;
+  % Fundamental frequency, Hz
+w0 = 1.0;
 
-p = pi*p/180;
-t = pi*t/180;
+  % Coefficients of the sinusoid function: y(w,t) = C*cos(wt) + D*sin(wt)
+  %                                               = A*cos(wt - phi)
+c0 = 2;
+d0 = 1;
+  % In terms of amplitude and phase offset
+a0 = sqrt(c0*c0 + d0*d0);
+phi0 = atan2(d0,c0);
 
-w0 = 2*pi/p;
+%
+% End user inputs
+%
 
-c0 = 1.0;
-d0 = 1.0; 
+  % Period and increment
+pd = 2*pi/w0;
+dt = pd/100;
+t = 0:dt:pd;
 
+fprintf('\nFundamental frequency %1.1f Hz', w0);
+fprintf('\nPeriod %1.3e sec', pd);
+fprintf('\nAmplitude %1.1f', a0);
+fprintf('\nPhase %1.2f deg', 180*phi0/pi);
+fprintf('\n');
 
 y0 = c0*cos(w0*t) + d0*sin(w0*t);
 
 figure; hold on;
 plot(t, y0);
 
-figure; hold on;
-for ii = 1:20
-  yi = c0*cos(ii*w0*t) + d0*sin(ii*w0*t);
-  plot(t, yi);
-end
+y0 = a0*cos(w0*t - phi0);
+
+plot(t, y0, '*');
+
+

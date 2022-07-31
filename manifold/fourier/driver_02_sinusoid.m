@@ -1,6 +1,6 @@
 %
-% Demonstrates determining the coefficients of a single sinusoid in the
-% form:
+% Demonstrates determining the coefficients of a single sinusoid with
+% known frequency:
 %
 % (w,t) = C*cos(wt) + D*sin(wt)
 %
@@ -9,6 +9,8 @@
 % points are used.  Finally, discrete points, at values subject to noise
 % and/or bias are used.
 %
+% Kurt Motekew  2022/07/31
+%
 
 close all;
 clear;
@@ -16,8 +18,8 @@ clear;
   % Frequency, Hz
 w0 = 1.0;
 
-  % Coefficients of sine function: y(w,t) = C*cos(wt) + D*sin(wt)
-  %                                       = A*cos(wt - phi)
+  % Coefficients of the sinusoid function: y(w,t) = C*cos(wt) + D*sin(wt)
+  %                                               = A*cos(wt - phi)
 c0 = 2.5;
 d0 = 3.7; 
 
@@ -29,13 +31,14 @@ sigma = 0.1;
 % End user inputs
 %
 
+  % In terms of amplitude and phase offset
+a0 = sqrt(c0*c0 + d0*d0);
+phi0 = atan2(d0,c0);
+
   % Period and increment
 pd = 2*pi/w0;
 dt = pd/100;
 t = 0:dt:pd;
-
-a0 = sqrt(c0*c0 + d0*d0);
-phi0 = atan2(d0,c0);
 
   % Truth
 y0 = c0*cos(w0*t) + d0*sin(w0*t);
@@ -89,5 +92,9 @@ fprintf('\nDetermination using f[wt] + N(%1.1f,%1.1f)', mu, sigma);
 fprintf('\nc0: %1.3f  vs.  c0: %1.3f', c0, c0_hat);
 fprintf('\nd0: %1.3f  vs.  d0: %1.3f', d0, d0_hat);
 
+stitle = sprintf('y = %1.1fcos(%1.1ft) + %1.1fsin(%1.1ft)', c0, w0, d0, w0);
+xlabel('t');
+ylabel('y');
+title(stitle);
 
 fprintf('\n');
