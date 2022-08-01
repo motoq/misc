@@ -1,43 +1,44 @@
 %
-% Placeholder
+% Plot the result of combining weighted sinusoids to create a square
+% wave.
 %
 
 close all;
 clear;
 
   % Fundamental frequency, Hz
-w0 = 1.0;
-
-  % Coefficients of the sinusoid function: y(w,t) = C*cos(wt) + D*sin(wt)
-  %                                               = A*cos(wt - phi)
-c0 = 2;
-d0 = 1;
-  % In terms of amplitude and phase offset
-a0 = sqrt(c0*c0 + d0*d0);
-phi0 = atan2(d0,c0);
-
-%
-% End user inputs
-%
+w1 = 1.0;
 
   % Period and increment
-pd = 2*pi/w0;
+pd = 2*pi/w1;
 dt = pd/100;
-t = 0:dt:pd;
+t = (-pd/2):dt:(pd/2);
 
-fprintf('\nFundamental frequency %1.1f Hz', w0);
-fprintf('\nPeriod %1.3e sec', pd);
-fprintf('\nAmplitude %1.1f', a0);
-fprintf('\nPhase %1.2f deg', 180*phi0/pi);
+fprintf('\nFundamental frequency %1.1f Hz', w1);
+fprintf(' and Period %1.3e sec', pd);
 fprintf('\n');
 
-y0 = c0*cos(w0*t) + d0*sin(w0*t);
-
+  % Overlay multiple harmonics and the combined result
 figure; hold on;
-plot(t, y0);
+y = zeros(size(t));
+for ii = 1:8
+  wn = ii*w1;
+  an = sin(wn)/(wn);
+  yn = an*cos(wn*t);
+  plot(t, yn);
+  y = y + yn;
+end
+plot(t, y, 'linewidth',3);
 
-y0 = a0*cos(w0*t - phi0);
-
-plot(t, y0, '*');
+  % Single plot with many harmonics added
+y = zeros(size(t));
+for ii = 1:100
+  wn = ii*w1;
+  an = sin(wn)/wn;
+  yn = an*cos(wn*t);
+  y = y + yn;
+end
+figure; hold on;
+plot(t, y, 'linewidth',3);
 
 

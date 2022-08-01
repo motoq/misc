@@ -16,12 +16,12 @@ close all;
 clear;
 
   % Frequency, Hz
-w0 = 1.0;
+w1 = 1.0;
 
   % Coefficients of the sinusoid function: y(w,t) = C*cos(wt) + D*sin(wt)
   %                                               = A*cos(wt - phi)
-c0 = 2.5;
-d0 = 3.7; 
+c1 = 2.5;
+d1 = 3.7; 
 
   % Mean and standard deviation of noise to be applied
 mu = 0.0;
@@ -32,67 +32,67 @@ sigma = 0.1;
 %
 
   % In terms of amplitude and phase offset
-a0 = sqrt(c0*c0 + d0*d0);
-phi0 = atan2(d0,c0);
+a1 = sqrt(c1*c1 + d1*d1);
+phi1 = atan2(d1,c1);
 
   % Period and increment
-pd = 2*pi/w0;
+pd = 2*pi/w1;
 dt = pd/100;
 t = 0:dt:pd;
 
   % Truth
-y0 = c0*cos(w0*t) + d0*sin(w0*t);
+y1 = c1*cos(w1*t) + d1*sin(w1*t);
   % Noisy
-y0_n = (mu + sigma*randn(1,size(y0,2))) + y0;
+y1_n = (mu + sigma*randn(1,size(y1,2))) + y1;
 
-fprintf('\nFrequency %1.1f Hz', w0);
+fprintf('\nFrequency %1.1f Hz', w1);
 fprintf('\nPeriod %1.3e sec', pd);
-fprintf('\nAmplitude %1.1f', a0);
-fprintf('\nPhase %1.2f deg', 180*phi0/pi);
+fprintf('\nAmplitude %1.1f', a1);
+fprintf('\nPhase %1.2f deg', 180*phi1/pi);
 fprintf('\n');
 
 figure; hold on;
-plot(t, y0);
-plot(t, a0*cos(w0*t - phi0));
-plot(t, y0_n, '*');
+plot(t, y1);
+plot(t, a1*cos(w1*t - phi1));
+plot(t, y1_n, '*');
 
 %
 % Determine coeffcients by integrating the sine wave definition
 %
 
-fun = @(t) (c0*cos(w0*t) + d0*sin(w0*t)).*cos(w0*t);
-c0_hat = (2.0/pd)*integral(fun,0,pd);
-fun = @(t) (c0*cos(w0*t) + d0*sin(w0*t)).*sin(w0*t);
-d0_hat = (2.0/pd)*integral(fun,0,pd);
+fun = @(t) (c1*cos(w1*t) + d1*sin(w1*t)).*cos(w1*t);
+c1_hat = (2.0/pd)*integral(fun,0,pd);
+fun = @(t) (c1*cos(w1*t) + d1*sin(w1*t)).*sin(w1*t);
+d1_hat = (2.0/pd)*integral(fun,0,pd);
 
 fprintf('\nDetermination using f(wt)');
-fprintf('\nc0: %1.3f  vs.  c0: %1.3f', c0, c0_hat);
-fprintf('\nd0: %1.3f  vs.  d0: %1.3f', d0, d0_hat);
+fprintf('\nc1: %1.3f  vs.  c1: %1.3f', c1, c1_hat);
+fprintf('\nd1: %1.3f  vs.  d1: %1.3f', d1, d1_hat);
 
 %
 % Determine coeffcients by integrating discrete points 
 %
 
-c0_hat = (2.0/pd)*trapz(t, y0.*cos(w0*t));
-d0_hat = (2.0/pd)*trapz(t, y0.*sin(w0*t));
+c1_hat = (2.0/pd)*trapz(t, y1.*cos(w1*t));
+d1_hat = (2.0/pd)*trapz(t, y1.*sin(w1*t));
 
 fprintf('\nDetermination using f[wt] with dt = %1.1e sec', dt);
-fprintf('\nc0: %1.3f  vs.  c0: %1.3f', c0, c0_hat);
-fprintf('\nd0: %1.3f  vs.  d0: %1.3f', d0, d0_hat);
+fprintf('\nc1: %1.3f  vs.  c1: %1.3f', c1, c1_hat);
+fprintf('\nd1: %1.3f  vs.  d1: %1.3f', d1, d1_hat);
 
 %
 % Determine coeffcients by integrating discrete points subject to
 % noise and bias
 %
 
-c0_hat = (2.0/pd)*trapz(t, y0_n.*cos(w0*t));
-d0_hat = (2.0/pd)*trapz(t, y0_n.*sin(w0*t));
+c1_hat = (2.0/pd)*trapz(t, y1_n.*cos(w1*t));
+d1_hat = (2.0/pd)*trapz(t, y1_n.*sin(w1*t));
 
 fprintf('\nDetermination using f[wt] + N(%1.1f,%1.1f)', mu, sigma);
-fprintf('\nc0: %1.3f  vs.  c0: %1.3f', c0, c0_hat);
-fprintf('\nd0: %1.3f  vs.  d0: %1.3f', d0, d0_hat);
+fprintf('\nc1: %1.3f  vs.  c1: %1.3f', c1, c1_hat);
+fprintf('\nd1: %1.3f  vs.  d1: %1.3f', d1, d1_hat);
 
-stitle = sprintf('y = %1.1fcos(%1.1ft) + %1.1fsin(%1.1ft)', c0, w0, d0, w0);
+stitle = sprintf('y = %1.1fcos(%1.1ft) + %1.1fsin(%1.1ft)', c1, w1, d1, w1);
 xlabel('t');
 ylabel('y');
 title(stitle);
