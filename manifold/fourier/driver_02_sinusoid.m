@@ -27,6 +27,9 @@ d1 = 3.7;
 mu = 0.0;
 sigma = 0.1;
 
+  % Fraction of period for time increment
+frac_pd = .02;
+
 %
 % End user inputs
 %
@@ -37,8 +40,10 @@ phi1 = atan2(d1,c1);
 
   % Period and increment
 pd = 2*pi/w1;
-dt = pd/100;
-t = 0:dt:pd;
+dt = frac_pd*pd;
+t1 = -pd/2;
+t2 = pd/2;
+t = t1:dt:t2;
 
   % Truth
 y1 = c1*cos(w1*t) + d1*sin(w1*t);
@@ -61,9 +66,9 @@ plot(t, y1_n, '*');
 %
 
 fun = @(t) (c1*cos(w1*t) + d1*sin(w1*t)).*cos(w1*t);
-c1_hat = (2.0/pd)*integral(fun,0,pd);
+c1_hat = (2.0/pd)*integral(fun,t1,t2);
 fun = @(t) (c1*cos(w1*t) + d1*sin(w1*t)).*sin(w1*t);
-d1_hat = (2.0/pd)*integral(fun,0,pd);
+d1_hat = (2.0/pd)*integral(fun,t1,t2);
 
 fprintf('\nDetermination using f(wt)');
 fprintf('\nc1: %1.3f  vs.  c1: %1.3f', c1, c1_hat);
