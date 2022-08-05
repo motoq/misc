@@ -12,7 +12,6 @@
 % Kurt Motekew  2022/07/31
 %
 
-close all;
 clear;
 
   % Frequency, Hz
@@ -35,8 +34,7 @@ frac_pd = .02;
 %
 
   % In terms of amplitude and phase offset
-a1 = sqrt(c1*c1 + d1*d1);
-phi1 = atan2(d1,c1);
+[a1, phi1] = sig_cart2polar(c1, d1);
 
   % Period and increment
 pd = 2*pi/w1;

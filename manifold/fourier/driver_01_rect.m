@@ -2,8 +2,9 @@
 % Plot the result of combining weighted sinusoids to create a square
 % wave.
 %
+% Kurt Motekew  2022/07/31
+%
 
-close all;
 clear;
 
   % Fundamental frequency, Hz
