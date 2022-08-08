@@ -7,7 +7,7 @@
 
 clear;
 
-  % Fundamental frequency, Hz
+  % Fundamental frequency, rad/sec
 w1 = 1.0;
 
   % Period and increment
@@ -15,7 +15,7 @@ pd = 2*pi/w1;
 dt = pd/100;
 t = (-pd/2):dt:(pd/2);
 
-fprintf('\nFundamental frequency %1.1f Hz', w1);
+fprintf('\nFundamental frequency %1.1f rad/sec', w1);
 fprintf(' and Period %1.3e sec', pd);
 fprintf('\n');
 

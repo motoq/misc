@@ -8,9 +8,16 @@
 
 clear;
 
-w1 = 2.0e9;
+  % Speed of light, m/s
+c = 3e8;
+
+  % Base frequency
+freq = 2.0e9;
   % Assumed base frequency bias for reconstruction
-dw = 100e6;
+df = 100e6;
+
+w1 = 2*pi*freq;
+dw = 2*pi*df;
 
   % Define sinusoids composing the signal using more human readable
   % polar format
@@ -27,17 +34,17 @@ frac_pd = .02;
   %
 
   % Period and increment
-pd = 2*pi/w1;
+pd = 1/freq;
 dt = frac_pd*pd;
 t = (-pd/2):dt:(pd/2);
 nt = size(t,2);
   % Number of component sinusoids
 ncs = size(ai,2);
 
-fprintf('\nFundamental frequency %1.1e Hz', w1);
-fprintf(' and Period %1.3e sec', pd);
+fprintf('\nFundamental frequency %1.1e Hz', freq);
+fprintf(' and wavelength %1.3e m', c/freq);
 fprintf('\nError in Assumed Base Frequency During Reconstruction is');
-fprintf(' %1.1e Hz', dw);
+fprintf(' %1.1e Hz', df);
 
   % harmonic frequencies of component sinusoids
 ni = 1:ncs;
@@ -67,7 +74,7 @@ a0_hat = c0_hat;
 for ii = 1:ncs
   ci_hat(ii) = (2.0/pd)*trapz(t, yi(ii,:).*cos(wi_hat(ii)*t));
   di_hat(ii) = (2.0/pd)*trapz(t, yi(ii,:).*sin(wi_hat(ii)*t));
-  [ai_hat(ii), phii_hat(ii)] = sig_cart2polar(ci_hat(ii), di_hat(ii));
+  [ai_hat(ii), phii_hat(ii)] = sig_rect2polar(ci_hat(ii), di_hat(ii));
 end
 
   % Check error in solution
@@ -80,7 +87,7 @@ for ii = 1:ncs
 end
 y_hat = y_hat + c0_hat/2;
 plot(t, y_hat, '+');
-stitle = sprintf('%1.1e Hz with Base Frequency Bias %1.1e Hz', w1, dw);
+stitle = sprintf('%1.1e Hz with Base Frequency Bias %1.1e Hz', freq, df);
 title(stitle);
 
 fprintf('\n');

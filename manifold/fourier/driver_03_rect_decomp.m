@@ -6,7 +6,7 @@
 
 clear;
 
-  % Fundamental frequency, Hz
+  % Fundamental frequency as angular rate, rad/sec
 w1 = 1.0;
 
 nmax = 5;
@@ -16,9 +16,7 @@ pd = 2*pi/w1;
 dt = pd/100;
 t = (-pd/2):dt:(pd/2);
 
-fprintf('\nFundamental frequency %1.1f Hz', w1);
-fprintf(' and Period %1.3e sec', pd);
-fprintf('\n');
+fprintf('\nFundamental frequency %1.1f Hz', 1/pd);
 
   % Overlay multiple harmonics and the combined result
 yi = zeros(nmax, size(t,2));
@@ -48,6 +46,4 @@ d2 = (2.0/pd)*trapz(t, yi(2,:).*sin(wn*t));
 y2 = c0/2 + c2*cos(wn*t) + d2*sin(wn*t);
 plot(t, y2, '*');
 
-
-
-
+fprintf('\n');

@@ -14,7 +14,7 @@
 
 clear;
 
-  % Frequency, Hz
+  % Frequency as rad/sec
 w1 = 1.0;
 
   % Coefficients of the sinusoid function: y(w,t) = C*cos(wt) + D*sin(wt)
@@ -34,7 +34,7 @@ frac_pd = .02;
 %
 
   % In terms of amplitude and phase offset
-[a1, phi1] = sig_cart2polar(c1, d1);
+[a1, phi1] = sig_rect2polar(c1, d1);
 
   % Period and increment
 pd = 2*pi/w1;
@@ -48,7 +48,7 @@ y1 = c1*cos(w1*t) + d1*sin(w1*t);
   % Noisy
 y1_n = (mu + sigma*randn(1,size(y1,2))) + y1;
 
-fprintf('\nFrequency %1.1f Hz', w1);
+fprintf('\nFrequency %1.1f rad/sec', w1);
 fprintf('\nPeriod %1.3e sec', pd);
 fprintf('\nAmplitude %1.1f', a1);
 fprintf('\nPhase %1.2f deg', 180*phi1/pi);
