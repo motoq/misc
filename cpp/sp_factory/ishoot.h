@@ -10,5 +10,5 @@ class IShoot {
     virtual void fire() = 0;
 };
 
-#endif  // ISHOOT_H
+#endif
 
