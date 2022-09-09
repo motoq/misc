@@ -10,7 +10,8 @@ clear;
   % Packing or no gap overlay
 pack = 0;
 nogap = 1;
-fit = nogap*pi/6;
+method = pack;
+fit = method*pi/6;
 
   % Ellipse definition
 Cov = [3 2 ; 2 4];
@@ -52,7 +53,11 @@ quiver(0, 0, e_2(1), e_2(2), 'color', [0 1 0], 'linewidth', 1,...
                                                'AutoScale','off');
 xlabel('x');
 ylabel('y');
-title('Ellipse to Pack');
+if method == pack
+  title('Ellipse to Pack');
+else
+  title('Ellipse to No-Gap Pack');
+end
 axis equal;
 
   % Plot packed circles
@@ -66,7 +71,11 @@ for ii = 1:nc
 end
 xlabel('x');
 ylabel('y');
-title('Packed Unit Circles');
+if method == pack
+  title('Packed Unit Circles');
+else
+  title('No-Gap Packed Unit Circles');
+end
 axis equal;
 
   % Plot packed ellipses
@@ -80,5 +89,9 @@ for ii = 1:nc
 end
 xlabel('x');
 ylabel('y');
-title('Packed Unit Ellipses');
+if method == pack
+  title('Packed Ellipses');
+else
+  title('No-Gap Packed Ellipses');
+end
 axis equal;
