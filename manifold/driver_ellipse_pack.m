@@ -1,4 +1,4 @@
-close all;
+%close all;
 clear;
 
 %
@@ -10,7 +10,7 @@ clear;
   % Packing or no gap overlay
 pack = 0;
 nogap = 1;
-method = pack;
+method = nogap;
 fit = method*pi/6;
 
   % Ellipse definition
