@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include <vector>
+#include <unordered_map>
 #include <execution>
 
 #include <ishoot.h>
@@ -39,9 +40,25 @@ int main() {
 
 
     // Test list of guns
+  std::cout << "\n\nTest vector\n";
   for (const auto& gun : guns) {
     gun->fire();
   }
+
+    // Test move of elements to map
+  std::cout << "\n\nTest move to map\n";
+  std::unordered_map<std::string, std::unique_ptr<IShoot>> guns_map;
+  guns_map["First"] = std::move(guns[0]);
+  if (guns[0] == nullptr) {
+    std::cout << "\nVector has nullptr now";
+  } else {
+    std::cout << "\nVector element not moved!";
+  }
+  for (const auto& gun : guns_map) {
+    gun.second->fire();
+  }
+
+
 
   std::cout << '\n';
 }
