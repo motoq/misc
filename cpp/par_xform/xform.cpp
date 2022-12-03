@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <string>
 #include <vector>
 #include <unordered_map>
 #include <execution>
@@ -17,7 +18,13 @@
 int main() {
 
     // Firearm configuration, 1 for M14, 2 for M14E2
-  std::vector<int> configs{ 1, 2, 1, 1, 2, 1, 1 };
+  std::vector<std::string> configs{ "M14",
+                                    "M14E2",
+                                    "M14",
+                                    "M14",
+                                    "M14E2",
+                                    "M14",
+                                    "M14" };
     // Set target vector of pointers to matching size
     // so existing elements can be accessed in parallel
   std::vector<std::unique_ptr<IShoot>> guns(configs.size());
@@ -26,12 +33,12 @@ int main() {
     // corresponding pointer element in guns.
   std::transform(std::execution::par,
                  configs.begin(), configs.end(), guns.begin(),
-                 [](int cfg) {
+                 [](const auto& cfg) {
                    std::unique_ptr<IShoot> m14;
-                   if (cfg == 2) {
-                     m14 = std::make_unique<M14E2>("Config 2");
+                   if (cfg == "M14E2") {
+                     m14 = std::make_unique<M14E2>(cfg);
                    } else {
-                     m14 = std::make_unique<M14>("Config 1");
+                     m14 = std::make_unique<M14>(cfg);
                    }
                      // Set element in guns corresponding to cfg
                    return m14;
@@ -48,17 +55,13 @@ int main() {
     // Test move of elements to map
   std::cout << "\n\nTest move to map\n";
   std::unordered_map<std::string, std::unique_ptr<IShoot>> guns_map;
-  guns_map["First"] = std::move(guns[0]);
-  if (guns[0] == nullptr) {
-    std::cout << "\nVector has nullptr now";
-  } else {
-    std::cout << "\nVector element not moved!";
+  for (unsigned int ii=0; ii<configs.size(); ++ii) {
+    std::string id = configs[ii] + std::to_string(ii);
+    guns_map[id] = std::move(guns[ii]);
   }
   for (const auto& gun : guns_map) {
     gun.second->fire();
   }
-
-
 
   std::cout << '\n';
 }
