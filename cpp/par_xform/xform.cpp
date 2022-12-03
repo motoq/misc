@@ -12,8 +12,19 @@
 /**
  * Demonstrates the use of parallel processing via std::transform.  A
  * vector of configuration settings is accessed in parallel with a
- * vector of pointers.  Memory is allocated to each pointer based on the
- * corresponding configuration setting.
+ * vector of pointers for objects that are to be created.  Memory is
+ * allocated to each pointer based on the corresponding configuration
+ * setting.
+ *
+ * The std::for_each loop is demonstrated by executing each of the
+ * objects.
+ *
+ * Moving the contents to a map is demonstrated - the idea being to
+ * create processor intensive objects in parallel with two vectors.
+ * Since the destination vector size can be set before object
+ * generation, the vector itself (vs. what each element points to) is
+ * not modified.  After creation, each object can be cheaply moved to a
+ * map with the intent of accessing object through a key, vs. an index.
  */
 int main() {
 
@@ -45,12 +56,19 @@ int main() {
                  }
   );
 
-
-    // Test list of guns
-  std::cout << "\n\nTest vector\n";
+    // Test vector of guns
+  std::cout << "\n\nTest execution from vector with for loop\n";
   for (const auto& gun : guns) {
     gun->fire();
   }
+
+    // Test vector using for_each
+  std::cout << "\n\nTest execution from vector with for_each\n";
+  std::for_each(std::execution::par, guns.begin(), guns.end(),
+                [](const auto& gun) {
+                  gun->fire();
+                }
+  );
 
     // Test move of elements to map
   std::cout << "\n\nTest move to map\n";
@@ -59,6 +77,7 @@ int main() {
     std::string id = configs[ii] + std::to_string(ii);
     guns_map[id] = std::move(guns[ii]);
   }
+    //(const auto& [cfg, gun] : guns_map)
   for (const auto& gun : guns_map) {
     gun.second->fire();
   }
