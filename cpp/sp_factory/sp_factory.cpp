@@ -60,6 +60,8 @@ int main()
   M14E2 m14e2;
   operate(m14e2);
 
+  std:: cout << "\n\nTest ostream print:  " << m14;
+
   std::cout << '\n';
 }
 
