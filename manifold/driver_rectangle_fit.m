@@ -2,38 +2,23 @@
 clear;
 
 %
-% Fixing a maximum area rectangle within an ellipse via an affine
-% transform
+% Fitting a maximum area rectangle within an ellipse via an affine
+% transform.  Affine transformations preserve ratios of lengths and
+% areas.
 %
 % Kurt Motekew  2023/04/20
 %
 
-
-  % Ellipse definition
-Cov = [3 2 ; 2 4];
-[V, L] = eig(Cov);
-ehat_1 = V(:,1);
-ehat_2 = V(:,2);
-e_1 = sqrt(L(1,1))*ehat_1;
-e_2 = sqrt(L(2,2))*ehat_2;
-
-  % Rotation then axis scaling
-C = [ehat_1' ; ehat_2'];
-T = [1/sqrt(L(1,1)) 0 ; 0 1/sqrt(L(2,2))];
-Tac = T*C;
-Tca = Tac^-1;
-
-  % Unit circle after affine transformation
-CovA = Tac*Cov*Tac';
-e_1a = Tac*e_1;
-e_2a = Tac*e_2;
-
   % A square maximizes the area within a circle (proof via area as
   % as a cost function A = cos(theta)*sin(theta), max A at theta = pi/4)
   %
+  % Create a square inscribed within a unit circle.  The affine radial
+  % vectors (ra) locating the square's corners are independent of the
+  % ellipse and could be hard coded (or computed at compile time with a
+  % real language).
+  %
   % Create 5 corners to close plot function (first point = last point)
 nc = 5;
-r = zeros(2,nc);
 ra = zeros(2,nc);
 theta = pi/4;
 dtheta = pi/2;
@@ -41,9 +26,30 @@ for ii = 1:nc
     % Corner of square in unit circle
   ra(:,ii) = [cos(theta) ; sin(theta)];
     % Corresponding corner of rectangle in ellipse
-  r(:,ii) = Tca*ra(:,ii);
   theta = theta + dtheta;
 end
+
+  % Ellipse definition
+Cov = [3 2 ; 2 4];
+[V, L] = eig(Cov);
+ehat_1 = V(:,1);
+ehat_2 = V(:,2);
+  % Rotation then axis scaling
+C = [ehat_1' ; ehat_2'];
+T = [1/sqrt(L(1,1)) 0 ; 0 1/sqrt(L(2,2))];
+Tac = T*C;
+Tca = Tac^-1;
+  % Done - maximum area rectangle corners on ellipse
+r = Tca*ra;
+
+
+  % For plotting
+e_1 = sqrt(L(1,1))*ehat_1;
+e_2 = sqrt(L(2,2))*ehat_2;
+  % Unit circle after affine transformation
+CovA = Tac*Cov*Tac';
+e_1a = Tac*e_1;
+e_2a = Tac*e_2;
 
   % Plot ellipse definition with axes
 figure; hold on;
