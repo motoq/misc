@@ -35,14 +35,15 @@ CovA = Tac*Cov*Tac';
 cir_rectA = Tac*cir_rect;
   % Find the further vertex
 if norm(cir_rectA(:,1)) > norm(cir_rectA(:,2))
-  cpA = cir_rectA(:,1);
+  rpA = cir_rectA(:,1);
 else
-  cpA = cir_rectA(:,2);
+  rpA = cir_rectA(:,2);
 end
   % Move the more distant vertext onto the unit curcle
-cpA = cpA/norm(cpA);
+cpA = rpA/norm(rpA);
   % Back to Cartesian space
 cp = Tca*cpA;
+rp = Tca*rpA;
   % A single corner of the rectangle defines the inscribed rectangle
 r = zeros(size(signs));
 r(:,1) = cp;
@@ -66,6 +67,7 @@ quiver(0, 0, e_1(1), e_1(2), 'color', [1 0 0], 'linewidth', 1,...
 quiver(0, 0, e_2(1), e_2(2), 'color', [0 1 0], 'linewidth', 1,...
                                                'AutoScale','off');
 plot(cir_rect(1,:), cir_rect(2,:), 'm-');
+scatter(rp(1), rp(2), 'm');
 scatter(cp(1), cp(2), 'm');
 plot(r(1,:), r(2,:), 'b-');
 scatter(r(1,:), r(2,:), 'b');
@@ -83,6 +85,7 @@ quiver(0, 0, e_1a(1), e_1a(2), 'color', [1 0 0], 'linewidth', 1,...
 quiver(0, 0, e_2a(1), e_2a(2), 'color', [0 1 0], 'linewidth', 1,...
                                                  'AutoScale','off');
 plot(cir_rectA(1,:), cir_rectA(2,:), 'm-');
+scatter(rpA(1), rpA(2), 'm');
 scatter(cpA(1), cpA(2), 'b');
 xlabel('x');
 ylabel('y');
