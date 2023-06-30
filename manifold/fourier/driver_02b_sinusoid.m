@@ -14,7 +14,7 @@
 clear;
 
   % Frequency as rad/sec
-w1 = 1.0;
+w1 = 2.5;
 
   % Coefficients of the sinusoid function: y(w,t) = C*cos(wt) + D*sin(wt)
 c1 = 2.5;
@@ -22,6 +22,8 @@ d1 = 3.7;
 
   % Fraction of period for time increment
 frac_pd = .02;
+  % Generate signal over this factor times the period
+np = 2;
 
 %
 % End user inputs
@@ -30,11 +32,11 @@ frac_pd = .02;
   % In terms of amplitude and phase offset
 [a1, phi1] = sig_rect2polar(c1, d1);
 
-  % Period and increment
+  % Period, signal duration, and increment for discrete points
 pd = 2*pi/w1;
 dt = frac_pd*pd;
-t1 = -pd/2;
-t2 = pd/2;
+t2 = np*pd/2;
+t1 = -t2;
 t = t1:dt:t2;
 ns = size(t,2);
 
