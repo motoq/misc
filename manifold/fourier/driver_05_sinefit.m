@@ -32,7 +32,7 @@ dw = 0.1;
 % End user inputs
 %
 
-  % Period and increment
+  % Period and increment given frequency in rad/sec
 pd = 2*pi/w1;
 dt = frac_pd*pd;
 t = (-pd/2):dt:(pd/2);
