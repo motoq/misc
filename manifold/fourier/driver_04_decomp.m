@@ -89,5 +89,6 @@ y_hat = y_hat + c0_hat/2;
 plot(t, y_hat, '+');
 stitle = sprintf('%1.1e Hz with Base Frequency Bias %1.1e Hz', freq, df);
 title(stitle);
+grid on;
 
 fprintf('\n');
