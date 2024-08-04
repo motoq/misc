@@ -14,7 +14,7 @@
 % See Section 2.4 of Pavel Grinfeld's "An Introduction to Tensor
 % Calculus":
 %
-% <https://grinfeld.org/books/An-Introduction-To-Tensor-Calculus/Chapter1.html>
+% <https://grinfeld.org/books/An-Introduction-To-Tensor-Calculus/Chapter2.html>
 %
 % Kurt Motekew
 % 2024/02/14

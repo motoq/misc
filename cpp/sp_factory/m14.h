@@ -11,7 +11,7 @@
  */
 class M14 : public IShoot {
   public:
-    M14() {}
+    M14() = default;
     explicit M14(std::string msg) { this->msg = ":  " + msg; }
     ~M14() override { std::cout << "\nM14 Destructor" << msg; }
     void fire() override { std::cout << "\nBang!"; }
@@ -19,12 +19,11 @@ class M14 : public IShoot {
     std::string getMsg() const { return msg; }
 
   private:
-    std::string msg = "Default";
+    std::string msg = "DefaultMsgM14";
 };
 
-std::ostream& operator<< (std::ostream &out, M14 const& data) {
-  out << data.getMsg();
-  return out;
+std::ostream& operator<<(std::ostream& out, const M14& data) {
+  return out << data.getMsg();
 }
 
 #endif
