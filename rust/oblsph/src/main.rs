@@ -21,12 +21,21 @@ fn main() {
     println!("\n");
     println!("Eccentricity:    {}", eccen);
     println!("Semimajor axis:  {}", smajor);
-    println!("Longitudde:      {} deg", DEG_PER_RAD*lambda);
+    println!("Longitude:      {} deg", DEG_PER_RAD*lambda);
     println!("Elevation:       {}", eta);
 }
 
 
-
+/**
+ * Requests user input from the CL.  A single f64 with the given limits
+ * is returned.  The function will continue to ask for a value until a
+ * valid one is entered.
+ *
+ * @param  min_val  Minimum allowable value
+ * @param  max_val  Maximum allowable value
+ *
+ * @return  Parsed value meeting requirements
+ */
 fn obls_read_input(min_val: f64, max_val: f64) -> f64 {
 
     let mut bad_val = 2.0*max_val;
@@ -35,19 +44,21 @@ fn obls_read_input(min_val: f64, max_val: f64) -> f64 {
         bad_val = 2.0*min_val;
     }
 
-    let mut ret_val = bad_val;
-    while ret_val < min_val  ||  ret_val > max_val {
+    let ret_val = loop {
         let mut str_val = String::new();
         io::stdin()
             .read_line(&mut str_val)
             .expect("Failed to read input from command line!");
-        ret_val = match str_val.trim().parse() {
+        let val = match str_val.trim().parse() {
             Ok(num) => num,
             Err(_) => bad_val,
         };
-    }
+        if !(val < min_val  ||  val > max_val) {
+            break val;
+        }
+    };
+
     ret_val
 }
-
 
 
