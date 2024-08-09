@@ -1,28 +1,39 @@
 use std::io;
 
 fn main() {
+
+    #[derive(Default)]
+    struct OblateSpheroid {
+        eccen: f64,
+        smajor: f64, 
+        lambda: f64,
+        eta: f64,
+    }
+
+    let mut os: OblateSpheroid = Default::default();
+
     const RAD_PER_DEG: f64 = std::f64::consts::PI/180.0;
     const DEG_PER_RAD: f64 = 1.0/RAD_PER_DEG;
 
     let max_smaj = f64::sqrt(0.1*std::f64::MAX);
 
     println!("Enter the eccentricity (0 <= e < 1):");
-    let eccen = obls_read_input(0.0, 0.9);
+    os.eccen = obls_read_input(0.0, 0.9);
 
     println!("Enter the semimajor axis length (0 <= a):");
-    let smajor = obls_read_input(0.0, max_smaj);
+    os.smajor = obls_read_input(0.0, max_smaj);
 
     println!("Enter longitude (-180 <= lam <= 180):");
-    let lambda = RAD_PER_DEG*obls_read_input(-180.0, 180.0);
+    os.lambda = RAD_PER_DEG*obls_read_input(-180.0, 180.0);
 
     println!("Enter elevation (-1 <= eta <= 1):");
-    let eta = obls_read_input(-1.0, 1.0);
+    os.eta = obls_read_input(-1.0, 1.0);
 
     println!("\n");
-    println!("Eccentricity:    {}", eccen);
-    println!("Semimajor axis:  {}", smajor);
-    println!("Longitude:      {} deg", DEG_PER_RAD*lambda);
-    println!("Elevation:       {}", eta);
+    println!("Eccentricity:    {}", os.eccen);
+    println!("Semimajor axis:  {}", os.smajor);
+    println!("Longitude:      {} deg", DEG_PER_RAD*os.lambda);
+    println!("Elevation:       {}", os.eta);
 }
 
 
