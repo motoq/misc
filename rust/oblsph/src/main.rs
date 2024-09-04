@@ -1,10 +1,10 @@
 use std::io;
 
-use cognition::oblate_spheroid::OblateSpheroid;
+use cognition::oblate_spheroid;
 
 fn main() {
 
-    let mut os: OblateSpheroid = Default::default();
+    let mut os: oblate_spheroid::OblateSpheroid = Default::default();
 
     const RAD_PER_DEG: f64 = std::f64::consts::PI/180.0;
     const DEG_PER_RAD: f64 = 1.0/RAD_PER_DEG;

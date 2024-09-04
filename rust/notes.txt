@@ -1,0 +1,7 @@
+cargo check
+cargo build
+cargo run
+
+
+cargo new cognition --lib
+
