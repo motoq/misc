@@ -1,14 +1,8 @@
 use std::io;
 
-fn main() {
+use cognition::oblate_spheroid::OblateSpheroid;
 
-    #[derive(Default)]
-    struct OblateSpheroid {
-        eccen: f64,
-        smajor: f64, 
-        lambda: f64,
-        eta: f64,
-    }
+fn main() {
 
     let mut os: OblateSpheroid = Default::default();
 
