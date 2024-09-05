@@ -4,30 +4,27 @@ use cognition::oblate_spheroid;
 
 fn main() {
 
-    let mut os: oblate_spheroid::OblateSpheroid = Default::default();
-
     const RAD_PER_DEG: f64 = std::f64::consts::PI/180.0;
-    const DEG_PER_RAD: f64 = 1.0/RAD_PER_DEG;
 
     let max_smaj = f64::sqrt(0.1*std::f64::MAX);
 
     println!("Enter the eccentricity (0 <= e < 1):");
-    os.eccen = obls_read_input(0.0, 0.9);
+    let eccen: f64 = obls_read_input(0.0, 0.9);
 
     println!("Enter the semimajor axis length (0 <= a):");
-    os.smajor = obls_read_input(0.0, max_smaj);
+    let smajor: f64 = obls_read_input(0.0, max_smaj);
 
     println!("Enter longitude (-180 <= lam <= 180):");
-    os.lambda = RAD_PER_DEG*obls_read_input(-180.0, 180.0);
+    let lambda: f64  = RAD_PER_DEG*obls_read_input(-180.0, 180.0);
 
     println!("Enter elevation (-1 <= eta <= 1):");
-    os.eta = obls_read_input(-1.0, 1.0);
+    let eta: f64 = obls_read_input(-1.0, 1.0);
+
+    let os: oblate_spheroid::OblateSpheroid =
+        oblate_spheroid::OblateSpheroid::new(eccen, smajor, lambda, eta);
 
     println!("\n");
-    println!("Eccentricity:    {}", os.eccen);
-    println!("Semimajor axis:  {}", os.smajor);
-    println!("Longitude:      {} deg", DEG_PER_RAD*os.lambda);
-    println!("Elevation:       {}", os.eta);
+    println!("OblateSpheroid {}", os);
 }
 
 
