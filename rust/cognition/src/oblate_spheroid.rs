@@ -1,10 +1,10 @@
 
 #[derive(Default)]
 pub struct OblateSpheroid {
-    pub m_eccen: f64,
-    pub m_smajor: f64,
-    pub m_lambda: f64,
-    pub m_eta: f64,
+    m_eccen: f64,
+    m_smajor: f64,
+    m_lambda: f64,
+    m_eta: f64,
 }
 
 
@@ -21,11 +21,10 @@ impl OblateSpheroid {
 
 
 impl std::fmt::Display for OblateSpheroid {
-fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         const DPR: f64 = 180.0/std::f64::consts::PI;
-
-        write!(f, "(\n  Eccentricity: {}\n  Semimajor: {}\
-                   \n  Lambda: {}\n  Eta: {})",
+        write!(f, "(\n  Eccentricity: {};  Semimajor: {}\
+                   ;  Lambda: {};  Eta: {})",
             self.m_eccen, self.m_smajor, DPR*self.m_lambda, self.m_eta)
     }
 }
