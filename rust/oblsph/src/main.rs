@@ -20,11 +20,22 @@ fn main() {
     println!("Enter elevation (-1 <= eta <= 1):");
     let eta: f64 = obls_read_input(-1.0, 1.0);
 
-    let os: oblate_spheroid::OblateSpheroid =
-        oblate_spheroid::OblateSpheroid::new(eccen, smajor, lambda, eta);
+    let os = if let Ok(os) =
+        oblate_spheroid::OblateSpheroid::new(eccen, smajor, lambda, eta) {
+        os
+    } else {
+        return;
+    };
+
+    println!("OblateSpheroid {}", os);
+
+    let os = oblate_spheroid::OblateSpheroid::new2();
+    println!("OblateSpheroid {}", os);
+
+    let os: oblate_spheroid::OblateSpheroid  = Default::default();
+    println!("OblateSpheroid {}", os);
 
     println!("\n");
-    println!("OblateSpheroid {}", os);
 }
 
 

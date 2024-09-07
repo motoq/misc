@@ -9,13 +9,23 @@ pub struct OblateSpheroid {
 
 
 impl OblateSpheroid {
-    pub fn new(eccen: f64, smajor: f64, lambda: f64, eta: f64) -> Self {
-        Self {
-            eccen,
-            smajor,
-            lambda,
-            eta,
+    pub fn new(eccen: f64,
+               smajor: f64,
+               lambda: f64,
+               eta: f64) -> Result<Self, String> {
+        if eccen < 0.0   ||  eccen >= 1.0 {
+            return Err("Invalid Eccentricity".to_string());
         }
+        Ok(Self {
+                eccen,
+                smajor,
+                lambda,
+                eta,
+        })
+    }
+
+    pub fn new2() -> Self {
+        Default::default()
     }
 }
 
