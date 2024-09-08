@@ -3,25 +3,21 @@ use std::io;
 use cognition::oblate_spheroid;
 
 fn main() {
-
-    const RAD_PER_DEG: f64 = std::f64::consts::PI/180.0;
-
     // Get Inputs
     println!("Enter the eccentricity (0 <= e < 1):");
     let eccen: f64 = read_input();
     println!("Enter the semimajor axis length (0 <= a):");
     let smajor: f64 = read_input();
     println!("Enter longitude (-180 <= lam <= 180):");
-    let lambda: f64  = RAD_PER_DEG*read_input();
+    let lambda: f64  = (std::f64::consts::PI/180.0)*read_input();
     println!("Enter elevation (-1 <= eta <= 1):");
     let eta: f64 = read_input();
 
-    let os = if let Ok(os) =
-        oblate_spheroid::OblateSpheroid::new(eccen, smajor, lambda, eta) {
-        os
-    } else {
-        println!("Bad OblateSpheroid Init");
-        return;
+
+    let os = match oblate_spheroid::OblateSpheroid::new(eccen,
+                                                        smajor, lambda, eta) {
+        Ok(ok) => ok,
+        Err(error) => panic!("OblateSpheroid Construction: {error:?}"),
     };
 
     println!("OblateSpheroid {}", os);
@@ -33,6 +29,13 @@ fn main() {
 }
 
 
+/**
+ * Requests user input from the CL for a number.
+ * The function will continue to ask for a value until an
+ * entry that can be interpreted as a number is entered.
+ *
+ * @return  Parsed value
+ */
 fn read_input() -> f64 {
     let ret_val = loop {
         let mut str_val = String::new();
