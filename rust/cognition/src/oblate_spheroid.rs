@@ -6,6 +6,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+const DPR: f64 = 180.0/std::f64::consts::PI;
+
+
 /**
  * Oblate spheroid definition (eccentricity and semimajor axis length)
  * and coordinates (oblate spheroidal and Cartesian) struct.
@@ -18,7 +21,6 @@ pub struct OblateSpheroid {
     cart: [f64; 3],
 }
 
-const DPR: f64 = 180.0/std::f64::consts::PI;
 
 /**
  * OblateSpheroid creation functionality
@@ -76,6 +78,7 @@ impl OblateSpheroid {
     }
 }
 
+
 impl Default for OblateSpheroid {
     /**
      * Default oblate spheroid definition and coordinates
@@ -100,7 +103,7 @@ impl std::fmt::Display for OblateSpheroid {
      */
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "(\n  Eccentricity: {};  Semimajor: {}\
-                   ;  Lambda: {};  Eta: {})",
+                   ;  Azimuth: {};  Elevation: {})",
             self.eccen, self.smajor, DPR*self.lambda, self.eta)
     }
 }

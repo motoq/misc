@@ -3,7 +3,7 @@ use std::io;
 use cognition::oblate_spheroid;
 
 fn main() {
-    // Get Inputs
+    // Get inputs from command line
     println!("Enter the eccentricity (0 <= e < 1):");
     let eccen: f64 = read_input();
     println!("Enter the semimajor axis length (0 <= a):");
@@ -13,16 +13,9 @@ fn main() {
     println!("Enter elevation (-1 <= eta <= 1):");
     let eta: f64 = read_input();
 
+    let os = oblate_spheroid::OblateSpheroid::new(eccen, smajor, lambda, eta)
+                 .expect("OblateSpheroid Construction: ");
 
-    let os = match oblate_spheroid::OblateSpheroid::new(eccen,
-                                                        smajor, lambda, eta) {
-        Ok(ok) => ok,
-        Err(error) => panic!("OblateSpheroid Construction: {error:?}"),
-    };
-
-    println!("OblateSpheroid {}", os);
-
-    let os: oblate_spheroid::OblateSpheroid  = Default::default();
     println!("OblateSpheroid {}", os);
 
     println!("\n");
@@ -52,6 +45,17 @@ fn read_input() -> f64 {
     ret_val
 }
 
+
+    /*
+    let os = match oblate_spheroid::OblateSpheroid::new(eccen,
+                                                        smajor, lambda, eta) {
+        Ok(ok) => ok,
+        Err(error) => panic!("OblateSpheroid Construction: {error:?}"),
+    println!("OblateSpheroid {}", os);
+    let os: oblate_spheroid::OblateSpheroid  = Default::default();
+    println!("OblateSpheroid {}", os);
+    };
+    */
 
 /*
  * Requests user input from the CL.  A single f64 with the given limits
