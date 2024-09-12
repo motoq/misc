@@ -5,6 +5,14 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[bin]]
+name = "oblsph"
+path = "src/main.rs"
+
+[[bin]]
+name = "test_consistency"
+path = "src/test_consistency/main.rs"
+
 [dependencies]
 cognition = { path = "../cognition" }
 #plotters = "0.3.3"

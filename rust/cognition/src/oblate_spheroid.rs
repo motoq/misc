@@ -23,7 +23,7 @@ pub struct OblateSpheroid {
 
 
 /**
- * OblateSpheroid creation functionality
+ * OblateSpheroid associated functions for instantiation
  */
 impl OblateSpheroid {
     /**
@@ -47,8 +47,8 @@ impl OblateSpheroid {
         } else if semimajor < 0.0 {
             return Err("Invalid Semimajor Axis: ".to_string() +
                        &semimajor.to_string());
-        } else if longitude < -0.5*std::f64::consts::PI  ||
-                  longitude >  0.5*std::f64::consts::PI {
+        } else if longitude < -std::f64::consts::PI  ||
+                  longitude >  std::f64::consts::PI {
             return Err("Invalid Longitude: ".to_string() +
                        &(DPR*longitude).to_string());
         } else if latitude < -1.0  ||  latitude >  1.0 {
@@ -92,7 +92,62 @@ impl OblateSpheroid {
         os.set_with_cartesian(eccentricity, cartesian);
         Ok(os)
     }
+}
 
+
+/**
+ * Public immutable methods
+ */
+impl OblateSpheroid {
+    /**
+     * @return  Eccentricity
+     */
+    pub fn get_eccentricity(&self) -> f64 {
+        self.ecc
+    }
+
+
+    /**
+     * @return  Semimajor axis
+     */
+    pub fn get_semimajor(&self) -> f64 {
+        self.sma
+    }
+
+
+    /**
+     * @return  Longitude, radians
+     */
+    pub fn get_longitude(&self) -> f64 {
+        self.lon
+    }
+
+
+    /**
+     * @return  Latitude
+     */
+    pub fn get_latitude(&self) -> f64 {
+        self.lat
+    }
+
+
+    /**
+     * @return  Cartesian coordinates
+     */
+    pub fn get_cartesian(&self) -> [f64; 3] {
+        self.xyz
+    }
+}
+
+
+/**
+ * Private methods
+ */
+impl OblateSpheroid {
+
+    //
+    // Private Functions
+    //
 
     /*
      * Update Cartesian coords with previously validated OS coords
@@ -152,7 +207,7 @@ impl std::fmt::Display for OblateSpheroid {
      * @return  Printable form of OblateSpheroid
      */
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "(\n  Eccentricity: {};  Semimajor: {}\
+        write!(f, "(Eccentricity: {};  Semimajor: {}\
                    ;  Azimuth: {};  Elevation: {})",
             self.ecc, self.sma, DPR*self.lon, self.lat)
     }

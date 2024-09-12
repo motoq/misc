@@ -8,12 +8,12 @@ fn main() {
     let eccen: f64 = read_input();
     println!("Enter the semimajor axis length (0 <= a):");
     let smajor: f64 = read_input();
-    println!("Enter longitude (-180 <= lam <= 180):");
-    let lambda: f64  = (std::f64::consts::PI/180.0)*read_input();
-    println!("Enter elevation (-1 <= eta <= 1):");
-    let eta: f64 = read_input();
+    println!("Enter longitude (-180 <= lon <= 180):");
+    let lon: f64  = (std::f64::consts::PI/180.0)*read_input();
+    println!("Enter elevation (-1 <= lat <= 1):");
+    let lat: f64 = read_input();
 
-    let os = oblate_spheroid::OblateSpheroid::new(eccen, smajor, lambda, eta)
+    let os = oblate_spheroid::OblateSpheroid::new(eccen, smajor, lon, lat)
                  .expect("OblateSpheroid Construction: ");
 
     println!("OblateSpheroid {}", os);
