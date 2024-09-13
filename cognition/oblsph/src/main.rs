@@ -1,6 +1,6 @@
 use std::io;
 
-use cognition::oblate_spheroid;
+use cogs::oblate_spheroid;
 
 fn main() {
     // Get inputs from command line

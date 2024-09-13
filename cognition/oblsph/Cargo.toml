@@ -14,5 +14,5 @@ name = "test_consistency"
 path = "src/test_consistency/main.rs"
 
 [dependencies]
-cognition = { path = "../cognition" }
+cogs = { path = "../cogs" }
 #plotters = "0.3.3"

@@ -1,22 +1,31 @@
-use cognition::oblate_spheroid;
+use cogs::oblate_spheroid;
 
+/**
+ * This program performs a consistency check on the oblate spheroidal
+ * struct.  It iterates over a wide range of eccentricities, semimajor axes
+ * longitudes, and latitude.  Each set is used to initialize an OblateSpheroid
+ * object.  The Cartesian coordinates are then pulled to initialize another
+ * OblateSpheroid struct.  The difference between all the elements are RSS'ed
+ * and added to a total error that is printed upon completion.
+ */
 fn main() {
     const RPD: f64 = std::f64::consts::PI/180.0;
 
-    let mut ecc: f64 = 0.0;
-    let mut sma: f64 = 0.1;
-    let mut lon: f64 = RPD*-180.0;
-    let mut lat: f64 = -0.9;
-    let decc: f64 = 0.01;
-    let dsma: f64 = 0.01;
+    let decc: f64 = 0.05;
+    let dsma: f64 = 0.1;
     let dlon: f64 = RPD*3.0;
-    let dlat: f64 = 0.01;
+    let dlat: f64 = 0.05;
 
     let mut count = 0;
     let mut rss_error: f64  = 0.0;
+
+    let mut ecc: f64 = 0.0;
     while ecc < 0.9 {
+        let mut sma: f64 = 0.1;
         while sma < 7.5 {
+            let mut lat: f64 = -0.9;
             while lat < 0.9 {
+                let mut lon: f64 = RPD*-180.0;
                 while lon < RPD*180.0 {
                     let os1 =
                             oblate_spheroid::
