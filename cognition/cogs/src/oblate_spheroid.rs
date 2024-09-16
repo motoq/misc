@@ -6,6 +6,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+extern crate nalgebra as na;
+
 const DPR: f64 = 180.0/std::f64::consts::PI;
 
 
@@ -18,7 +20,7 @@ pub struct OblateSpheroid {
     sma: f64,
     lon: f64,
     lat: f64,
-    xyz: [f64; 3],
+    xyz: na::SMatrix<f64, 3, 1>,
 }
 
 
@@ -76,7 +78,8 @@ impl OblateSpheroid {
      * @return  Ok:  OblateSpheroid
      *          Err: String
      */
-    pub fn new_from_cartesian(eccentricity: f64, cartesian: &[f64; 3])
+    pub fn new_from_cartesian(eccentricity: f64,
+                              cartesian: &na::SMatrix<f64, 3, 1>)
                -> Result<OblateSpheroid, String> {
         if eccentricity < 0.0   ||  eccentricity >= 1.0 {
             return Err("Invalid Eccentricity: ".to_string() +
@@ -134,7 +137,7 @@ impl OblateSpheroid {
     /**
      * @return  Cartesian coordinates
      */
-    pub fn get_cartesian(&self) -> [f64; 3] {
+    pub fn get_cartesian(&self) -> na::SMatrix<f64, 3, 1> {
         self.xyz
     }
 }
@@ -172,7 +175,8 @@ impl OblateSpheroid {
      * @param  eccen  Eccentricity defining parameter, 0 <= eccen < 1
      * @param  cart   Cartesian coordinates
      */
-    fn set_with_cartesian(&mut self, eccen: f64, cart: &[f64; 3]) {
+    fn set_with_cartesian(&mut self, eccen: f64,
+                          cart: &na::SMatrix<f64, 3, 1>) {
         let x2y2 = cart[0]*cart[0] + cart[1]*cart[1];
         let z2 = cart[2]*cart[2];
         let ome2 = 1.0 - eccen*eccen;
@@ -196,7 +200,7 @@ impl Default for OblateSpheroid {
             sma: 0.0,
             lon: 0.0,
             lat: 0.0,
-            xyz: [0.0, 0.0, 0.0],
+            xyz: [0.0, 0.0, 0.0].into(),
         }
     }
 }

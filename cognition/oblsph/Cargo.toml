@@ -15,4 +15,5 @@ path = "src/test_consistency/main.rs"
 
 [dependencies]
 cogs = { path = "../cogs" }
+nalgebra = "0.32.5"
 #plotters = "0.3.3"
