@@ -1,3 +1,4 @@
+use cogs::utl_const::RAD_PER_DEG;
 use cogs::oblate_spheroid;
 
 /**
@@ -9,11 +10,9 @@ use cogs::oblate_spheroid;
  * and added to a total error that is printed upon completion.
  */
 fn main() {
-    const RPD: f64 = std::f64::consts::PI/180.0;
-
     let decc: f64 = 0.05;
     let dsma: f64 = 0.1;
-    let dlon: f64 = RPD*3.0;
+    let dlon: f64 = RAD_PER_DEG*3.0;
     let dlat: f64 = 0.05;
 
     let mut count = 0;
@@ -25,8 +24,8 @@ fn main() {
         while sma < 7.5 {
             let mut lat: f64 = -0.9;
             while lat < 0.9 {
-                let mut lon: f64 = RPD*-180.0;
-                while lon < RPD*180.0 {
+                let mut lon: f64 = RAD_PER_DEG*-180.0;
+                while lon < RAD_PER_DEG*180.0 {
                     let os1 =
                             oblate_spheroid::
                             OblateSpheroid::new(ecc, sma, lon, lat)

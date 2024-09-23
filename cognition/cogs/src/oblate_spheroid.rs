@@ -8,7 +8,7 @@
 
 extern crate nalgebra as na;
 
-const DPR: f64 = 180.0/std::f64::consts::PI;
+use crate::utl_const::DEG_PER_RAD;
 
 
 /**
@@ -52,7 +52,7 @@ impl OblateSpheroid {
         } else if longitude < -std::f64::consts::PI  ||
                   longitude >  std::f64::consts::PI {
             return Err("Invalid Longitude: ".to_string() +
-                       &(DPR*longitude).to_string());
+                       &(DEG_PER_RAD*longitude).to_string());
         } else if latitude < -1.0  ||  latitude >  1.0 {
             return Err("Invalid Latitude: ".to_string() +
                        &latitude.to_string());
@@ -62,7 +62,7 @@ impl OblateSpheroid {
                                      sma: semimajor,
                                      lon: longitude,
                                      lat: latitude,
-                                     xyz: Default::default(),
+                                     xyz: Default::default()
         };
         os.set_with_os(eccentricity, semimajor, longitude, latitude);
         Ok(os)
@@ -213,7 +213,7 @@ impl std::fmt::Display for OblateSpheroid {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "(Eccentricity: {};  Semimajor: {}\
                    ;  Azimuth: {};  Elevation: {})",
-            self.ecc, self.sma, DPR*self.lon, self.lat)
+            self.ecc, self.sma, DEG_PER_RAD*self.lon, self.lat)
     }
 }
 
