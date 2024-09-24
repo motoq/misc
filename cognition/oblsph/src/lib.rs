@@ -1,5 +1,7 @@
 use std::fs;
 
+use cogs::utl_const::RAD_PER_DEG;
+
 #[derive(Default)]
 pub struct Config {
     pub eccentricity: f64,
@@ -38,16 +40,39 @@ impl Config {
                         key/value pairs".to_string());
         }
         for ii in (0..tokens.len()).step_by(2) {
-            println!("{}", tokens[ii]);
-            if "semimajor".to_string().eq(&tokens[ii]) {
+            if "eccentricity".to_string().eq(&tokens[ii]) {
+                cfg.eccentricity = match tokens[ii+1].trim().parse() {
+                    Ok(num) => num,
+                    Err(_) =>
+                        return Err("Can't parse eccentricity: ".to_string() +
+                                   &tokens[ii+1]),
+                };
+            } else if "semimajor".to_string().eq(&tokens[ii]) {
                 cfg.semimajor = match tokens[ii+1].trim().parse() {
                     Ok(num) => num,
                     Err(_) =>
-                        return Err("Can't parse eccentricity".to_string() +
+                        return Err("Can't parse semimajor: ".to_string() +
                                    &tokens[ii+1]),
                 };
+            } else if "longitude_deg".to_string().eq(&tokens[ii]) {
+                cfg.longitude = match tokens[ii+1].trim().parse() {
+                    Ok(num) => num,
+                    Err(_) =>
+                        return Err("Can't parse longitude_deg: ".to_string() +
+                                   &tokens[ii+1]),
+                };
+            } else if "latitude".to_string().eq(&tokens[ii]) {
+                cfg.latitude = match tokens[ii+1].trim().parse() {
+                    Ok(num) => num,
+                    Err(_) =>
+                        return Err("Can't parse latitude: ".to_string() +
+                                   &tokens[ii+1]),
+                };
+            } else {
+                return Err("Bad input token: ".to_string() + &tokens[ii]);
             }
         }
+        cfg.longitude *= RAD_PER_DEG;
 
         Ok(cfg)
     }
