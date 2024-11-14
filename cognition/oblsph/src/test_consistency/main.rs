@@ -28,13 +28,12 @@ fn main() {
                 while lon < RAD_PER_DEG*180.0 {
                     let os1 =
                             oblate_spheroid::
-                            OblateSpheroid::new(ecc, sma, lon, lat)
+                            OblateSpheroid::try_from(&(ecc, sma, lon, lat))
                             .expect("OblateSpheroid Construction: ");
                     let xyz = os1.get_cartesian();
-                    let os2 =
-                            oblate_spheroid::
-                            OblateSpheroid::new_from_cartesian(ecc, &xyz)
-                            .expect("OblateSpheroid Construction: ");
+                    let os2 = oblate_spheroid::
+                              OblateSpheroid::try_from(&(ecc, xyz))
+                                  .expect("OblateSpheroid Construction: ");
         
                     let de = os2.get_eccentricity() - os1.get_eccentricity();
                     let da = os2.get_semimajor() - os1.get_semimajor();

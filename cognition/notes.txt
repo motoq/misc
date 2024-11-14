@@ -5,3 +5,6 @@ cargo run
 
 cargo new cognition --lib
 
+cargo run --bin oblsph input.txt
+cargo run --bin test_consistency input.txt
+
