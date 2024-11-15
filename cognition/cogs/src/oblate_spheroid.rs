@@ -15,6 +15,7 @@ use crate::utl_const::DEG_PER_RAD;
  * Oblate spheroid definition (eccentricity and semimajor axis length)
  * and coordinates (oblate spheroidal and Cartesian) struct.
  */
+#[derive(Copy, Clone)]
 pub struct OblateSpheroid {
     ecc: f64,
     sma: f64,

@@ -15,13 +15,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         process::exit(1);
     });
 
-    let os =
-        oblate_spheroid::OblateSpheroid::try_from(&(config.eccentricity,
-                                                    config.semimajor,
-                                                    config.longitude,
-                                                    config.latitude))
+    let os = oblate_spheroid::OblateSpheroid::try_from(&(config.eccentricity,
+                                                         config.semimajor,
+                                                         config.longitude,
+                                                         config.latitude))
         .expect("OblateSpheroid Construction: ");
-
 
     println!("OblateSpheroid {}", os);
 
