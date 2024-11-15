@@ -8,3 +8,38 @@ cargo new cognition --lib
 cargo run --bin oblsph input.txt
 cargo run --bin test_consistency input.txt
 
+
+
+
+
+
+nalgebra built update:
+[conan@fedora cogs]$ cargo build
+    Updating crates.io index
+  Downloaded num-bigint v0.4.6
+  Downloaded simba v0.9.0
+  Downloaded nalgebra v0.33.2
+  Downloaded 3 crates (541.2 KB) in 0.36s
+   Compiling autocfg v1.3.0
+   Compiling proc-macro2 v1.0.86
+   Compiling unicode-ident v1.0.13
+   Compiling paste v1.0.15
+   Compiling bytemuck v1.18.0
+   Compiling typenum v1.17.0
+   Compiling rawpointer v0.2.1
+   Compiling safe_arch v0.7.2
+   Compiling num-traits v0.2.19
+   Compiling matrixmultiply v0.3.9
+   Compiling quote v1.0.37
+   Compiling wide v0.7.28
+   Compiling syn v2.0.77
+   Compiling approx v0.5.1
+   Compiling num-complex v0.4.6
+   Compiling num-integer v0.1.46
+   Compiling num-rational v0.4.2
+   Compiling simba v0.9.0
+   Compiling nalgebra-macros v0.2.2
+   Compiling nalgebra v0.33.2
+   Compiling cogs v0.1.0 (/home/conan/c/proj/misc.git/cognition/cogs)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 10.53s
+
