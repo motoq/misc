@@ -1,3 +1,5 @@
+pub mod plot_os;
+
 use std::fs;
 
 use cogs::utl_const::RAD_PER_DEG;

@@ -108,7 +108,6 @@ impl TryFrom<&(f64, na::SMatrix<f64, 3, 1>)> for OblateSpheroid {
         if *eccentricity < 0.0   ||  *eccentricity >= 1.0 {
             return Err("Invalid Eccentricity: ".to_string() +
                         &eccentricity.to_string());
-            //return Err("Invalid Eccentricity");
         }
         let mut os = OblateSpheroid::default();
         os.set_with_cartesian(*eccentricity, cartesian);
@@ -134,6 +133,13 @@ impl OblateSpheroid {
      */
     pub fn get_semimajor(&self) -> f64 {
         self.sma
+    }
+
+    /**
+     * @return  Semiminor axis
+     */
+    pub fn get_semiminor(&self) -> f64 {
+        self.sma*(1.0 - self.ecc*self.ecc).sqrt()
     }
 
     /**

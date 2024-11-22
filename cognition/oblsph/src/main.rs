@@ -2,6 +2,7 @@ use std::env;
 use std::process;
 
 use oblsph::Config;
+use oblsph::plot_os::plot_os;
 
 use cogs::oblate_spheroid;
 
@@ -22,6 +23,12 @@ fn main() {
     println!("OblateSpheroid {}", os);
 
     println!("\n");
+
+    //let _ = plot_os(&os);
+    match plot_os(&os) {
+        Ok(_) => println!("Generated file"),
+        Err(msg) => println!("Plot not OK {}", msg),
+    }
 
     if !config.plot_overview {
         process::exit(0);
