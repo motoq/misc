@@ -1,6 +1,7 @@
 pub mod plot_os;
 
-use std::fs;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 use cogs::utl_const::RAD_PER_DEG;
 
@@ -16,34 +17,39 @@ pub struct Config {
 
 impl Config {
     pub fn build(args: &[String]) -> Result<Config, String> {
-          // Ensure call to application is correct
+          // Ensure call to application is correct and open input file
         if args.len() != 2 {
             return Err("Correct use is: ".to_string() +
                         &args[0] + " <input_filename>");
         }
-
-          // Short input file - ingest all at once
-        let contents = match fs::read_to_string(&args[1]) {
+        let file = match File::open(&args[1]) {
             Ok(ok) => ok,
             Err(_) =>  return Err("Error reading file: ".to_string() +
                                    &args[1]),
         };
 
-          // Tokenize and make sure each line is key/value pair
-        let mut cfg: Config = Default::default();
+          // Tokenize...
+        let reader = BufReader::new(file);
         let mut tokens: Vec<String> = Vec::new();
-        for line in contents.lines() {
-            let parts = line.split_whitespace();
-            for tok in parts {
-                tokens.push(tok.to_string());
+        for buf in reader.lines() {
+            match buf {
+                Ok(line) => {
+                    let parts = line.split_whitespace();
+                    for tok in parts {
+                        tokens.push(tok.to_string());
+                    }
+                },
+                Err(_) => return Err("Error tokenizing input file".to_string()),
             }
         }
+          // ... and make sure each line is key/value pair
         if tokens.len()%2 != 0 {
             return Err("Odd number of what should be \
                         key/value pairs".to_string());
         }
 
           // Match key/value
+        let mut cfg: Config = Default::default();
         for ii in (0..tokens.len()).step_by(2) {
             if "eccentricity".to_string().eq(&tokens[ii]) {
                 cfg.eccentricity = match tokens[ii+1].trim().parse() {
@@ -74,7 +80,7 @@ impl Config {
                                    &tokens[ii+1]),
                 };
             } else if "plot_prefix".to_string().eq(&tokens[ii]) {
-                cfg.plot_prefix = tokens[ii].clone();
+                cfg.plot_prefix = tokens[ii+1].clone();
             } else {
                 return Err("Bad input token: ".to_string() + &tokens[ii]);
             }
