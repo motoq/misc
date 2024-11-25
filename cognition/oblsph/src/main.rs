@@ -11,7 +11,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let config = Config::build(&args).unwrap_or_else(|err| {
         println!("problem parsing arguments: {err}");
-        process::exit(1);
+        process::exit(0);
     });
 
     let os = oblate_spheroid::OblateSpheroid::try_from(&(config.eccentricity,
@@ -24,13 +24,14 @@ fn main() {
 
     println!("\n");
 
+    if config.plot_prefix.len() == 0 {
+        process::exit(0);
+    }
+
     //let _ = plot_os(&os);
-    match plot_os(&os) {
+    match plot_os(&os, &config) {
         Ok(_) => println!("Generated file"),
         Err(msg) => println!("Plot not OK {}", msg),
     }
 
-    if !config.plot_overview {
-        process::exit(0);
-    }
 }

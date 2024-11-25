@@ -11,25 +11,26 @@ pub struct Config {
     pub longitude: f64,
     pub latitude: f64,
 
-    pub plot_overview: bool,
+    pub plot_prefix: String,
 }
 
 impl Config {
     pub fn build(args: &[String]) -> Result<Config, String> {
+          // Ensure call to application is correct
         if args.len() != 2 {
             return Err("Correct use is: ".to_string() +
                         &args[0] + " <input_filename>");
         }
 
-        let file_name = args[1].clone();
-        let contents = match fs::read_to_string(&file_name) {
+          // Short input file - ingest all at once
+        let contents = match fs::read_to_string(&args[1]) {
             Ok(ok) => ok,
             Err(_) =>  return Err("Error reading file: ".to_string() +
-                                   &file_name),
+                                   &args[1]),
         };
 
+          // Tokenize and make sure each line is key/value pair
         let mut cfg: Config = Default::default();
-        cfg.plot_overview = false;
         let mut tokens: Vec<String> = Vec::new();
         for line in contents.lines() {
             let parts = line.split_whitespace();
@@ -41,6 +42,8 @@ impl Config {
             return Err("Odd number of what should be \
                         key/value pairs".to_string());
         }
+
+          // Match key/value
         for ii in (0..tokens.len()).step_by(2) {
             if "eccentricity".to_string().eq(&tokens[ii]) {
                 cfg.eccentricity = match tokens[ii+1].trim().parse() {
@@ -70,6 +73,8 @@ impl Config {
                         return Err("Can't parse latitude: ".to_string() +
                                    &tokens[ii+1]),
                 };
+            } else if "plot_prefix".to_string().eq(&tokens[ii]) {
+                cfg.plot_prefix = tokens[ii].clone();
             } else {
                 return Err("Bad input token: ".to_string() + &tokens[ii]);
             }

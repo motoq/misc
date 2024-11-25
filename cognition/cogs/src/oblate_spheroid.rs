@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-extern crate nalgebra as na;
+use nalgebra as na;
 
 use crate::utl_const::DEG_PER_RAD;
 

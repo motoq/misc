@@ -1,14 +1,17 @@
 use std::fs::File;
 use std::io::Write;
 
+use crate::Config;
 use cogs::oblate_spheroid;
 
-pub fn plot_os(os: &oblate_spheroid::OblateSpheroid) -> std::io::Result<()> {
+pub fn plot_os(os: &oblate_spheroid::OblateSpheroid,
+               cfg: &Config) -> std::io::Result<()> {
 
     println!("Semiminor {}", os.get_semiminor());
 
-    let path = "results.txt";
-    let mut output = File::create(path)?;
+    let mut file_name = cfg.plot_prefix.clone();
+    file_name.push_str(".gp");
+    let mut output = File::create(&file_name)?;
     write!(output, "set title \"Oblate Spheroid\"")?;
     write!(output, "\nset parametric")?;
     write!(output, "\nset isosamples 25")?;
@@ -19,7 +22,7 @@ pub fn plot_os(os: &oblate_spheroid::OblateSpheroid) -> std::io::Result<()> {
     write!(output, "\nset view equal xyz")?;
 
 
-    write!(output, "\npause mouse close\n")
-
+    //write!(output, "\npause mouse close\n")
+    Ok(())
 }
 
