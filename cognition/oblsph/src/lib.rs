@@ -38,7 +38,7 @@ impl Config {
                     for tok in parts {
                         tokens.push(tok.to_string());
                     }
-                },
+                }
                 Err(_) => return Err("Error tokenizing input file".to_string()),
             }
         }
