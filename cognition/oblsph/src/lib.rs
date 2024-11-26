@@ -81,6 +81,8 @@ impl Config {
                 };
             } else if "plot_prefix".to_string().eq(&tokens[ii]) {
                 cfg.plot_prefix = tokens[ii+1].clone();
+            } else if "plot".to_string().eq(&tokens[ii]) {
+                ();
             } else {
                 return Err("Bad input token: ".to_string() + &tokens[ii]);
             }
