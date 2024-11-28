@@ -3,10 +3,10 @@
 clear;
 %close all;
 
-e = .9;                                          % Shape
-a = 3.75;                                        % Semimajor axis length, units
-lambda = pi*75/180;                              % Azimuth range
-eta = 0.7;                                       % Elevation range
+e = .75;                                          % Shape
+a = 7.5;                                        % Semimajor axis length, units
+lambda = pi*70/180;                              % Azimuth range
+eta = 0.5;                                       % Elevation range
 
 plt_os_surfaces(e, a, lambda, eta);
 plt_os_covariant(e, a, lambda, eta);

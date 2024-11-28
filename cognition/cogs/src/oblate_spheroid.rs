@@ -162,6 +162,24 @@ impl OblateSpheroid {
     pub fn get_cartesian(&self) -> na::SMatrix<f64, 3, 1> {
         self.xyz
     }
+
+    /**
+     * @return  Cartesian coordinates
+     */
+    pub fn get_cov_basis(&self) -> (na::SMatrix<f64, 3, 1>,
+                                    na::SMatrix<f64, 3, 1>,
+                                    na::SMatrix<f64, 3, 1>)
+    {
+        let a = self.sma;
+        let sqome2 = (1.0 - self.ecc*self.ecc).sqrt();
+        let sqometa2 = (1.0 - self.lat*self.lat).sqrt();
+        let cl = self.lon.cos();
+        let sl = self.lon.sin();
+
+        (na::matrix![sqometa2*cl ; sqometa2*sl ; self.lat*sqome2],
+         na::matrix![-a*sqometa2*sl ; a*sqometa2*cl ; 0.0],
+         na::matrix![-a*self.lat*cl/sqometa2 ; -a*self.lat*sl/sqometa2 ; a*sqome2])
+    }
 }
 
 

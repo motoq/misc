@@ -5,6 +5,8 @@ use std::io::{BufRead, BufReader};
 
 use cogs::utl_const::RAD_PER_DEG;
 
+use crate::plot_os::OsPlotType;
+
 #[derive(Default)]
 pub struct Config {
     pub eccentricity: f64,
@@ -13,6 +15,7 @@ pub struct Config {
     pub latitude: f64,
 
     pub plot_prefix: String,
+    pub plot_types: Vec<OsPlotType>,
 }
 
 impl Config {
@@ -82,7 +85,12 @@ impl Config {
             } else if "plot_prefix".to_string().eq(&tokens[ii]) {
                 cfg.plot_prefix = tokens[ii+1].clone();
             } else if "plot".to_string().eq(&tokens[ii]) {
-                ();
+                match tokens[ii+1].as_str() {
+                    "covariant_basis" =>
+                        cfg.plot_types.push(OsPlotType::BasisCovariant),
+                    _ => return Err("Invalid plot option: ".to_string() +
+                                    &tokens[ii+1]),
+                }
             } else {
                 return Err("Bad input token: ".to_string() + &tokens[ii]);
             }
