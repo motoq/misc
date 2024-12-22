@@ -88,6 +88,8 @@ impl Config {
                 match tokens[ii+1].as_str() {
                     "covariant_basis" =>
                         cfg.plot_types.push(OsPlotType::BasisCovariant),
+                    "contravariant_basis" =>
+                        cfg.plot_types.push(OsPlotType::BasisContravariant),
                     _ => return Err("Invalid plot option: ".to_string() +
                                     &tokens[ii+1]),
                 }

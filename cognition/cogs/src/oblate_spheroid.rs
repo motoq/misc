@@ -164,21 +164,42 @@ impl OblateSpheroid {
     }
 
     /**
-     * @return  Cartesian coordinates
+     * @return  Covariant basis vectors at current location
      */
     pub fn get_cov_basis(&self) -> (na::SMatrix<f64, 3, 1>,
                                     na::SMatrix<f64, 3, 1>,
                                     na::SMatrix<f64, 3, 1>)
     {
         let a = self.sma;
+        let eta = self.lat;
         let sqome2 = (1.0 - self.ecc*self.ecc).sqrt();
-        let sqometa2 = (1.0 - self.lat*self.lat).sqrt();
+        let sqometa2 = (1.0 - eta*eta).sqrt();
         let cl = self.lon.cos();
         let sl = self.lon.sin();
 
-        (na::matrix![sqometa2*cl ; sqometa2*sl ; self.lat*sqome2],
+        (na::matrix![sqometa2*cl ; sqometa2*sl ; eta*sqome2],
          na::matrix![-a*sqometa2*sl ; a*sqometa2*cl ; 0.0],
-         na::matrix![-a*self.lat*cl/sqometa2 ; -a*self.lat*sl/sqometa2 ; a*sqome2])
+         na::matrix![-a*eta*cl/sqometa2 ; -a*eta*sl/sqometa2 ; a*sqome2])
+    }
+
+    /**
+     * @return  Contravariant basis vectors at current location
+     */
+    pub fn get_cont_basis(&self) -> (na::SMatrix<f64, 3, 1>,
+                                     na::SMatrix<f64, 3, 1>,
+                                     na::SMatrix<f64, 3, 1>)
+    {
+        let a = self.sma;
+        let eta = self.lat;
+        let ometa2 = 1.0 - eta*eta;
+        let sqome2 = (1.0 - self.ecc*self.ecc).sqrt();
+        let sqometa2 = (ometa2).sqrt();
+        let cl = self.lon.cos();
+        let sl = self.lon.sin();
+
+        (na::matrix![sqometa2*cl ; sqometa2*sl ; eta/sqome2],
+         na::matrix![-sl/(a*sqometa2) ; cl/(a*sqometa2) ; 0.0],
+         na::matrix![-eta*sqometa2*cl/a;-eta*sqometa2*sl/a;ometa2/(a*sqome2)])
     }
 }
 

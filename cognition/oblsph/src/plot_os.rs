@@ -1,11 +1,15 @@
 use std::fs::File;
 use std::io::{Write, BufWriter};
 
-use crate::Config;
+use nalgebra as na;
+
 use cogs::oblate_spheroid;
+
+use crate::Config;
 
 pub enum OsPlotType {
     BasisCovariant,
+    BasisContravariant,
 }
 
 pub fn plot_os(os: &oblate_spheroid::OblateSpheroid,
@@ -30,32 +34,25 @@ pub fn plot_os(os: &oblate_spheroid::OblateSpheroid,
             OsPlotType::BasisCovariant => {
                 let xyz0 = os.get_cartesian();
                 let (e1, e2, e3) = os.get_cov_basis();
-                write!(writer,
-                    "\nset arrow from {:.3e}, {:.3e}, {:.3e}",
-                    xyz0[0], xyz0[1], xyz0[2])?;
                 let mut xyz = xyz0 + e1;
-                write!(writer,
-                    " to {:.3e}, {:.3e}, {:.3e}",
-                    xyz[0], xyz[1], xyz[2])?;
-                write!(writer,
-                    "\nset arrow from {:.3e}, {:.3e}, {:.3e}",
-                    xyz0[0], xyz0[1], xyz0[2])?;
+                plot_arrow(&mut writer, &xyz0, &xyz, &"red".to_string())?;
                 xyz = xyz0 + e2;
-                write!(writer,
-                    " to {:.3e}, {:.3e}, {:.3e}",
-                    xyz[0], xyz[1], xyz[2])?;
-                write!(writer,
-                    "\nset arrow from {:.3e}, {:.3e}, {:.3e}",
-                    xyz0[0], xyz0[1], xyz0[2])?;
+                plot_arrow(&mut writer, &xyz0, &xyz, &"green".to_string())?;
                 xyz = xyz0 + e3;
-                write!(writer,
-                    " to {:.3e}, {:.3e}, {:.3e}",
-                    xyz[0], xyz[1], xyz[2])?;
+                plot_arrow(&mut writer, &xyz0, &xyz, &"blue".to_string())?;
+            }
+            OsPlotType::BasisContravariant => {
+                let xyz0 = os.get_cartesian();
+                let (e1, e2, e3) = os.get_cont_basis();
+                let mut xyz = xyz0 + e1;
+                plot_arrow(&mut writer, &xyz0, &xyz, &"red".to_string())?;
+                xyz = xyz0 + e2;
+                plot_arrow(&mut writer, &xyz0, &xyz, &"green".to_string())?;
+                xyz = xyz0 + e3;
+                plot_arrow(&mut writer, &xyz0, &xyz, &"blue".to_string())?;
             }
         }
     }
-
-
 
     write!(writer, "\nset view equal xyz")?;
 
@@ -64,4 +61,16 @@ pub fn plot_os(os: &oblate_spheroid::OblateSpheroid,
     writer.flush()?;
     Ok(())
 }
+
+fn plot_arrow(out: &mut BufWriter<File>,
+              orgn: &na::SMatrix<f64, 3, 1>,
+              dstn: &na::SMatrix<f64, 3, 1>,
+              rgb: &str) -> std::io::Result<()> {
+    write!(out, "\nset arrow from {:.3e}, {:.3e}, {:.3e}",
+                 orgn[0], orgn[1], orgn[2])?;
+    write!(out, " to {:.3e}, {:.3e}, {:.3e}", dstn[0], dstn[1], dstn[2])?;
+    write!(out, " filled back lw 3 lc rgb \"{}\"", rgb)?;
+    Ok(())
+}
+
 
