@@ -32,8 +32,6 @@ figure; hold on;
   % Reference axis
 quiver(0, 0, v(1), v(2), 'color', [0 0 0], 'linewidth', 1,...
        'AutoScale','off');
-%quiver(0, 0, -v(1), -v(2), 'color', [0 0 0], 'linewidth', 1,...
-%       'AutoScale','off');
 plot([0 -v(1)], [0 -v(2)], '-k')
   % Original vector
 quiver(0, 0, x(1), x(2), 'color', [0 0 1], 'linewidth', 3,...
@@ -57,4 +55,32 @@ plot([x(1) xf(1)], [x(2) xf(2)], '-k')
 
 xlim([-1 1]);
 ylim([-1 1]);
+axis equal;
+
+figure; hold on;
+  % Reference axis
+quiver(0, 0, v(1), v(2), 'color', [0 0 0], 'linewidth', 1,...
+       'AutoScale','off');
+plot([0 -v(1)], [0 -v(2)], '-k')
+  % Original vector
+quiver(0, 0, x(1), x(2), 'color', [0 0 1], 'linewidth', 3,...
+       'AutoScale','off');
+  % Oblique projections
+for sf = 0:.25:2
+  Po = eye(2) - sf*v*v'/(v'*v);
+  xo = Po*x;
+  quiver(0, 0, xo(1), xo(2), 'color', [0 1 0], 'linewidth', 1,...
+         'AutoScale','off');
+end
+  % Projection onto normal
+quiver(0, 0, xpn(1), xpn(2), 'color', [1 0 0], 'linewidth', 1,...
+       'AutoScale','off');
+  % Reflection
+quiver(0, 0, xf(1), xf(2), 'color', [0 0 1], 'linewidth', 1,...
+       'AutoScale','off');
+
+  % Line from vector to reflection touches tip of projection onto
+  % normal and oblique projection
+plot([x(1) xf(1)], [x(2) xf(2)], '-k')
+
 axis equal;
