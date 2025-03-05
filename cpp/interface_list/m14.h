@@ -10,14 +10,16 @@
  * Semiautomatic
  */
 class M14 : public IShoot {
-  public:
-    M14() {}
-    M14(std::string msg) { this->msg = ":  " + msg; }
-    virtual ~M14() { std::cout << "\nM14 Destructor" << msg; }
-    virtual void fire() { std::cout << "\nBang!"; }
+public:
+  ~M14() override { std::cout << "\nM14 Destructor" << msg; }
 
-  private:
-    std::string msg = "";
+  M14() = default;
+  M14(std::string msg) { this->msg = ":  " + msg; }
+
+  void fire() override { std::cout << "\nBang!"; }
+
+private:
+  std::string msg = "";
 };
 
 #endif  // M14_H
