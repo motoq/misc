@@ -30,7 +30,6 @@ function app_nd_xtan(pos, pnt, Cov)
   Tac = Scale*Rot;
   Tca = Tac^-1;
   
-  CovAff = Tac*Cov*Tac';
   posAff = Tac*pos;
   pntAff = Tac*pnt;
   
@@ -57,7 +56,7 @@ function app_nd_xtan(pos, pnt, Cov)
   end
   
   [xp2d, missed] = mth_circle_x(pos2d(1:2), pnt2d(1:2));
-  [xpnd, missednd] = mth_nsphere_x(posAff, pntAff);
+  [xpnd, ~] = mth_nsphere_x(posAff, pntAff);
   if missed
     fprintf('\n\nNo intersection');
   else
@@ -66,7 +65,6 @@ function app_nd_xtan(pos, pnt, Cov)
     xpnd = Tca*xpnd;
     r_xp_pos = xp - pos;
     r_xp_pos_hat = r_xp_pos/norm(r_xp_pos);
-    pnt_hat = pnt/norm(pnt);
     cang = dot(r_xp_pos_hat, r_xp_pos_hat);
       % Chi^2 indicates on surface.  Rank 2 means position, pointing, and
       % tangent vectors are all in the same plane.  Cosine angle between

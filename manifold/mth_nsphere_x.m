@@ -45,7 +45,7 @@ function [xpt, missed] = mth_nsphere_x(pos, pnt)
         s = -(beta + sqrt(d))/alpha;
       else
         fprintf('\nPointing above horizon');
-        s = 0
+        s = 0;
         missed = true;
       end
     else

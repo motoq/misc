@@ -36,7 +36,7 @@ function [pos, pnt, Cov] = app_nd_xtan_autogen(m)
   W = Cov^-1;
   
     % Base reference point origin on size of hyperellipsoid
-  [V, D] = eig(Cov);
+  [~, D] = eig(Cov);
   rng = sqrt(max(max(D)));
   pos = zeros(m,1);
   while sqrt(pos'*W*pos) <= 1
