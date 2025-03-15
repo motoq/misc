@@ -19,7 +19,7 @@ clear;
 
   % Top part of an ellipse
 %f = @(x) 0.5*sqrt(1 - x.*x);
-  % Runge plot
+  % Runge example
 f = @(x) 1./(1 + 25*x.*x);
 
   % True function values (lots of points to capture ellipse shape
@@ -33,7 +33,7 @@ y = f(x);
 
   % Equal spacing polynomial nodes - order will be one less than the number
   % of fit points resulting in a polynomial passing through each point
-xo = [-1:.1:1]';
+xo = [-1:.2:1]';
 yo = f(xo);
   % Number of nodes and polynomial order
 n = size(xo,1);
@@ -59,7 +59,7 @@ figure;  hold on;
 plot(x, y, '-k');
 plot(xo, yo, 'ob');
 plot(x, yp, '-r');
-stitle = sprintf('%ith Order Lagrange Equal Spacing cond(A''A) = %1.3f',...
+stitle = sprintf('%ith Order Lagrange Equal Spacing cond(A''A) = %1.1f',...
                  order, cond(F));
 title(stitle);
 axis equal;
@@ -90,7 +90,7 @@ figure;  hold on;
 plot(x, y, '-k');
 plot(xo, yo, 'ob');
 plot(x, yp, '-r');
-stitle = sprintf('%ith Order Lagrange Chebyshev Spacing cond(A''A) = %1.3f',...
+stitle = sprintf('%ith Order Lagrange Chebyshev Spacing cond(A''A) = %1.1f',...
                  order, cond(F));
 title(stitle);
 axis equal;
@@ -120,7 +120,7 @@ figure;  hold on;
 plot(x, y, '-k');
 plot(xo, yo, 'ob');
 plot(x, yp, '-r');
-stitle = sprintf('%ith Order Chebyshev cond(T''T) = %1.3f', order, cond(F));
+stitle = sprintf('%ith Order Chebyshev cond(T''T) = %1.1f', order, cond(F));
 title(stitle);
 axis equal;
 
