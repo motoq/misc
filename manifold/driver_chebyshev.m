@@ -3,7 +3,8 @@
 % ellipse) through Lagrange polynomials with equal and Chebychev node
 % spacing.  A fit using a Chebyshev polynomial is also generated, and
 % the condition number of the associated information matrix for all
-% fits is generated.
+% fits is generated.  Barycentric Lagrange interpolation is also
+% illustrated.
 %
 % The sample functions are are designed to be generated on a range of
 % [-1, 1].  No normalization of the independent parameter
@@ -99,7 +100,8 @@ axis equal;
 % Chebyshev polynomial
 %
 
-  % Repeat generation of Chebyshev nodes for convenience of reference
+  % Chebyshev points of the 1st kind
+  % Repeat for convenience of reference
 k = [1:n]';
 xo = cos(0.5*pi*(2*k-1)/n);
 yo = f(xo);
@@ -121,6 +123,37 @@ plot(x, y, '-k');
 plot(xo, yo, 'ob');
 plot(x, yp, '-r');
 stitle = sprintf('%ith Order Chebyshev cond(T''T) = %1.1f', order, cond(F));
+title(stitle);
+axis equal;
+
+%
+% Barycentric interpolation
+%
+% From:  Jean-Paul Berrut and Lloyd N. Trefethen,
+%        Barycentric Lagrange Interpolation,
+%        SIAM Review Vol. 46. No. 3. pp 501-517
+%        2004 Society for Industrial and Applied Mathematics
+%
+
+  % Chebyshev points of the 2nd kind
+xo = cos(pi*(0:order)'/order)
+yo = f(xo);
+c = [1/2 ; ones(order-1,1) ; 1/2].*(-1).^((0:order)');
+numer = zeros(size(x));
+denom = zeros(size(x));
+for jj = 1:n
+  xdiff = x - xo(jj);
+  temp = c(jj)./xdiff;
+  numer = numer + temp*yo(jj);
+  denom = denom + temp;
+end
+yb = numer./denom;
+
+figure;  hold on;
+plot(x, y, '-k');
+plot(xo, yo, 'ob');
+plot(x, yb, '-r');
+stitle = sprintf('%ith Order Barycentric', order);
 title(stitle);
 axis equal;
 
