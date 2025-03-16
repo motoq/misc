@@ -20,12 +20,14 @@ clear;
 
   % Top part of an ellipse
 %f = @(x) 0.5*sqrt(1 - x.*x);
+  % Berrut/Trefethen example
+%f = @(x) abs(x) + x/2.0 - x.*x;
   % Runge example
 f = @(x) 1./(1 + 25*x.*x);
 
   % True function values (lots of points to capture ellipse shape
   % for when that function is chosen)
-xx = [-1:.001:1]';
+xx = (-1:.001:1)';
 yy = f(xx);
 
 %
@@ -34,7 +36,7 @@ yy = f(xx);
 
   % Equal spacing polynomial nodes - order will be one less than the number
   % of fit points resulting in a polynomial passing through each point
-xo = [-1:.2:1]';
+xo = (-1:.2:1)';
 yo = f(xo);
   % Number of nodes and polynomial order
 n = size(xo,1);
@@ -177,6 +179,8 @@ axis equal;
 %     from a function that is continuous over the range of interest
 %     since the point of interpolation is not having the function on
 %     hand in the first place.
+%   - The size of "exact" can change with each loop - update bookeeping
+%     method for a production implementation.
 %
 
   % Chebyshev points of the 2nd kind
