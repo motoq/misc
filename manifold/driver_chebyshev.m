@@ -103,7 +103,7 @@ axis equal;
   % Chebyshev points of the 1st kind
   % Repeat for convenience of reference
 k = [1:n]';
-xo = cos(0.5*pi*(2*k-1)/n);
+xo = cos(0.5*pi*(2*k-1)/n)
 yo = f(xo);
   % Fit using Chebyshev polynomials
 T = zeros(n, order+1);
@@ -114,14 +114,17 @@ F = (T'*T);
 C = F^-1;
 pt = C*T'*yo;
 yt = zeros(size(x));
-for ii = 1:n 
-  yt = yt + T(ii)*pt(ii);
+yz = zeros(size(x));
+for ii = 1:size(x,1) 
+  yt(ii) = mth_tpoly(order, x(ii))*pt;      % Should vectorize mth_tpoly...
+  yz(ii) = sum(mth_tpoly(order, x(ii)));
 end
 
 figure;  hold on;
 plot(x, y, '-k');
 plot(xo, yo, 'ob');
-plot(x, yp, '-r');
+plot(x, yt, '-r');
+plot(x, yz, '-c');
 stitle = sprintf('%ith Order Chebyshev cond(T''T) = %1.1f', order, cond(F));
 title(stitle);
 axis equal;
@@ -136,7 +139,7 @@ axis equal;
 %
 
   % Chebyshev points of the 2nd kind
-xo = cos(pi*(0:order)'/order)
+xo = cos(pi*(0:order)'/order);
 yo = f(xo);
 c = [1/2 ; ones(order-1,1) ; 1/2].*(-1).^((0:order)');
 numer = zeros(size(x));
