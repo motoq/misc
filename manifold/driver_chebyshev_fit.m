@@ -1,10 +1,10 @@
 %
 % Illustrates polynomial fits to the Runge example (or half of an
 % ellipse) through Lagrange polynomials with equal and Chebychev node
-% spacing.  A fit using a Chebyshev polynomial is also generated, and
-% the condition number of the associated information matrix for all
-% fits is generated.  Barycentric Lagrange interpolation is also
-% illustrated.
+% spacing.  Fits using Chebyshev polynomials of the first and second
+% kinds are generated, and the condition number of the associated
+% information matrix for all are generated.  Barycentric Lagrange
+% interpolation is also illustrated.
 %
 % The sample functions are are designed to be generated on a range of
 % [-1, 1].  No normalization of the independent parameter
@@ -101,11 +101,10 @@ axis equal;
 % Chebyshev polynomial.  Using Chebyshev points of the 2nd kind instead
 % of the 1st kind slightly increases the cond() number of the
 % information matrix.  But, the end nodes match +/-1 without numerical
-% roundoff.
+% roundoff and there is less Runge effect at the endpoints.
 %
 
-  % Chebyshev points of the 1st kind
-  % Repeat for convenience of reference
+  % Chebyshev points - repeat for convenience of reference
 %kk = [1:n]';
 %xo = cos(0.5*pi*(2*kk-1)/n);                % 1st kind
 xo = -cos(pi*(0:order)'/order);             % 2nd kind
@@ -132,6 +131,34 @@ title(stitle);
 axis equal;
 
 %
+% Chebyshev polynomial of the 2nd kind
+%
+
+  % Chebyshev points of the 2nd
+xo = -cos(pi*(0:order)'/order);
+yo = f(xo);
+U = zeros(n, order+1);
+for ii = 1:n
+  U(ii,:) = mth_upoly(order, xo(ii));
+end
+F = (U'*U);
+C = F^-1;
+pu = C*U'*yo;
+yu = zeros(size(xx));
+for ii = 1:size(xx,1) 
+  yu(ii) = mth_upoly(order, xx(ii))*pu;
+end
+
+figure;  hold on;
+plot(xx, yy, '-k');
+plot(xo, yo, 'ob');
+plot(xx, yu, '-r');
+stitle = sprintf('%ith Order Chebyshev 2nd kind cond(U''U) = %1.1f',...
+                  order, cond(F));
+title(stitle);
+axis equal;
+
+%
 % Barycentric interpolation
 %
 % From:  Jean-Paul Berrut and Lloyd N. Trefethen,
@@ -140,14 +167,16 @@ axis equal;
 %        2004 Society for Industrial and Applied Mathematics
 %
 % Real World Implementation Notes:
-%   - When computing c, instead of (-1)^jj to compute sign, implement
+%   - When computing cc, instead of (-1)^jj to compute sign, implement
 %     via mod 2.  The current implementation is handy with vectorization.
 %   - Divide by zero logic should be expanded to handle near zero.
 %     It works fine here, but for real world interpolation, we are
 %     typically arbitrarily close to the first node for many problems.
 %     In practice, additional logic needs to be added to map node
 %     points to divide by zero locations vs. pulling true value
-%     from a function that is continuous over the range of interest.
+%     from a function that is continuous over the range of interest
+%     since the point of interpolation is not having the function on
+%     hand in the first place.
 %
 
   % Chebyshev points of the 2nd kind
