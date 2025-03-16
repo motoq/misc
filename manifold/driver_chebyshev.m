@@ -72,7 +72,7 @@ axis equal;
   % Compute new fit points, but keep order and fit method the same
 %kk = [1:n]';
 %xo = cos(0.5*pi*(2*kk-1)/n);                % 1st kind
-xo = cos(pi*(0:order)'/order);              % 2nd kind
+xo = -cos(pi*(0:order)'/order);             % 2nd kind
 yo = f(xo);
 
   % Vandermonde Matrix using Chebyshev node spacing
@@ -108,7 +108,7 @@ axis equal;
   % Repeat for convenience of reference
 %kk = [1:n]';
 %xo = cos(0.5*pi*(2*kk-1)/n);                % 1st kind
-xo = cos(pi*(0:order)'/order);              % 2nd kind
+xo = -cos(pi*(0:order)'/order);             % 2nd kind
 yo = f(xo);
   % Fit using Chebyshev polynomials
 T = zeros(n, order+1);
@@ -151,7 +151,7 @@ axis equal;
 %
 
   % Chebyshev points of the 2nd kind
-xo = cos(pi*(0:order)'/order);
+xo = -cos(pi*(0:order)'/order);
 yo = f(xo);
   % [.5 ; -1 ; 1 ... 1 ; -1 .5]'
 cc = [1/2 ; ones(order-1,1) ; 1/2].*(-1).^((0:order)');
