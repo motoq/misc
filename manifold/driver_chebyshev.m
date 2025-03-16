@@ -25,8 +25,8 @@ f = @(x) 1./(1 + 25*x.*x);
 
   % True function values (lots of points to capture ellipse shape
   % for when that function is chosen)
-x = [-1:.001:1]';
-y = f(x);
+xx = [-1:.001:1]';
+yy = f(xx);
 
 %
 % Lagrange polynomial
@@ -51,15 +51,15 @@ end
   % vs. proper matrix decomposition and backwards substitution
 F = (A'*A);
 p = F^-1*A'*yo;
-yp = zeros(size(x));
+yp = zeros(size(xx));
 for ii = 1:n 
-  yp = yp + p(ii)*x.^(ii-1);
+  yp = yp + p(ii)*xx.^(ii-1);
 end
 
 figure;  hold on;
-plot(x, y, '-k');
+plot(xx, yy, '-k');
 plot(xo, yo, 'ob');
-plot(x, yp, '-r');
+plot(xx, yp, '-r');
 stitle = sprintf('%ith Order Lagrange Equal Spacing cond(A''A) = %1.1f',...
                  order, cond(F));
 title(stitle);
@@ -70,8 +70,9 @@ axis equal;
 %
 
   % Compute new fit points, but keep order and fit method the same
-k = [1:n]';
-xo = cos(0.5*pi*(2*k-1)/n);
+%kk = [1:n]';
+%xo = cos(0.5*pi*(2*kk-1)/n);                % 1st kind
+xo = cos(pi*(0:order)'/order);              % 2nd kind
 yo = f(xo);
 
   % Vandermonde Matrix using Chebyshev node spacing
@@ -82,28 +83,32 @@ for ii = 2:n
 end
 F = (A'*A);
 p = F^-1*A'*yo;
-yp = zeros(size(x));
+yp = zeros(size(xx));
 for ii = 1:n 
-  yp = yp + p(ii)*x.^(ii-1);
+  yp = yp + p(ii)*xx.^(ii-1);
 end
 
 figure;  hold on;
-plot(x, y, '-k');
+plot(xx, yy, '-k');
 plot(xo, yo, 'ob');
-plot(x, yp, '-r');
+plot(xx, yp, '-r');
 stitle = sprintf('%ith Order Lagrange Chebyshev Spacing cond(A''A) = %1.1f',...
                  order, cond(F));
 title(stitle);
 axis equal;
 
 %
-% Chebyshev polynomial
+% Chebyshev polynomial.  Using Chebyshev points of the 2nd kind instead
+% of the 1st kind slightly increases the cond() number of the
+% information matrix.  But, the end nodes match +/-1 without numerical
+% roundoff.
 %
 
   % Chebyshev points of the 1st kind
   % Repeat for convenience of reference
-k = [1:n]';
-xo = cos(0.5*pi*(2*k-1)/n)
+%kk = [1:n]';
+%xo = cos(0.5*pi*(2*kk-1)/n);                % 1st kind
+xo = cos(pi*(0:order)'/order);              % 2nd kind
 yo = f(xo);
   % Fit using Chebyshev polynomials
 T = zeros(n, order+1);
@@ -113,18 +118,15 @@ end
 F = (T'*T);
 C = F^-1;
 pt = C*T'*yo;
-yt = zeros(size(x));
-yz = zeros(size(x));
-for ii = 1:size(x,1) 
-  yt(ii) = mth_tpoly(order, x(ii))*pt;      % Should vectorize mth_tpoly...
-  yz(ii) = sum(mth_tpoly(order, x(ii)));
+yt = zeros(size(xx));
+for ii = 1:size(xx,1) 
+  yt(ii) = mth_tpoly(order, xx(ii))*pt;     % Should vectorize mth_tpoly...
 end
 
 figure;  hold on;
-plot(x, y, '-k');
+plot(xx, yy, '-k');
 plot(xo, yo, 'ob');
-plot(x, yt, '-r');
-plot(x, yz, '-c');
+plot(xx, yt, '-r');
 stitle = sprintf('%ith Order Chebyshev cond(T''T) = %1.1f', order, cond(F));
 title(stitle);
 axis equal;
@@ -137,25 +139,40 @@ axis equal;
 %        SIAM Review Vol. 46. No. 3. pp 501-517
 %        2004 Society for Industrial and Applied Mathematics
 %
+% Real World Implementation Notes:
+%   - When computing c, instead of (-1)^jj to compute sign, implement
+%     via mod 2.  The current implementation is handy with vectorization.
+%   - Divide by zero logic should be expanded to handle near zero.
+%     It works fine here, but for real world interpolation, we are
+%     typically arbitrarily close to the first node for many problems.
+%     In practice, additional logic needs to be added to map node
+%     points to divide by zero locations vs. pulling true value
+%     from a function that is continuous over the range of interest.
+%
 
   % Chebyshev points of the 2nd kind
 xo = cos(pi*(0:order)'/order);
 yo = f(xo);
-c = [1/2 ; ones(order-1,1) ; 1/2].*(-1).^((0:order)');
-numer = zeros(size(x));
-denom = zeros(size(x));
+  % [.5 ; -1 ; 1 ... 1 ; -1 .5]'
+cc = [1/2 ; ones(order-1,1) ; 1/2].*(-1).^((0:order)');
+numer = zeros(size(xx));
+denom = zeros(size(xx));
 for jj = 1:n
-  xdiff = x - xo(jj);
-  temp = c(jj)./xdiff;
+  xdiff = xx - xo(jj);
+  temp = cc(jj)./xdiff;
   numer = numer + temp*yo(jj);
   denom = denom + temp;
+  exact(xdiff == 0) = 1;                    % Don't divide by 0
 end
 yb = numer./denom;
+  % Use node point to cover divide by 0
+ii = find(exact);
+yb(ii) = yy(exact(ii));
 
 figure;  hold on;
-plot(x, y, '-k');
+plot(xx, yy, '-k');
 plot(xo, yo, 'ob');
-plot(x, yb, '-r');
+plot(xx, yb, '-r');
 stitle = sprintf('%ith Order Barycentric', order);
 title(stitle);
 axis equal;
