@@ -1,0 +1,20 @@
+[package]
+name = "misc_test"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "misc"
+path = "src/main.rs"
+
+[[bin]]
+name = "patterns"
+path = "src/patterns/main.rs"
+
+[[bin]]
+name = "generic_num"
+path = "src/generic_num/main.rs"
+
+[dependencies]
+num-traits = "0.2.19"
+trig = "0.3.0"
