@@ -15,6 +15,10 @@ path = "src/patterns/main.rs"
 name = "generic_num"
 path = "src/generic_num/main.rs"
 
+[[bin]]
+name = "move"
+path = "src/move/main.rs"
+
 [dependencies]
 num-traits = "0.2.19"
 trig = "0.3.0"
