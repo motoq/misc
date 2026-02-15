@@ -1,3 +1,4 @@
+/// List summary of experiments
 fn main() {
     println!("\n  Pattern matching experiments:");
     println!("$ cargo run --bin patterns");

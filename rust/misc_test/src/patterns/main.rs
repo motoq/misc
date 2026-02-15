@@ -1,6 +1,4 @@
-/// Demonstrates:
-///   # Match on the number of elements in an array
-
+/// Demonstrate some pattern matching capabilities
 fn main() {
     println!("--- Test pattern matching on number of elements in an array ---");
     let people = [];

@@ -1,5 +1,5 @@
-/// Demonstrates:
-///   # Match on the number of elements in an array
+/// Demonstrates working with generic float and int types, including
+/// the conversion of numeric literals to the desired type
 
 use std::ops::{Add, Mul};
 use trig::Trig;
