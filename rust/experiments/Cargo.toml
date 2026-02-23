@@ -8,6 +8,10 @@ name = "misc"
 path = "src/main.rs"
 
 [[bin]]
+name = "closures"
+path = "src/closures/main.rs"
+
+[[bin]]
 name = "patterns"
 path = "src/patterns/main.rs"
 
